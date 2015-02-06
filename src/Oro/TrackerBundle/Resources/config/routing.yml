@@ -1,0 +1,7 @@
+tracker_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: TrackerBundle:Default:index }
+
+fos_user:
+    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+    prefix: /tracking
