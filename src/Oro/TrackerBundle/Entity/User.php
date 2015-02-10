@@ -32,6 +32,23 @@ class User extends BaseUser
      */
     protected $fullname;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    protected $avatar;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Project", inversedBy="users")
+     * @ORM\JoinTable(name="users_projects")
+     **/
+    protected $projects;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Issue", inversedBy="collaborators")
+     * @ORM\JoinTable(name="issue_collaborators")
+     **/
+    protected $issues;
+
     public function __construct()
     {
         parent::__construct();
@@ -41,7 +58,7 @@ class User extends BaseUser
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -64,10 +81,99 @@ class User extends BaseUser
     /**
      * Get fullname
      *
-     * @return string 
+     * @return string
      */
     public function getFullname()
     {
         return $this->fullname;
+    }
+
+    /**
+     * Set avatar
+     *
+     * @param string $avatar
+     * @return User
+     */
+    public function setAvatar($avatar)
+    {
+        $this->avatar = $avatar;
+
+        return $this;
+    }
+
+    /**
+     * Get avatar
+     *
+     * @return string
+     */
+    public function getAvatar()
+    {
+        return $this->avatar;
+    }
+
+    /**
+     * Add projects
+     *
+     * @param \Oro\TrackerBundle\Entity\Project $projects
+     * @return User
+     */
+    public function addProject(\Oro\TrackerBundle\Entity\Project $projects)
+    {
+        $this->projects[] = $projects;
+
+        return $this;
+    }
+
+    /**
+     * Remove projects
+     *
+     * @param \Oro\TrackerBundle\Entity\Project $projects
+     */
+    public function removeProject(\Oro\TrackerBundle\Entity\Project $projects)
+    {
+        $this->projects->removeElement($projects);
+    }
+
+    /**
+     * Get projects
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getProjects()
+    {
+        return $this->projects;
+    }
+
+    /**
+     * Add issues
+     *
+     * @param \Oro\TrackerBundle\Entity\Issue $issues
+     * @return User
+     */
+    public function addIssue(\Oro\TrackerBundle\Entity\Issue $issues)
+    {
+        $this->issues[] = $issues;
+
+        return $this;
+    }
+
+    /**
+     * Remove issues
+     *
+     * @param \Oro\TrackerBundle\Entity\Issue $issues
+     */
+    public function removeIssue(\Oro\TrackerBundle\Entity\Issue $issues)
+    {
+        $this->issues->removeElement($issues);
+    }
+
+    /**
+     * Get issues
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getIssues()
+    {
+        return $this->issues;
     }
 }

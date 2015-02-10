@@ -1,0 +1,581 @@
+<?php
+namespace Oro\TrackerBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="issues")
+ */
+class Issue
+{
+    /**
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $id;
+
+    /**
+     * @ORM\Column(type="text")
+     *
+     * @Assert\NotBlank(message="Please enter issue summary.")
+     * @Assert\Length(
+     *     min=3,
+     *     minMessage="The summary is too short."
+     * )
+     */
+    protected $summary;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     *
+     * @Assert\NotBlank(message="Please enter issue code.")
+     * @Assert\Length(
+     *     min=1,
+     *     max="255",
+     *     minMessage="The code is too short.",
+     *     maxMessage="The code is too long."
+     * )
+     */
+    protected $code;
+
+    /**
+     * @ORM\Column(type="text")
+     *
+     * @Assert\NotBlank(message="Please enter issue description.")
+     * @Assert\Length(
+     *     min=3,
+     *     minMessage="The description is too short."
+     * )
+     */
+    protected $description;
+
+    /**
+     * @ORM\Column(type="string", length=15)
+     *
+     * @Assert\NotBlank(message="Please select issue type.")
+     */
+    protected $type;
+
+    /**
+     * @ORM\Column(type="integer", options={"default":0})
+     */
+    protected $priority;
+
+    /**
+     * @ORM\Column(type="string", length=20)
+     */
+    protected $status;
+
+    /**
+     * @ORM\Column(type="string", length=20)
+     */
+    protected $resolution;
+
+    /**
+     * @ORM\OneToOne(targetEntity="User")
+     * @ORM\JoinColumn(name="reporter_id", referencedColumnName="id")
+     **/
+    protected $reporter;
+
+    /**
+     * @ORM\OneToOne(targetEntity="User")
+     * @ORM\JoinColumn(name="assignee_id", referencedColumnName="id")
+     **/
+    protected $assignee;
+
+    /**
+     * @ORM\OneToOne(targetEntity="Project", inversedBy="issues")
+     * @ORM\JoinColumn(name="project_id", referencedColumnName="id")
+     **/
+    protected $project;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="User", mappedBy="issues")
+     **/
+    protected $collaborators;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Issue", inversedBy="children")
+     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
+     **/
+    protected $parent;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Issue", mappedBy="parent")
+     */
+    protected $children;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Comment", mappedBy="issue")
+     */
+    protected $comments;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Activity", mappedBy="issue")
+     **/
+    protected $activities;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    protected $created;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    protected $updated;
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->collaborators = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->children = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->comments = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->activities = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set summary
+     *
+     * @param string $summary
+     * @return Issue
+     */
+    public function setSummary($summary)
+    {
+        $this->summary = $summary;
+
+        return $this;
+    }
+
+    /**
+     * Get summary
+     *
+     * @return string
+     */
+    public function getSummary()
+    {
+        return $this->summary;
+    }
+
+    /**
+     * Set code
+     *
+     * @param string $code
+     * @return Issue
+     */
+    public function setCode($code)
+    {
+        $this->code = $code;
+
+        return $this;
+    }
+
+    /**
+     * Get code
+     *
+     * @return string
+     */
+    public function getCode()
+    {
+        return $this->code;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     * @return Issue
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * Set type
+     *
+     * @param string $type
+     * @return Issue
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * Get type
+     *
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * Set priority
+     *
+     * @param integer $priority
+     * @return Issue
+     */
+    public function setPriority($priority)
+    {
+        $this->priority = $priority;
+
+        return $this;
+    }
+
+    /**
+     * Get priority
+     *
+     * @return integer
+     */
+    public function getPriority()
+    {
+        return $this->priority;
+    }
+
+    /**
+     * Set status
+     *
+     * @param string $status
+     * @return Issue
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * Get status
+     *
+     * @return string
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * Set resolution
+     *
+     * @param string $resolution
+     * @return Issue
+     */
+    public function setResolution($resolution)
+    {
+        $this->resolution = $resolution;
+
+        return $this;
+    }
+
+    /**
+     * Get resolution
+     *
+     * @return string
+     */
+    public function getResolution()
+    {
+        return $this->resolution;
+    }
+
+    /**
+     * Set created
+     *
+     * @param \DateTime $created
+     * @return Issue
+     */
+    public function setCreated($created)
+    {
+        $this->created = $created;
+
+        return $this;
+    }
+
+    /**
+     * Get created
+     *
+     * @return \DateTime
+     */
+    public function getCreated()
+    {
+        return $this->created;
+    }
+
+    /**
+     * Set updated
+     *
+     * @param \DateTime $updated
+     * @return Issue
+     */
+    public function setUpdated($updated)
+    {
+        $this->updated = $updated;
+
+        return $this;
+    }
+
+    /**
+     * Get updated
+     *
+     * @return \DateTime
+     */
+    public function getUpdated()
+    {
+        return $this->updated;
+    }
+
+    /**
+     * Set reporter
+     *
+     * @param \Oro\TrackerBundle\Entity\User $reporter
+     * @return Issue
+     */
+    public function setReporter(\Oro\TrackerBundle\Entity\User $reporter = null)
+    {
+        $this->reporter = $reporter;
+
+        return $this;
+    }
+
+    /**
+     * Get reporter
+     *
+     * @return \Oro\TrackerBundle\Entity\User
+     */
+    public function getReporter()
+    {
+        return $this->reporter;
+    }
+
+    /**
+     * Set assignee
+     *
+     * @param \Oro\TrackerBundle\Entity\User $assignee
+     * @return Issue
+     */
+    public function setAssignee(\Oro\TrackerBundle\Entity\User $assignee = null)
+    {
+        $this->assignee = $assignee;
+
+        return $this;
+    }
+
+    /**
+     * Get assignee
+     *
+     * @return \Oro\TrackerBundle\Entity\User
+     */
+    public function getAssignee()
+    {
+        return $this->assignee;
+    }
+
+    /**
+     * Set project
+     *
+     * @param \Oro\TrackerBundle\Entity\Project $project
+     * @return Issue
+     */
+    public function setProject(\Oro\TrackerBundle\Entity\Project $project = null)
+    {
+        $this->project = $project;
+
+        return $this;
+    }
+
+    /**
+     * Get project
+     *
+     * @return \Oro\TrackerBundle\Entity\Project
+     */
+    public function getProject()
+    {
+        return $this->project;
+    }
+
+    /**
+     * Add collaborators
+     *
+     * @param \Oro\TrackerBundle\Entity\User $collaborators
+     * @return Issue
+     */
+    public function addCollaborator(\Oro\TrackerBundle\Entity\User $collaborators)
+    {
+        $this->collaborators[] = $collaborators;
+
+        return $this;
+    }
+
+    /**
+     * Remove collaborators
+     *
+     * @param \Oro\TrackerBundle\Entity\User $collaborators
+     */
+    public function removeCollaborator(\Oro\TrackerBundle\Entity\User $collaborators)
+    {
+        $this->collaborators->removeElement($collaborators);
+    }
+
+    /**
+     * Get collaborators
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCollaborators()
+    {
+        return $this->collaborators;
+    }
+
+    /**
+     * Set parent
+     *
+     * @param \Oro\TrackerBundle\Entity\Issue $parent
+     * @return Issue
+     */
+    public function setParent(\Oro\TrackerBundle\Entity\Issue $parent = null)
+    {
+        $this->parent = $parent;
+
+        return $this;
+    }
+
+    /**
+     * Get parent
+     *
+     * @return \Oro\TrackerBundle\Entity\Issue
+     */
+    public function getParent()
+    {
+        return $this->parent;
+    }
+
+    /**
+     * Add children
+     *
+     * @param \Oro\TrackerBundle\Entity\Issue $children
+     * @return Issue
+     */
+    public function addChild(\Oro\TrackerBundle\Entity\Issue $children)
+    {
+        $this->children[] = $children;
+
+        return $this;
+    }
+
+    /**
+     * Remove children
+     *
+     * @param \Oro\TrackerBundle\Entity\Issue $children
+     */
+    public function removeChild(\Oro\TrackerBundle\Entity\Issue $children)
+    {
+        $this->children->removeElement($children);
+    }
+
+    /**
+     * Get children
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getChildren()
+    {
+        return $this->children;
+    }
+
+    /**
+     * Add comments
+     *
+     * @param \Oro\TrackerBundle\Entity\Comment $comments
+     * @return Issue
+     */
+    public function addComment(\Oro\TrackerBundle\Entity\Comment $comments)
+    {
+        $this->comments[] = $comments;
+
+        return $this;
+    }
+
+    /**
+     * Remove comments
+     *
+     * @param \Oro\TrackerBundle\Entity\Comment $comments
+     */
+    public function removeComment(\Oro\TrackerBundle\Entity\Comment $comments)
+    {
+        $this->comments->removeElement($comments);
+    }
+
+    /**
+     * Get comments
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getComments()
+    {
+        return $this->comments;
+    }
+
+    /**
+     * Add activities
+     *
+     * @param \Oro\TrackerBundle\Entity\Activity $activities
+     * @return Issue
+     */
+    public function addActivity(\Oro\TrackerBundle\Entity\Activity $activities)
+    {
+        $this->activities[] = $activities;
+
+        return $this;
+    }
+
+    /**
+     * Remove activities
+     *
+     * @param \Oro\TrackerBundle\Entity\Activity $activities
+     */
+    public function removeActivity(\Oro\TrackerBundle\Entity\Activity $activities)
+    {
+        $this->activities->removeElement($activities);
+    }
+
+    /**
+     * Get activities
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getActivities()
+    {
+        return $this->activities;
+    }
+}
