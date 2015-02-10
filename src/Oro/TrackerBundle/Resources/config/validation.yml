@@ -1,0 +1,5 @@
+TrackerBundle\Entity\User:
+    properties:
+        avatarFile:
+            - File:
+                maxSize: 6000000

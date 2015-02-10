@@ -4,6 +4,7 @@ namespace Oro\TrackerBundle\Entity;
 use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * @ORM\Entity
@@ -36,6 +37,17 @@ class User extends BaseUser
      * @ORM\Column(type="text", nullable=true)
      */
     protected $avatar;
+
+    /**
+     * @Assert\File(maxSize="6000000")
+     */
+    protected $avatarFile;
+
+    /**
+     * Temporary avatar
+     * @var $tempAvatar
+     */
+    protected $tempAvatar;
 
     /**
      * @ORM\ManyToMany(targetEntity="Project", inversedBy="users")
@@ -89,6 +101,33 @@ class User extends BaseUser
     }
 
     /**
+     * Sets avatar file.
+     *
+     * @param UploadedFile $avatarFile
+     */
+    public function setAvatarFile(UploadedFile $avatarFile = null)
+    {
+        $this->avatarFile = $avatarFile;
+
+        if (isset($this->avatar)) {
+            $this->tempAvatar = $this->avatar;
+            $this->avatar = null;
+        } else {
+            $this->avatar = '';
+        }
+    }
+
+    /**
+     * Get avatar file.
+     *
+     * @return UploadedFile
+     */
+    public function getAvatarFile()
+    {
+        return $this->avatarFile;
+    }
+
+    /**
      * Set avatar
      *
      * @param string $avatar
@@ -109,6 +148,66 @@ class User extends BaseUser
     public function getAvatar()
     {
         return $this->avatar;
+    }
+
+    public function getAbsoluteAvatarPath()
+    {
+        return null === $this->avatar
+            ? null
+            : $this->getUploadRootAvatarDir().'/'.$this->avatar;
+    }
+
+    public function getWebAvatarPath()
+    {
+        return null === $this->avatar
+            ? null
+            : $this->getUploadAvatarDir().'/'.$this->avatar;
+    }
+
+    protected function getUploadRootAvatarDir()
+    {
+        return __DIR__.'/../../../../web/'.$this->getUploadAvatarDir();
+    }
+
+    protected function getUploadAvatarDir()
+    {
+        return 'uploads/avatars';
+    }
+
+    public function preUpload()
+    {
+        if (null !== $this->getAvatarFile()) {
+            $filename = sha1(uniqid(mt_rand(), true));
+            $this->avatar = $filename.'.'.$this->getAvatarFile()->guessExtension();
+        }
+    }
+
+    public function upload()
+    {
+
+        if (null === $this->getAvatarFile()) {
+            return;
+        }
+
+//        $this->removeAvatar();
+        $this->preUpload();
+
+        $this->getAvatarFile()->move(
+            $this->getUploadRootAvatarDir(),
+            $this->avatar
+        );
+
+        $this->avatarFile = null;
+    }
+
+    protected function removeAvatar()
+    {
+        $avatar = $this->getUploadRootAvatarDir()."/".$this->getAvatar();
+
+        if (is_file($avatar)) {
+            unlink($avatar);
+            $this->setAvatar("");
+        }
     }
 
     /**
