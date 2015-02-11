@@ -1,0 +1,7 @@
+{% extends "TrackerBundle::layout.html.twig" %}
+
+{% block page_description %}Profile [ <a href="{{ path('_tracking_user_edit', {'id': user.getId()}) }}">Edit</a> ]{% endblock %}
+
+{% block fos_user_content %}
+{% include "FOSUserBundle:Profile:show_content.html.twig" %}
+{% endblock fos_user_content %}

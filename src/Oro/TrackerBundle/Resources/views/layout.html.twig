@@ -2,7 +2,7 @@
 
 {% block head %}
     <link rel="icon" sizes="16x16" href="{{ asset('favicon.ico') }}" />
-    <link rel="stylesheet" href="{{ asset('bundles/acmedemo/css/demo.css') }}" />
+    <link rel="stylesheet" href="{{ asset('bundles/tracker/css/main.css') }}" />
 {% endblock %}
 
 {% block title 'Tracking Bundle' %}
@@ -11,12 +11,12 @@
     {% block content_header %}
         <ul id="menu">
             {% block content_header_more %}
-                {% if app.user and app.user.hasRole('ADMINISTRATOR') %}<li><a href="{{ path('fos_user_registration_register') }}">Create new user</a></li>{% endif %}
+                {% if app.user and app.user.hasRole('ADMINISTRATOR') %}
+                    <li>[ <a href="{{ path('_tracking_user_list') }}">Users list</a> ]</li>
+                {% endif %}
                 {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-                    Logged in as <li><a href="{{ path('fos_user_profile_show') }}">{{ app.user.username }}</a></li> |
-                    <li><a href="{{ path('fos_user_security_logout') }}">
-                        {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
-                    </a></li>
+                    <li>[ <a href="{{ path('fos_user_profile_show') }}">{{ app.user.username }}</a> ]</li>
+                    <li>[ <a href="{{ path('fos_user_security_logout') }}">{{ 'layout.logout'|trans({}, 'FOSUserBundle') }}</a> ]</li>
                 {% else %}
                     <li><a href="{{ path('fos_user_security_login') }}">{{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a></li>
                 {% endif %}
@@ -32,6 +32,8 @@
                 {{ flashMessage }}
             </div>
         {% endfor %}
+
+        <div class="page_description">{% block page_description %}{% endblock %}</div>
 
         {% block content %}{% endblock %}
         {% block fos_user_content %}{% endblock fos_user_content %}

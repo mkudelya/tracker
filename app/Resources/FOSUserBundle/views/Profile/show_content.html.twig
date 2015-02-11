@@ -1,0 +1,10 @@
+{% trans_default_domain 'FOSUserBundle' %}
+
+<div class="fos_user_user_show">
+    {% if user.getWebAvatarPath() %}
+        <p><a href="{{ user.getWebAvatarPath() }}" target="_blank"><img src="{{ user.getWebAvatarPath() }}" width="10%"/></a></p>
+    {% endif %}
+    <p>{{ 'profile.show.email'|trans }}: {{ user.email }}</p>
+    <p>{{ 'profile.show.username'|trans }}: {{ user.username }}</p>
+    <p>Full name: {{ user.fullname }}</p>
+</div>

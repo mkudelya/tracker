@@ -62,10 +62,10 @@ ul#demo-list a {
     float:        left;
 }
 .flash-message {
-    padding: 10px;
-    margin: 5px;
-    margin-top: 15px;
-    background-color: #ffe;
+    background-color: #eee;
+    margin: 10px 0 !important;
+    padding: 5px !important;
+    font-weight: bold;
 }
 .sf-reset .error {
     color: red;
@@ -98,4 +98,11 @@ ul#demo-list a {
 .sf-reset .symfony-content pre {
     white-space: pre;
     font-family: monospace;
+}
+
+.block .page_description {
+    font-size: 2em;
+    font-weight: bold;
+    margin: 0px 10px 20px 0 !important;
+    font-variant: small-caps;
 }

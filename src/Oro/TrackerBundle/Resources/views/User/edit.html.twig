@@ -1,0 +1,52 @@
+{% extends "TrackerBundle::layout.html.twig" %}
+
+{% block page_description %}Edit user{% endblock %}
+
+{% block content %}
+<form action="{{ path('_tracking_user_update', {'id': id}) }}" {{ form_enctype(form) }} method="POST" class="tracker_user_update">
+
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+
+    <div>
+        {{ form_label(form.email) }}
+        {{ form_errors(form.email) }}
+        {{ form_widget(form.email) }}
+    </div>
+
+    <div>
+        {{ form_label(form.username) }}
+        {{ form_errors(form.username) }}
+        {{ form_widget(form.username) }}
+    </div>
+
+    <div>
+        {{ form_errors(form.plainPassword) }}
+        {{ form_widget(form.plainPassword) }}
+    </div>
+
+    <div>
+        {{ form_label(form.fullname) }}
+        {{ form_errors(form.fullname) }}
+        {{ form_widget(form.fullname) }}
+    </div>
+
+    <div>
+        {{ form_label(form.avatarFile) }}
+        {% if user.getWebAvatarPath() %}
+            <a href="{{ user.getWebAvatarPath() }}" target="_blank"><img src="{{ user.getWebAvatarPath() }}" width="2%"/></a>
+        {% endif %}
+        {{ form_errors(form.avatarFile) }}
+        {{ form_widget(form.avatarFile) }}
+    </div>
+
+    <div>
+        {{ form_label(form.roles) }}
+        {{ form_errors(form.roles) }}
+        {{ form_widget(form.roles) }}
+    </div>
+
+    <input type="submit" value="Update"/>
+    {{ form_end(form) }}
+</form>
+{% endblock %}

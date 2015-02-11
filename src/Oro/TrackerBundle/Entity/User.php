@@ -161,7 +161,7 @@ class User extends BaseUser
     {
         return null === $this->avatar
             ? null
-            : $this->getUploadAvatarDir().'/'.$this->avatar;
+            : '/'.$this->getUploadAvatarDir().'/'.$this->avatar;
     }
 
     protected function getUploadRootAvatarDir()
@@ -189,7 +189,7 @@ class User extends BaseUser
             return;
         }
 
-//        $this->removeAvatar();
+        $this->removeAvatar();
         $this->preUpload();
 
         $this->getAvatarFile()->move(

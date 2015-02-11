@@ -1,0 +1,29 @@
+{% extends "TrackerBundle::layout.html.twig" %}
+
+{% block page_description %}Users list [ <a href="{{ path('fos_user_registration_register') }}">Add new user</a> ]{% endblock %}
+
+{% block content %}
+    {% if users|length > 0 %}
+        <table width="100%">
+            <tr>
+                <td><b>ID</b></td>
+                <td><b>Email</b></td>
+                <td><b>Username</b></td>
+                <td><b>Full name</b></td>
+                <td><b>Actions</b></td>
+            </tr>
+        {% for user in users %}
+            <tr>
+                <td>{{ user.getId() }}</td>
+                <td>{{ user.getEmail() }}</td>
+                <td>{{ user.getUsername() }}</td>
+                <td>{{ user.getFullname() }}</td>
+                <td><a href="{{ path('_tracking_user_edit', {'id': user.getId()}) }}">Edit</a> | Delete</td>
+            </tr>
+        {% endfor %}
+        </table>
+    {% else %}
+            No users
+    {% endif %}
+{% endblock %}
+
