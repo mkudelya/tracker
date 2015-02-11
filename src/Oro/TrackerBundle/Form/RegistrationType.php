@@ -34,7 +34,7 @@ class RegistrationType extends AbstractType
 
                 $form->add('roles', 'choice', array(
                     'choices'   => (new Role)->getAvailableRoles(),
-                    'data' => array_map('strtolower', $userRoles),
+                    'data' => $userRoles,
                     'multiple'  => true,
                     'required'  => true
                 ));

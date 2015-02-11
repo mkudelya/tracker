@@ -2,7 +2,6 @@
 namespace Oro\TrackerBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
@@ -19,43 +18,21 @@ class Project
 
     /**
      * @ORM\Column(type="string", length=255)
-     *
-     * @Assert\NotBlank(message="Please enter project label.")
-     * @Assert\Length(
-     *     min=3,
-     *     max="255",
-     *     minMessage="The label is too short.",
-     *     maxMessage="The label is too long."
-     * )
      */
     protected $label;
 
     /**
      * @ORM\Column(type="text")
-     *
-     * @Assert\NotBlank(message="Please enter project summary.")
-     * @Assert\Length(
-     *     min=3,
-     *     minMessage="The summary is too short."
-     * )
      */
     protected $summary;
 
     /**
      * @ORM\Column(type="string", length=255)
-     *
-     * @Assert\NotBlank(message="Please enter project code.")
-     * @Assert\Length(
-     *     min=1,
-     *     max="255",
-     *     minMessage="The code is too short.",
-     *     maxMessage="The code is too long."
-     * )
      */
     protected $code;
 
     /**
-     * @ORM\ManyToMany(targetEntity="User", mappedBy="projects")
+     * @ORM\ManyToMany(targetEntity="User", inversedBy="projects")
      **/
     protected $users;
 

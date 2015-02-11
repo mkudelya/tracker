@@ -1,0 +1,28 @@
+{% extends "TrackerBundle::layout.html.twig" %}
+
+{% block page_description %}{{ 'project.projects_list'|trans({}, 'TrackerBundle') }}
+    [ <a href="{{ path('_tracking_project_edit') }}">{{ 'project.add_new_project'|trans({}, 'TrackerBundle') }}</a> ]{% endblock %}
+
+{% block content %}
+    {% if projects|length > 0 %}
+        <table width="100%">
+            <tr>
+                <td><b>{{ 'grid_title.code'|trans({}, 'TrackerBundle') }}</b></td>
+                <td><b>{{ 'grid_title.label'|trans({}, 'TrackerBundle') }}</b></td>
+                <td><b>{{ 'grid_title.actions'|trans({}, 'TrackerBundle') }}</b></td>
+            </tr>
+            {% for project in projects %}
+                <tr>
+                    <td>{{ project.getCode() }}</td>
+                    <td>{{ project.getLabel() }}</td>
+                    <td>
+                        <a href="{{ path('_tracking_project_edit', {'id': project.getId()}) }}">{{ 'grid.edit'|trans({}, 'TrackerBundle') }}</a>
+                        | {{ 'grid.delete'|trans({}, 'TrackerBundle') }}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        {{ 'project.projects_not_found'|trans({}, 'TrackerBundle') }}
+    {% endif %}
+{% endblock %}

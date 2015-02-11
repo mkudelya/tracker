@@ -4,9 +4,9 @@ namespace Oro\TrackerBundle\Entity;
 class Role
 {
     protected $_roles = array(
-        'administrator' => 'Administrator',
-        'manager' => 'Manager',
-        'operator' => 'Operator'
+        'ROLE_ADMINISTRATOR' => 'Administrator',
+        'ROLE_MANAGER' => 'Manager',
+        'ROLE_OPERATOR' => 'Operator'
     );
 
     public function getAvailableRoles()

@@ -1,0 +1,18 @@
+project:
+    label:
+        blank: Please enter a label
+        short: "[-Inf,Inf]The label is too short"
+        long: "[-Inf,Inf]The label is too long"
+    summary:
+        blank: Please enter a summary
+        short: "[-Inf,Inf]The summary is too short"
+    code:
+        blank: Please enter a code
+        short: "[-Inf,Inf]The code is too short"
+        long: "[-Inf,Inf]The code is too long"
+
+user:
+    fullname:
+        blank: Please enter a full name
+        short: "[-Inf,Inf]The full name is too short"
+        long: "[-Inf,Inf]The full name is too long"

@@ -1,0 +1,9 @@
+{% extends "TrackerBundle::layout.html.twig" %}
+
+{% block page_description %}{{ 'project.edit_project'|trans({}, 'TrackerBundle') }}{% endblock %}
+
+{% block content %}
+<form action="{{ path('_tracking_project_edit', {'id': id}) }}" {{ form_enctype(form) }} method="POST" class="tracker_user_update">
+{{ form_widget(form) }}
+</form>
+{% endblock %}

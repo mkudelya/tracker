@@ -21,15 +21,6 @@ class User extends BaseUser
 
     /**
      * @ORM\Column(type="string", length=255)
-     *
-     * @Assert\NotBlank(message="Please enter your full name.", groups={"Registration", "Profile"})
-     * @Assert\Length(
-     *     min=3,
-     *     max="255",
-     *     minMessage="The fullname is too short.",
-     *     maxMessage="The fullname is too long.",
-     *     groups={"Registration", "Profile"}
-     * )
      */
     protected $fullname;
 
@@ -50,7 +41,7 @@ class User extends BaseUser
     protected $tempAvatar;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Project", inversedBy="users")
+     * @ORM\ManyToMany(targetEntity="Project", mappedBy="users")
      * @ORM\JoinTable(name="users_projects")
      **/
     protected $projects;

@@ -11,8 +11,11 @@
     {% block content_header %}
         <ul id="menu">
             {% block content_header_more %}
-                {% if app.user and app.user.hasRole('ADMINISTRATOR') %}
-                    <li>[ <a href="{{ path('_tracking_user_list') }}">Users list</a> ]</li>
+                {% if is_granted('ROLE_ADMINISTRATOR') %}
+                    <li>[ <a href="{{ path('_tracking_user_list') }}">{{ 'layout.users_list'|trans({}, 'TrackerBundle') }}</a> ]</li>
+                {% endif %}
+                {% if is_granted('ROLE_MANAGER') %}
+                    <li>[ <a href="{{ path('_tracking_project_list') }}">{{ 'layout.projects_list'|trans({}, 'TrackerBundle') }}</a> ]</li>
                 {% endif %}
                 {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
                     <li>[ <a href="{{ path('fos_user_profile_show') }}">{{ app.user.username }}</a> ]</li>

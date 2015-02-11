@@ -106,3 +106,11 @@ ul#demo-list a {
     margin: 0px 10px 20px 0 !important;
     font-variant: small-caps;
 }
+
+form div label {
+    display: block;
+}
+
+form div div div ul li {
+    color: red;
+}

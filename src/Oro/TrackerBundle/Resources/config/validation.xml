@@ -4,7 +4,7 @@
                     xsi:schemaLocation="http://symfony.com/schema/dic/constraint-mapping
         http://symfony.com/schema/dic/constraint-mapping/constraint-mapping-1.0.xsd">
 
-    <class name="TrackerBundle\Entity\User">
+    <class name="Oro\TrackerBundle\Entity\User">
         <property name="avatarFile">
             <constraint name="File">
                 <option name="maxSize">6000000</option>
@@ -62,6 +62,58 @@
                     <value>Tracker</value>
                 </option>
             </constraint>
+        </property>
+
+        <property name="fullname">
+            <constraint name="NotBlank">
+                <option name="message">user.fullname.blank</option>
+                <option name="groups">
+                    <value>Tracker</value>
+                </option>
+            </constraint>
+            <constraint name="Length">
+                <option name="min">2</option>
+                <option name="minMessage">fos_user.fullname.short</option>
+                <option name="max">255</option>
+                <option name="maxMessage">fos_user.fullname.long</option>
+                <option name="groups">
+                    <value>Tracker</value>
+                </option>
+            </constraint>
+        </property>
+    </class>
+
+    <class name="Oro\TrackerBundle\Entity\Project">
+        <property name="label">
+            <constraint name="NotBlank">
+                <option name="message">project.label.empty</option>
+            </constraint>
+            <constraint name="Length">
+                <option name="min">2</option>
+                <option name="minMessage">project.label.short</option>
+                <option name="max">255</option>
+                <option name="maxMessage">project.label.long</option>
+            </constraint>
+        </property>
+        <property name="summary">
+            <constraint name="NotBlank">
+                <option name="message">project.summary.empty</option>
+            </constraint>
+            <constraint name="Length">
+                <option name="min">2</option>
+                <option name="minMessage">project.summary.short</option>
+            </constraint>
+        </property>
+        <property name="code">
+            <constraint name="NotBlank">
+                <option name="message">project.code.empty</option>
+            </constraint>
+            <constraint name="Length">
+                <option name="min">1</option>
+                <option name="minMessage">tracker.code.short</option>
+                <option name="max">255</option>
+                <option name="maxMessage">tracker.code.long</option>
+             </constraint>
         </property>
     </class>
 

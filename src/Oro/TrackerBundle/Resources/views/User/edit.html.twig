@@ -1,6 +1,6 @@
 {% extends "TrackerBundle::layout.html.twig" %}
 
-{% block page_description %}Edit user{% endblock %}
+{% block page_description %}{{ 'user.edit_user'|trans({}, 'TrackerBundle') }}{% endblock %}
 
 {% block content %}
 <form action="{{ path('_tracking_user_update', {'id': id}) }}" {{ form_enctype(form) }} method="POST" class="tracker_user_update">
@@ -46,7 +46,7 @@
         {{ form_widget(form.roles) }}
     </div>
 
-    <input type="submit" value="Update"/>
+    <input type="submit" value="{{ 'form.save'|trans({}, 'TrackerBundle') }}"/>
     {{ form_end(form) }}
 </form>
 {% endblock %}

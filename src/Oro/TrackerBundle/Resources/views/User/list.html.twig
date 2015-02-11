@@ -1,16 +1,18 @@
 {% extends "TrackerBundle::layout.html.twig" %}
 
-{% block page_description %}Users list [ <a href="{{ path('fos_user_registration_register') }}">Add new user</a> ]{% endblock %}
+{% block page_description %}{{ 'user.users_list'|trans({}, 'TrackerBundle') }}
+    [ <a href="{{ path('fos_user_registration_register') }}">{{ 'user.add_new_user'|trans({}, 'TrackerBundle') }}</a> ]
+{% endblock %}
 
 {% block content %}
     {% if users|length > 0 %}
         <table width="100%">
             <tr>
-                <td><b>ID</b></td>
-                <td><b>Email</b></td>
-                <td><b>Username</b></td>
-                <td><b>Full name</b></td>
-                <td><b>Actions</b></td>
+                <td><b>{{ 'grid_title.id'|trans({}, 'TrackerBundle') }}</b></td>
+                <td><b>{{ 'grid_title.email'|trans({}, 'TrackerBundle') }}</b></td>
+                <td><b>{{ 'grid_title.username'|trans({}, 'TrackerBundle') }}</b></td>
+                <td><b>{{ 'grid_title.full_name'|trans({}, 'TrackerBundle') }}</b></td>
+                <td><b>{{ 'grid_title.actions'|trans({}, 'TrackerBundle') }}</b></td>
             </tr>
         {% for user in users %}
             <tr>
@@ -18,12 +20,13 @@
                 <td>{{ user.getEmail() }}</td>
                 <td>{{ user.getUsername() }}</td>
                 <td>{{ user.getFullname() }}</td>
-                <td><a href="{{ path('_tracking_user_edit', {'id': user.getId()}) }}">Edit</a> | Delete</td>
+                <td><a href="{{ path('_tracking_user_edit', {'id': user.getId()}) }}">{{ 'grid.edit'|trans({}, 'TrackerBundle') }}</a>
+                    | {{ 'grid.delete'|trans({}, 'TrackerBundle') }}</td>
             </tr>
         {% endfor %}
         </table>
     {% else %}
-            No users
+        {{ 'user.users_not_found'|trans({}, 'TrackerBundle') }}
     {% endif %}
 {% endblock %}
 

@@ -1,0 +1,33 @@
+# Global strings
+layout:
+    users_list: Users list
+    projects_list: Projects list
+
+project:
+    edit_project: Edit project
+    add_new_project: Add new project
+    projects_list: Projects list
+    projects_not_found: projects not found
+
+user:
+    edit_user: Edit user
+    users_not_found: users not found
+    users_list: Users list
+    add_new_user: Add new user
+
+grid:
+    edit: Edit
+    delete: Delete
+
+
+grid_title:
+    code: Code
+    label: Label
+    actions: Actions
+    id: ID
+    email: Email
+    username: Username
+    full_name: Full name
+
+form:
+    save: Save
