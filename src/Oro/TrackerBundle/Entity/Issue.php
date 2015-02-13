@@ -2,11 +2,14 @@
 namespace Oro\TrackerBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="issues")
+ * @ORM\HasLifecycleCallbacks
+ * @UniqueEntity("code")
  */
 class Issue
 {
@@ -19,43 +22,21 @@ class Issue
 
     /**
      * @ORM\Column(type="text")
-     *
-     * @Assert\NotBlank(message="Please enter issue summary.")
-     * @Assert\Length(
-     *     min=3,
-     *     minMessage="The summary is too short."
-     * )
      */
     protected $summary;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     *
-     * @Assert\NotBlank(message="Please enter issue code.")
-     * @Assert\Length(
-     *     min=1,
-     *     max="255",
-     *     minMessage="The code is too short.",
-     *     maxMessage="The code is too long."
-     * )
+     * @ORM\Column(type="string", length=255, unique=true)
      */
     protected $code;
 
     /**
      * @ORM\Column(type="text")
-     *
-     * @Assert\NotBlank(message="Please enter issue description.")
-     * @Assert\Length(
-     *     min=3,
-     *     minMessage="The description is too short."
-     * )
      */
     protected $description;
 
     /**
      * @ORM\Column(type="string", length=15)
-     *
-     * @Assert\NotBlank(message="Please select issue type.")
      */
     protected $type;
 
@@ -70,24 +51,24 @@ class Issue
     protected $status;
 
     /**
-     * @ORM\Column(type="string", length=20)
+     * @ORM\Column(type="string", length=20, nullable=true)
      */
     protected $resolution;
 
     /**
-     * @ORM\OneToOne(targetEntity="User")
+     * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumn(name="reporter_id", referencedColumnName="id")
      **/
     protected $reporter;
 
     /**
-     * @ORM\OneToOne(targetEntity="User")
+     * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumn(name="assignee_id", referencedColumnName="id")
      **/
     protected $assignee;
 
     /**
-     * @ORM\OneToOne(targetEntity="Project", inversedBy="issues")
+     * @ORM\ManyToOne(targetEntity="Project", inversedBy="issues")
      * @ORM\JoinColumn(name="project_id", referencedColumnName="id")
      **/
     protected $project;
@@ -179,6 +160,10 @@ class Issue
      */
     public function setCode($code)
     {
+        if (!empty($code)) {
+            $code = strtoupper(preg_replace('/[^a-zA-z_-\d]+/', '', $code));
+        }
+
         $this->code = $code;
 
         return $this;
@@ -356,75 +341,6 @@ class Issue
     }
 
     /**
-     * Set reporter
-     *
-     * @param \Oro\TrackerBundle\Entity\User $reporter
-     * @return Issue
-     */
-    public function setReporter(\Oro\TrackerBundle\Entity\User $reporter = null)
-    {
-        $this->reporter = $reporter;
-
-        return $this;
-    }
-
-    /**
-     * Get reporter
-     *
-     * @return \Oro\TrackerBundle\Entity\User
-     */
-    public function getReporter()
-    {
-        return $this->reporter;
-    }
-
-    /**
-     * Set assignee
-     *
-     * @param \Oro\TrackerBundle\Entity\User $assignee
-     * @return Issue
-     */
-    public function setAssignee(\Oro\TrackerBundle\Entity\User $assignee = null)
-    {
-        $this->assignee = $assignee;
-
-        return $this;
-    }
-
-    /**
-     * Get assignee
-     *
-     * @return \Oro\TrackerBundle\Entity\User
-     */
-    public function getAssignee()
-    {
-        return $this->assignee;
-    }
-
-    /**
-     * Set project
-     *
-     * @param \Oro\TrackerBundle\Entity\Project $project
-     * @return Issue
-     */
-    public function setProject(\Oro\TrackerBundle\Entity\Project $project = null)
-    {
-        $this->project = $project;
-
-        return $this;
-    }
-
-    /**
-     * Get project
-     *
-     * @return \Oro\TrackerBundle\Entity\Project
-     */
-    public function getProject()
-    {
-        return $this->project;
-    }
-
-    /**
      * Add collaborators
      *
      * @param \Oro\TrackerBundle\Entity\User $collaborators
@@ -577,5 +493,92 @@ class Issue
     public function getActivities()
     {
         return $this->activities;
+    }
+
+    /**
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     */
+    public function updatedTimestamps()
+    {
+        $this->setUpdated(new \DateTime('now'));
+
+        if ($this->getCreated() == null) {
+            $this->setCreated(new \DateTime('now'));
+        }
+    }
+
+    /**
+     * Set project
+     *
+     * @param \Oro\TrackerBundle\Entity\Project $project
+     * @return Issue
+     */
+    public function setProject(\Oro\TrackerBundle\Entity\Project $project = null)
+    {
+        $this->project = $project;
+
+        return $this;
+    }
+
+    /**
+     * Get project
+     *
+     * @return \Oro\TrackerBundle\Entity\Project
+     */
+    public function getProject()
+    {
+        return $this->project;
+    }
+
+    public function __toString()
+    {
+        return $this->getCode();
+    }
+
+    /**
+     * Set reporter
+     *
+     * @param \Oro\TrackerBundle\Entity\User $reporter
+     * @return Issue
+     */
+    public function setReporter(\Oro\TrackerBundle\Entity\User $reporter = null)
+    {
+        $this->reporter = $reporter;
+
+        return $this;
+    }
+
+    /**
+     * Get reporter
+     *
+     * @return \Oro\TrackerBundle\Entity\User
+     */
+    public function getReporter()
+    {
+        return $this->reporter;
+    }
+
+    /**
+     * Set assignee
+     *
+     * @param \Oro\TrackerBundle\Entity\User $assignee
+     * @return Issue
+     */
+    public function setAssignee(\Oro\TrackerBundle\Entity\User $assignee = null)
+    {
+        $this->assignee = $assignee;
+
+        return $this;
+    }
+
+    /**
+     * Get assignee
+     *
+     * @return \Oro\TrackerBundle\Entity\User
+     */
+    public function getAssignee()
+    {
+        return $this->assignee;
     }
 }

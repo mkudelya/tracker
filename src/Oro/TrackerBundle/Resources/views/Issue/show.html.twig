@@ -1,0 +1,38 @@
+{% extends "TrackerBundle::layout.html.twig" %}
+
+{% block breadcrumb %}
+    <a href="{{ path('_tracking_project_list') }}">{{ 'project.projects_list'|trans({}, 'TrackerBundle') }}</a> /
+    <a href="{{ path('_tracking_project_show', {'projectCode' : project.getCode()}) }}">{{ project.getCode() }}</a> /
+    <a href="{{ path('_tracking_issue_show', {'projectCode': project.getCode(), 'issueCode': issue.getCode()}) }}">{{ issue.getCode() }}</a>
+{% endblock %}
+
+{% block description %}{{ issue.getSummary() }}{% endblock %}
+
+{% block page_actions %}
+    [ <a href="{{ path('_tracking_issue_edit', {'projectCode': project.getCode(), 'issueCode': issue.getCode()}) }}">{{ 'issue.edit'|trans({}, 'TrackerBundle') }}</a> ]
+    {% if isStory %}
+    <br>[ <a href="{{ path('_tracking_issue_add_subtask', {'projectCode': project.getCode(), 'issueCode': issue.getCode()}) }}">{{ 'issue.add_sub'|trans({}, 'TrackerBundle') }}</a> ]
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <p>{{ 'issue.project'|trans({}, 'TrackerBundle') }} : {{ issue.getProject().getSummary() }}</p>
+    <p>{{ 'issue.type'|trans({}, 'TrackerBundle') }} : {{ issue.getType() }}</p>
+    <p>{{ 'issue.reporter'|trans({}, 'TrackerBundle') }} : {{ issue.getReporter().getFullName() }}</p>
+    <p>{{ 'issue.assignee'|trans({}, 'TrackerBundle') }} : {{ issue.getAssignee().getFullName() }}</p>
+    <p>{{ 'issue.status'|trans({}, 'TrackerBundle') }} : {{ issue.getStatus() }}</p>
+    <p>{{ 'issue.resolution'|trans({}, 'TrackerBundle') }} : {{ issue.getResolution() }}</p>
+
+    <p>{{ 'issue.created'|trans({}, 'TrackerBundle') }} : {{ issue.getCreated()|date("m/d/Y", false) }}</p>
+    <p>{{ 'issue.updated'|trans({}, 'TrackerBundle') }} : {{ issue.getUpdated()|date("m/d/Y", false) }}</p>
+
+    <p>{{ 'issue.description'|trans({}, 'TrackerBundle') }} : {{ issue.getDescription() }}</p>
+
+    {% if isStory %}
+        <h2>{{ 'issue.subissue_list'|trans({}, 'TrackerBundle') }}:</h2>
+        {{ render(controller(
+        'TrackerBundle:Issue:subtasksList',
+        {'projectCode': project.getCode(), 'issueCode': issue.getCode()}
+        )) }}
+    {% endif %}
+{%  endblock %}

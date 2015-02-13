@@ -4,7 +4,6 @@ namespace Oro\TrackerBundle\Controller;
 
 use Oro\TrackerBundle\Entity\Project;
 use Oro\TrackerBundle\Form\ProjectType;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -26,16 +25,18 @@ class ProjectController extends Controller
     }
 
     /**
-     * @Route("/edit/{id}", name="_tracking_project_edit")
+     * @Route("/edit/{projectCode}", name="_tracking_project_edit")
      * @Template()
      */
-    public function editAction($id = null)
+    public function editAction($projectCode = null)
     {
         $request = $this->getRequest();
         $manager = $this->getDoctrine()->getManager();
+        $isAdd = true;
 
-        if ($id) {
-            $projectEntity = $manager->getRepository('TrackerBundle:Project')->find($id);
+        if ($projectCode) {
+            $projectEntity = $manager->getRepository('TrackerBundle:Project')->findOneByCode($projectCode);
+            $isAdd = false;
         } else {
             $projectEntity = new Project();
         }
@@ -46,12 +47,24 @@ class ProjectController extends Controller
         if ($request->getMethod() == 'POST' && $form->isValid()) {
             $manager->persist($projectEntity);
             $manager->flush();
-            return $this->redirect($this->generateUrl('_tracking_project_list'));
+            return $this->redirect($this->generateUrl('_tracking_project_show', array('projectCode' => $projectEntity->getCode())));
         }
 
         return array(
             'form' => $form->createView(),
-            'id' => $id
+            'projectCode' => $projectCode,
+            'isAdd' => $isAdd
         );
+    }
+
+    /**
+     * @Route("/{projectCode}", name="_tracking_project_show")
+     * @Template()
+     */
+    public function showAction($projectCode)
+    {
+        $projectEntity = $this->getDoctrine()->getRepository('TrackerBundle:Project')->findOneByCode($projectCode);
+
+        return array('project' => $projectEntity, 'code' => $projectCode);
     }
 }

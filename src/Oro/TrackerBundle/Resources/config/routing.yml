@@ -7,6 +7,11 @@ tracker_user:
     type:     annotation
     prefix:   /tracking/user
 
+tracker_issue:
+    resource: "@TrackerBundle/Controller/IssueController.php"
+    type:     annotation
+    prefix:   /tracking/project/{projectCode}/ussue
+
 tracker_project:
     resource: "@TrackerBundle/Controller/ProjectController.php"
     type:     annotation

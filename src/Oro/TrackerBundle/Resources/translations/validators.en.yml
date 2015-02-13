@@ -11,6 +11,22 @@ project:
         short: "[-Inf,Inf]The code is too short"
         long: "[-Inf,Inf]The code is too long"
 
+issue:
+    summary:
+        blank: Please enter a summary
+        short: "[-Inf,Inf]The summary is too short"
+    code:
+        blank: Please enter a code
+        short: "[-Inf,Inf]The code is too short"
+        long: "[-Inf,Inf]The code is too long"
+
+    description:
+        blank: Please enter a description
+        short: "[-Inf,Inf]The description is too short"
+
+    assignee:
+        blank: Please select a assignee
+
 user:
     fullname:
         blank: Please enter a full name

@@ -2,10 +2,12 @@
 namespace Oro\TrackerBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="projects")
+ * @UniqueEntity("code")
  */
 class Project
 {
@@ -27,7 +29,7 @@ class Project
     protected $summary;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true)
      */
     protected $code;
 
@@ -113,6 +115,10 @@ class Project
      */
     public function setCode($code)
     {
+        if (!empty($code)) {
+            $code = strtoupper(preg_replace('/[^a-zA-z_-\d]+/', '', $code));
+        }
+
         $this->code = $code;
 
         return $this;

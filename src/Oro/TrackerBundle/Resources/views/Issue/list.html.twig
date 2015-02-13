@@ -1,0 +1,35 @@
+{% block content %}
+    {% if issues|length > 0 %}
+        <table width="850">
+            <thead>
+                <tr>
+                    <th width="5%">{{ 'grid_title.code'|trans({}, 'TrackerBundle') }}</th>
+                    <th width="10%">{{ 'grid_title.summary'|trans({}, 'TrackerBundle') }}</th>
+                    <th width="5%">{{ 'grid_title.type'|trans({}, 'TrackerBundle') }}</th>
+                    <th width="5%">{{ 'grid_title.status'|trans({}, 'TrackerBundle') }}</th>
+                    <th width="5%">{{ 'grid_title.resolution'|trans({}, 'TrackerBundle') }}</th>
+                    <th width="10%">{{ 'grid_title.reporter'|trans({}, 'TrackerBundle') }}</th>
+                    <th width="5%">{{ 'grid_title.actions'|trans({}, 'TrackerBundle') }}</th>
+                </tr>
+            </thead>
+                <tbody>
+                {% for issue in issues %}
+                    <tr>
+                        <td>{{ issue.getCode() }}</td>
+                        <td>{{ issue.getSummary() }}</td>
+                        <td>{{ issue.getType() }}</td>
+                        <td>{{ issue.getStatus() }}</td>
+                        <td>{{ issue.getResolution() }}</td>
+                        <td>{{ issue.getReporter() }}</td>
+                        <td>
+                            <a href="{{ path('_tracking_issue_show', {'projectCode': projectCode, 'issueCode': issue.getCode()}) }}">{{ 'grid.show'|trans({}, 'TrackerBundle') }}</a> |
+                            <a href="{{ path('_tracking_issue_edit', {'projectCode': projectCode, 'issueCode': issue.getCode()}) }}">{{ 'grid.edit'|trans({}, 'TrackerBundle') }}</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        {{ 'issue.issues_not_found'|trans({}, 'TrackerBundle') }}
+    {% endif %}
+{% endblock %}

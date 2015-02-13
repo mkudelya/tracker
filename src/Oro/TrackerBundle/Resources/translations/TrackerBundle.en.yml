@@ -4,21 +4,37 @@ layout:
     projects_list: Projects list
 
 project:
-    edit_project: Edit project
-    add_new_project: Add new project
+    project: Project
+    add: Add project
+    edit: Edit project
     projects_list: Projects list
-    projects_not_found: projects not found
+    projects_not_found: Projects not found
 
+issue:
+    add: Add issue
+    add_sub: Add sub-issue
+    edit: Edit issue
+    issues_not_found: Issues not found
+    type: Type
+    status: Status
+    resolution: Resolution
+    reporter: Reporter
+    assignee: Assignee
+    project: Project
+    description: Description
+    subissue_list: Sub issues
+    created: Created
+    updated: Updated
 user:
-    edit_user: Edit user
-    users_not_found: users not found
+    add: Add user
+    edit: Edit user
+    users_not_found: Users not found
     users_list: Users list
     add_new_user: Add new user
 
 grid:
+    show: Show
     edit: Edit
-    delete: Delete
-
 
 grid_title:
     code: Code
@@ -28,6 +44,12 @@ grid_title:
     email: Email
     username: Username
     full_name: Full name
+    summary: Summary
+    type: Type
+    status: Status
+    resolution: Resolution
+    reporter: Reporter
+    assignee: Assignee
 
 form:
     save: Save

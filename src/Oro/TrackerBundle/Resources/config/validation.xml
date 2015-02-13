@@ -86,7 +86,7 @@
     <class name="Oro\TrackerBundle\Entity\Project">
         <property name="label">
             <constraint name="NotBlank">
-                <option name="message">project.label.empty</option>
+                <option name="message">project.label.blank</option>
             </constraint>
             <constraint name="Length">
                 <option name="min">2</option>
@@ -97,7 +97,7 @@
         </property>
         <property name="summary">
             <constraint name="NotBlank">
-                <option name="message">project.summary.empty</option>
+                <option name="message">project.summary.blank</option>
             </constraint>
             <constraint name="Length">
                 <option name="min">2</option>
@@ -106,7 +106,7 @@
         </property>
         <property name="code">
             <constraint name="NotBlank">
-                <option name="message">project.code.empty</option>
+                <option name="message">project.code.blank</option>
             </constraint>
             <constraint name="Length">
                 <option name="min">1</option>
@@ -114,6 +114,43 @@
                 <option name="max">255</option>
                 <option name="maxMessage">tracker.code.long</option>
              </constraint>
+        </property>
+    </class>
+
+    <class name="Oro\TrackerBundle\Entity\Issue">
+        <property name="summary">
+            <constraint name="NotBlank">
+                <option name="message">issue.summary.blank</option>
+            </constraint>
+            <constraint name="Length">
+                <option name="min">2</option>
+                <option name="minMessage">issue.summary.short</option>
+            </constraint>
+        </property>
+        <property name="code">
+            <constraint name="NotBlank">
+                <option name="message">issue.code.blank</option>
+            </constraint>
+            <constraint name="Length">
+                <option name="min">1</option>
+                <option name="minMessage">issue.code.short</option>
+                <option name="max">255</option>
+                <option name="maxMessage">issue.code.long</option>
+            </constraint>
+        </property>
+        <property name="description">
+            <constraint name="NotBlank">
+                <option name="message">issue.description.blank</option>
+            </constraint>
+            <constraint name="Length">
+                <option name="min">2</option>
+                <option name="minMessage">issue.description.short</option>
+            </constraint>
+        </property>
+        <property name="assignee">
+            <constraint name="NotBlank">
+                <option name="message">issue.assignee.blank</option>
+            </constraint>
         </property>
     </class>
 

@@ -1,26 +1,37 @@
 {% extends "TrackerBundle::layout.html.twig" %}
 
-{% block page_description %}{{ 'project.projects_list'|trans({}, 'TrackerBundle') }}
-    [ <a href="{{ path('_tracking_project_edit') }}">{{ 'project.add_new_project'|trans({}, 'TrackerBundle') }}</a> ]{% endblock %}
+{% block description %}
+    {{ 'project.projects_list'|trans({}, 'TrackerBundle') }}
+{% endblock %}
+
+{% block page_actions %}
+[ <a href="{{ path('_tracking_project_edit') }}">{{ 'project.add'|trans({}, 'TrackerBundle') }}</a> ]
+{% endblock %}
 
 {% block content %}
     {% if projects|length > 0 %}
-        <table width="100%">
-            <tr>
-                <td><b>{{ 'grid_title.code'|trans({}, 'TrackerBundle') }}</b></td>
-                <td><b>{{ 'grid_title.label'|trans({}, 'TrackerBundle') }}</b></td>
-                <td><b>{{ 'grid_title.actions'|trans({}, 'TrackerBundle') }}</b></td>
-            </tr>
-            {% for project in projects %}
+        <table width="850">
+            <thead>
                 <tr>
-                    <td>{{ project.getCode() }}</td>
-                    <td>{{ project.getLabel() }}</td>
-                    <td>
-                        <a href="{{ path('_tracking_project_edit', {'id': project.getId()}) }}">{{ 'grid.edit'|trans({}, 'TrackerBundle') }}</a>
-                        | {{ 'grid.delete'|trans({}, 'TrackerBundle') }}
-                    </td>
+                    <th width="10%">{{ 'grid_title.code'|trans({}, 'TrackerBundle') }}</th>
+                    <th width="30%">{{ 'grid_title.summary'|trans({}, 'TrackerBundle') }}</th>
+                    <th width="20%">{{ 'grid_title.label'|trans({}, 'TrackerBundle') }}</th>
+                    <th width="10%">{{ 'grid_title.actions'|trans({}, 'TrackerBundle') }}</th>
                 </tr>
-            {% endfor %}
+            <thead>
+            <tbody>
+                {% for project in projects %}
+                    <tr>
+                        <td>{{ project.getCode() }}</td>
+                        <td>{{ project.getSummary() }}</td>
+                        <td>{{ project.getLabel() }}</td>
+                        <td>
+                            <a href="{{ path('_tracking_project_show', {'projectCode':project.getCode()}) }}">{{ 'grid.show'|trans({}, 'TrackerBundle') }}</a> |
+                            <a href="{{ path('_tracking_project_edit', {'projectCode':project.getCode()}) }}">{{ 'grid.edit'|trans({}, 'TrackerBundle') }}</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
         </table>
     {% else %}
         {{ 'project.projects_not_found'|trans({}, 'TrackerBundle') }}

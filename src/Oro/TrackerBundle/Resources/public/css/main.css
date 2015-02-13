@@ -100,17 +100,62 @@ ul#demo-list a {
     font-family: monospace;
 }
 
-.block .page_description {
-    font-size: 2em;
+.block .description {
+    font-size: 20px;
     font-weight: bold;
     margin: 0px 10px 20px 0 !important;
-    font-variant: small-caps;
+}
+
+.block .breadcrumb {
+    display: block;
+    font-size: 12px;
+    margin-bottom: 20px;
 }
 
 form div label {
     display: block;
 }
 
-form div div div ul li {
+form li {
     color: red;
+}
+
+.sf-reset .block {
+    padding: 20px 70px 20px 10px !important;
+    position: relative;
+}
+
+.page-actions {
+    position: absolute;
+    margin-left: 90% !important;
+    top: 10px;
+    font-size: small;
+}
+
+table {
+    border: solid 1px #DDEEEE;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+table thead th {
+    background-color: #DDEFEF;
+    border: solid 1px #DDEEEE;
+    color: #336B6B;
+    padding: 10px !important;
+    text-align: center !important;
+    text-shadow: 1px 1px 1px #fff;
+    font-weight: bold;
+}
+table tbody td {
+    border: solid 1px #DDEEEE;
+    color: #333;
+    padding: 10px !important;
+    text-shadow: 1px 1px 1px #fff;
+}
+
+table tbody tr:nth-child(odd) {
+    background-color: #fff;
+}
+table tbody tr:nth-child(even) {
+    background-color: #FCFCFC;
 }
