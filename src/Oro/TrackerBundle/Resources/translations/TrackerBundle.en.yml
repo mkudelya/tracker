@@ -2,6 +2,7 @@
 layout:
     users_list: Users list
     projects_list: Projects list
+    issues_where_you_are_a_collaborator: Issues where you are a collaborator
 
 project:
     project: Project

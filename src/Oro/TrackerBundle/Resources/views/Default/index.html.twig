@@ -1,1 +1,8 @@
-{% extends 'TrackerBundle::layout.html.twig' %}
+{% extends "TrackerBundle::layout.html.twig" %}
+
+{% block content %}
+    {{ 'layout.issues_where_you_are_a_collaborator'|trans({}, 'TrackerBundle') }}:
+        {{ render(controller(
+        'TrackerBundle:Issue:listByCollaborator'
+        )) }}
+{% endblock %}

@@ -74,7 +74,7 @@ class Issue
     protected $project;
 
     /**
-     * @ORM\ManyToMany(targetEntity="User", mappedBy="issues")
+     * @ORM\ManyToMany(targetEntity="User", inversedBy="issues")
      **/
     protected $collaborators;
 
@@ -371,6 +371,21 @@ class Issue
     public function getCollaborators()
     {
         return $this->collaborators;
+    }
+
+    public function hasCollaborator($user)
+    {
+        $collaborators = $this->getCollaborators();
+
+        if ($collaborators->count()) {
+            foreach ($collaborators as $collaborator) {
+                if ($collaborator->getId() == $user->getId()) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     /**

@@ -47,7 +47,7 @@ class User extends BaseUser
     protected $projects;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Issue", inversedBy="collaborators")
+     * @ORM\ManyToMany(targetEntity="Issue", mappedBy="collaborators")
      * @ORM\JoinTable(name="issue_collaborators")
      **/
     protected $issues;

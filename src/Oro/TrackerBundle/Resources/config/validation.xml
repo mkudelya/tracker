@@ -154,6 +154,18 @@
         </property>
     </class>
 
+    <class name="Oro\TrackerBundle\Entity\Comment">
+    <property name="body">
+        <constraint name="NotBlank">
+            <option name="message">comment.body.blank</option>
+        </constraint>
+        <constraint name="Length">
+            <option name="min">2</option>
+            <option name="minMessage">comment.body.short</option>
+        </constraint>
+    </property>
+    </class>
+
     <class name="FOS\UserBundle\Model\Group">
         <property name="name">
             <constraint name="NotBlank">

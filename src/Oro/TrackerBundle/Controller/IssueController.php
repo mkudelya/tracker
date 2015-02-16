@@ -17,17 +17,15 @@ class IssueController extends Controller
     const ROUTE_ADD_SUBTASK = '_tracking_issue_add_subtask';
 
     /**
-     * @Route("/list", name="_tracking_issue_list")
+     * @Route("/list/", name="_tracking_issue_list")
      * @Template()
+     * @param $projectCode
+     * @return array
      */
     public function listAction($projectCode)
     {
-        $projectEntity = $this->getDoctrine()->getRepository('TrackerBundle:Project')->findOneByCode($projectCode);
-        $issues = $this->getDoctrine()
-            ->getRepository('TrackerBundle:Issue')
-            ->findBy(array('project' => $projectEntity, 'parent' => null));
-
-        return array('issues' => $issues, 'projectCode' => $projectCode);
+        $issues = $this->get('issue')->getIssueListByProjectCode($projectCode);
+        return array('issues' => $issues);
     }
 
     /**
@@ -36,14 +34,19 @@ class IssueController extends Controller
      */
     public function subtasksListAction($projectCode, $issueCode)
     {
-        $manager = $this->getDoctrine()->getManager();
-        $issueEntity = $manager->getRepository('TrackerBundle:Issue')->findOneByCode($issueCode);
+        $issues = $this->get('issue')->getIssueSubListByIssueCode($issueCode);
+        return array('issues' => $issues);
+    }
 
-        $issues = $this->getDoctrine()
-            ->getRepository('TrackerBundle:Issue')
-            ->findBy(array('parent' => $issueEntity));
-
-        return array('issues' => $issues, 'projectCode' => $projectCode);
+    /**
+     * @Template("TrackerBundle:Issue:list.html.twig")
+     * @return array
+     */
+    public function listByCollaboratorAction()
+    {
+        $user = $this->get('security.context')->getToken()->getUser();
+        $issues = $this->get('issue')->getIssueListByCollaborationUser($user);
+        return array('issues' => $issues);
     }
 
     /**

@@ -32,3 +32,8 @@ user:
         blank: Please enter a full name
         short: "[-Inf,Inf]The full name is too short"
         long: "[-Inf,Inf]The full name is too long"
+
+comment:
+    body:
+        blank: Please enter a body
+        short: "[-Inf,Inf]The body is too short"

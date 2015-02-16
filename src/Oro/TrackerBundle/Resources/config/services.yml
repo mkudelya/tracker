@@ -3,3 +3,14 @@ services:
         class: Oro\TrackerBundle\Form\RegistrationType
         tags:
             - { name: form.type, alias: tracker_user_registration }
+
+    event.listener:
+        class: Oro\TrackerBundle\EventListener\EntityListener
+        arguments: ['@service_container']
+        tags:
+            - { name: doctrine.event_listener, event: postPersist, method: updateCollaborators }
+            - { name: doctrine.event_listener, event: postUpdate, method: updateCollaborators }
+
+    issue:
+        class: Oro\TrackerBundle\Service\Issue
+        arguments: ['@service_container']

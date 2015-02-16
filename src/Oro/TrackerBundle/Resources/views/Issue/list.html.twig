@@ -22,8 +22,8 @@
                         <td>{{ issue.getResolution() }}</td>
                         <td>{{ issue.getReporter() }}</td>
                         <td>
-                            <a href="{{ path('_tracking_issue_show', {'projectCode': projectCode, 'issueCode': issue.getCode()}) }}">{{ 'grid.show'|trans({}, 'TrackerBundle') }}</a> |
-                            <a href="{{ path('_tracking_issue_edit', {'projectCode': projectCode, 'issueCode': issue.getCode()}) }}">{{ 'grid.edit'|trans({}, 'TrackerBundle') }}</a>
+                            <a href="{{ path('_tracking_issue_show', {'projectCode': issue.getProject().getCode(), 'issueCode': issue.getCode()}) }}">{{ 'grid.show'|trans({}, 'TrackerBundle') }}</a> |
+                            <a href="{{ path('_tracking_issue_edit', {'projectCode': issue.getProject().getCode(), 'issueCode': issue.getCode()}) }}">{{ 'grid.edit'|trans({}, 'TrackerBundle') }}</a>
                         </td>
                     </tr>
                 {% endfor %}

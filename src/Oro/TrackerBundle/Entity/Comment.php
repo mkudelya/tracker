@@ -31,12 +31,6 @@ class Comment
 
     /**
      * @ORM\Column(type="text")
-     *
-     * @Assert\NotBlank(message="Please enter comment body.")
-     * @Assert\Length(
-     *     min=1,
-     *     minMessage="The comments body is too short."
-     * )
      */
     protected $body;
 
