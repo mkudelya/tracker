@@ -6,10 +6,15 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
+ * @ORM\HasLifecycleCallbacks
  * @ORM\Table(name="activities")
  */
 class Activity
 {
+    const NEW_ISSUE_TYPE = 1;
+    const CHANGED_STATUS_ISSUE_TYPE = 2;
+    const COMMENTED_ISSUE_TYPE = 3;
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -24,9 +29,31 @@ class Activity
     protected $issue;
 
     /**
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="activities")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     **/
+    protected $user;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Project", inversedBy="activities")
+     * @ORM\JoinColumn(name="project_id", referencedColumnName="id")
+     **/
+    protected $project;
+
+    /**
      * @ORM\Column(type="text")
      */
     protected $body;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    protected $created;
+
+    /**
+     * @ORM\Column(type="integer", options={"default":0})
+     */
+    protected $type;
 
     /**
      * Get id
@@ -82,5 +109,115 @@ class Activity
     public function getIssue()
     {
         return $this->issue;
+    }
+
+    /**
+     * Set user
+     *
+     * @param \Oro\TrackerBundle\Entity\User $user
+     * @return Activity
+     */
+    public function setUser(\Oro\TrackerBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \Oro\TrackerBundle\Entity\User
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set created
+     *
+     * @param \DateTime $created
+     * @return Activity
+     */
+    public function setCreated($created)
+    {
+        $this->created = $created;
+
+        return $this;
+    }
+
+    /**
+     * Get created
+     *
+     * @return \DateTime
+     */
+    public function getCreated()
+    {
+        return $this->created;
+    }
+
+    /**
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     */
+    public function updatedTimestamps()
+    {
+        if ($this->getCreated() == null) {
+            $this->setCreated(new \DateTime('now'));
+        }
+    }
+
+    /**
+     * Set type
+     *
+     * @param integer $type
+     * @return Activity
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * Get type
+     *
+     * @return integer
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->user = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Set project
+     *
+     * @param \Oro\TrackerBundle\Entity\Project $project
+     * @return Activity
+     */
+    public function setProject(\Oro\TrackerBundle\Entity\Project $project = null)
+    {
+        $this->project = $project;
+
+        return $this;
+    }
+
+    /**
+     * Get project
+     *
+     * @return \Oro\TrackerBundle\Entity\Project
+     */
+    public function getProject()
+    {
+        return $this->project;
     }
 }

@@ -44,6 +44,11 @@ class Project
     protected $issues;
 
     /**
+     * @ORM\OneToMany(targetEntity="Activity", mappedBy="user")
+     **/
+    protected $activities;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -198,5 +203,38 @@ class Project
     public function getIssues()
     {
         return $this->issues;
+    }
+
+    /**
+     * Add activities
+     *
+     * @param \Oro\TrackerBundle\Entity\Activity $activities
+     * @return Project
+     */
+    public function addActivity(\Oro\TrackerBundle\Entity\Activity $activities)
+    {
+        $this->activities[] = $activities;
+
+        return $this;
+    }
+
+    /**
+     * Remove activities
+     *
+     * @param \Oro\TrackerBundle\Entity\Activity $activities
+     */
+    public function removeActivity(\Oro\TrackerBundle\Entity\Activity $activities)
+    {
+        $this->activities->removeElement($activities);
+    }
+
+    /**
+     * Get activities
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getActivities()
+    {
+        return $this->activities;
     }
 }

@@ -8,9 +8,13 @@ services:
         class: Oro\TrackerBundle\EventListener\EntityListener
         arguments: ['@service_container']
         tags:
-            - { name: doctrine.event_listener, event: postPersist, method: updateCollaborators }
-            - { name: doctrine.event_listener, event: postUpdate, method: updateCollaborators }
+            - { name: doctrine.event_listener, event: postPersist }
+            - { name: doctrine.event_listener, event: postUpdate }
 
     issue:
         class: Oro\TrackerBundle\Service\Issue
+        arguments: ['@service_container']
+
+    activity:
+        class: Oro\TrackerBundle\Service\Activity
         arguments: ['@service_container']

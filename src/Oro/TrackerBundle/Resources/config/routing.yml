@@ -17,6 +17,11 @@ tracker_project:
     type:     annotation
     prefix:   /tracking/project
 
+tracker_activity:
+    resource: "@TrackerBundle/Controller/ActivityController.php"
+    type:     annotation
+    prefix:   /tracking/activity
+
 fos_user:
     resource: "@FOSUserBundle/Resources/config/routing/all.xml"
     prefix: /

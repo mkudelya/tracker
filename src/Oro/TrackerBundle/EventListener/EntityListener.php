@@ -4,6 +4,7 @@ namespace Oro\TrackerBundle\EventListener;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Oro\TrackerBundle\Entity\Issue;
+use Oro\TrackerBundle\Entity\Activity;
 use Oro\TrackerBundle\Entity\Comment;
 use Symfony\Component\DependencyInjection\ContainerInterface as Container;
 
@@ -19,11 +20,45 @@ class EntityListener
     public function postPersist(LifecycleEventArgs $args)
     {
         $this->updateCollaborators($args);
+        $this->addToActivity($args, true);
     }
 
     public function postUpdate(LifecycleEventArgs $args)
     {
         $this->updateCollaborators($args);
+        $this->addToActivity($args, false);
+    }
+
+    public function addToActivity(LifecycleEventArgs $args, $isNewEntity)
+    {
+        $entity = $args->getEntity();
+        $entityManager = $args->getEntityManager();
+        $currentUser = $this->container->get('security.context')->getToken()->getUser();
+
+        if ($entity instanceof Issue) {
+            $activityEntity = new Activity();
+            $activityEntity->setIssue($entity);
+            $activityEntity->setUser($currentUser);
+            $activityEntity->setProject($entity->getProject());
+
+            if ($isNewEntity) {
+                $activityEntity->setType(Activity::NEW_ISSUE_TYPE);
+                $activityEntity->setBody('');
+                $entityManager->persist($activityEntity);
+                $entityManager->flush();
+            } else {
+                $uow = $entityManager->getUnitOfWork();
+                $uow->computeChangeSets();
+                $changeset = $uow->getEntityChangeSet($entity);
+
+                if (is_array($changeset) && isset($changeset['status'])) {
+                    $activityEntity->setType(Activity::CHANGED_STATUS_ISSUE_TYPE);
+                    $activityEntity->setBody($changeset['status'][1]);
+                    $entityManager->persist($activityEntity);
+                    $entityManager->flush();
+                }
+            }
+        }
     }
 
     public function updateCollaborators(LifecycleEventArgs $args)

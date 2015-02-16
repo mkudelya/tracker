@@ -3,6 +3,14 @@ layout:
     users_list: Users list
     projects_list: Projects list
     issues_where_you_are_a_collaborator: Issues where you are a collaborator
+    activity_list: Activity list
+    on: on
+
+activity:
+    activities_not_found: Activities not found
+    activity_list: Activity list
+    new_issue_created: created
+    issue_status_changed: changed status to
 
 project:
     project: Project

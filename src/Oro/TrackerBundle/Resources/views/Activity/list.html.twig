@@ -1,0 +1,31 @@
+{% block content %}
+    {% if activities|length > 0 %}
+        <table width="400">
+            <tbody>
+            {% for activity in activities %}
+                <tr>
+                    <td>
+                        {% if activity.getType() == constant('Oro\\TrackerBundle\\Entity\\Activity::NEW_ISSUE_TYPE') %}
+                            {{ activity.getUser().getFullname() }}
+                            {{ 'activity.new_issue_created'|trans({}, 'TrackerBundle') }}
+                            <a href="{{ path('_tracking_issue_show', {'projectCode': activity.getProject().getCode(), 'issueCode': activity.getIssue().getCode()}) }}">
+                            {{ activity.getIssue().getSummary() }}
+                            </a>
+                        {% elseif activity.getType() == constant('Oro\\TrackerBundle\\Entity\\Activity::CHANGED_STATUS_ISSUE_TYPE')  %}
+                            {{ activity.getUser().getFullname() }}
+                            {{ 'activity.issue_status_changed'|trans({}, 'TrackerBundle') }}
+                            '{{ activity.getBody() }}'
+                            {{ 'layout.on'|trans({}, 'TrackerBundle') }}
+                            <a href="{{ path('_tracking_issue_show', {'projectCode': activity.getProject().getCode(), 'issueCode': activity.getIssue().getCode()}) }}">
+                            {{ activity.getIssue().getSummary() }}
+                            </a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        {{ 'activity.activities_not_found'|trans({}, 'TrackerBundle') }}
+    {% endif %}
+{% endblock %}

@@ -52,6 +52,11 @@ class User extends BaseUser
      **/
     protected $issues;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Activity", mappedBy="user")
+     **/
+    protected $activities;
+
     public function __construct()
     {
         parent::__construct();
@@ -265,5 +270,38 @@ class User extends BaseUser
     public function getIssues()
     {
         return $this->issues;
+    }
+
+    /**
+     * Add activities
+     *
+     * @param \Oro\TrackerBundle\Entity\Activity $activities
+     * @return User
+     */
+    public function addActivity(\Oro\TrackerBundle\Entity\Activity $activities)
+    {
+        $this->activities[] = $activities;
+
+        return $this;
+    }
+
+    /**
+     * Remove activities
+     *
+     * @param \Oro\TrackerBundle\Entity\Activity $activities
+     */
+    public function removeActivity(\Oro\TrackerBundle\Entity\Activity $activities)
+    {
+        $this->activities->removeElement($activities);
+    }
+
+    /**
+     * Get activities
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getActivities()
+    {
+        return $this->activities;
     }
 }
