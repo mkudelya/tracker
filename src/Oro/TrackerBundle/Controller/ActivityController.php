@@ -32,4 +32,16 @@ class ActivityController extends Controller
         $activities = $this->get('activity')->getActivityIssueListByProject($projectEntity);
         return array('activities' => $activities);
     }
+
+    /**
+     * @Route("/list_by_issue/{issueCode}", name="_tracking_activity_list_by_issue")
+     * @Template("TrackerBundle:Activity:list.html.twig")
+     * @return array
+     */
+    public function listByIssueAction($issueCode)
+    {
+        $issueEntity = $this->getDoctrine()->getRepository('TrackerBundle:Issue')->findOneByCode($issueCode);
+        $activities = $this->get('activity')->getActivityIssueListByIssue($issueEntity);
+        return array('activities' => $activities);
+    }
 }

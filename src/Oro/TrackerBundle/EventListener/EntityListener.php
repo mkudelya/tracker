@@ -102,7 +102,16 @@ class EntityListener
                 $entityManager->flush();
             }
         } elseif ($entity instanceof Comment) {
+            $isUserCollaborator = $this
+                ->container
+                ->get('issue')
+                ->isUserCollaborator($entity->getIssue(), $entity->getUser());
 
+            if (!$isUserCollaborator) {
+                $entity->getIssue()->addCollaborator($entity->getUser());
+                $entityManager->persist($entity);
+                $entityManager->flush();
+            }
         }
     }
 }

@@ -30,6 +30,23 @@
     <p>{{ 'issue.updated'|trans({}, 'TrackerBundle') }} : {{ issue.getUpdated()|date("m/d/Y", false) }}</p>
 
     <p>{{ 'issue.description'|trans({}, 'TrackerBundle') }} : {{ issue.getDescription() }}</p>
+
+    <hr>
+    <p>
+    <p><b>{{ 'layout.activity_list'|trans({}, 'TrackerBundle') }}:</b></p>
+    {{ render(controller(
+    'TrackerBundle:Activity:listByIssue',
+    {'issueCode': issue.getCode()}
+    )) }}
+    </p>
+    <hr>
+    <p>
+    <p><b>{{ 'layout.collaborators_list'|trans({}, 'TrackerBundle') }}:</b></p>
+    {{ render(controller(
+    'TrackerBundle:Issue:listCollaboratorByIssue',
+    {'issueCode': issue.getCode()}
+    )) }}
+    </p>
     <hr>
     {% if isStory %}
         <p>

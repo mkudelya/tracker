@@ -1,0 +1,15 @@
+{% block content %}
+    {% if users|length > 0 %}
+        <table width="300">
+            <tbody>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.getFullName() }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        {{ 'issue.collaborators_list'|trans({}, 'TrackerBundle') }}
+    {% endif %}
+{% endblock %}

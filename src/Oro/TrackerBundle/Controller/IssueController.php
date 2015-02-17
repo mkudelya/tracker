@@ -52,6 +52,18 @@ class IssueController extends Controller
     }
 
     /**
+     * @Route("/{issueCode}/collaborators", name="_tracking_issue_sublist")
+     * @Template("TrackerBundle:Issue:collaborators.list.html.twig")
+     * @return array
+     */
+    public function listCollaboratorByIssueAction($issueCode)
+    {
+        $issueEntity = $this->getDoctrine()->getRepository('TrackerBundle:Issue')->findOneByCode($issueCode);
+        $users = $this->get('issue')->getCollaborationListByIssue($issueEntity);
+        return array('users' => $users);
+    }
+
+    /**
      * @Route("/{issueCode}/comments", name="_tracking_project_comment_list")
      * @Template("TrackerBundle:Comment:list.html.twig")
      */

@@ -47,8 +47,17 @@ class Issue
     public function getIssueListByCollaborationUser(User $user)
     {
         $manager = $this->getDoctrine()->getManager();
-        $issues = $manager->createQuery('select i from Oro\TrackerBundle\Entity\Issue i JOIN i.collaborators u WHERE u.id = ?1');
-        $issues->setParameter(1, $user->getId());
+        $issues = $manager->createQuery('select i from Oro\TrackerBundle\Entity\Issue i JOIN i.collaborators u WHERE u = ?1');
+        $issues->setParameter(1, $user);
+
+        return $issues->getResult();
+    }
+
+    public function getCollaborationListByIssue(IssueEntity $issue)
+    {
+        $manager = $this->getDoctrine()->getManager();
+        $issues = $manager->createQuery('select u from Oro\TrackerBundle\Entity\User u JOIN u.issues i JOIN i.collaborators c WHERE i = ?1');
+        $issues->setParameter(1, $issue);
 
         return $issues->getResult();
     }

@@ -8,6 +8,7 @@ layout:
     issues_where_you_are_as_collaborator: Issues where you are as collaborator
     activity_list: Activity list
     on: on
+    collaborators_list: Collaborators list
 
 activity:
     activities_not_found: Activities not found
@@ -40,13 +41,13 @@ issue:
     created: Created
     updated: Updated
     comments_not_found: Comments not found
+    collaborators_not_found: Collaborators not found
 user:
     add: Add user
     edit: Edit user
     users_not_found: Users not found
     users_list: Users list
     add_new_user: Add new user
-
 grid:
     show: Show
     edit: Edit
