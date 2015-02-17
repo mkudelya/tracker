@@ -26,6 +26,22 @@ class UserController extends Controller
     }
 
     /**
+     * @Route("/show/{username}", name="_tracking_user_profile")
+     * @Template()
+     */
+    public function showAction($username = null)
+    {
+        if (!empty($username)) {
+            $manager = $this->getDoctrine()->getManager();
+            $userEntity = $manager->getRepository('TrackerBundle:User')->findOneByUsername($username);
+        } else {
+            $userEntity = $this->get('security.context')->getToken()->getUser();
+        }
+
+        return array('user' => $userEntity);
+    }
+
+    /**
      * @Route("/edit/{id}", name="_tracking_user_edit")
      * @Template()
      */

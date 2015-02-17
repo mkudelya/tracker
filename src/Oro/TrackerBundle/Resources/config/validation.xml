@@ -18,6 +18,13 @@
                     <value>Tracker</value>
                 </option>
             </constraint>
+            <constraint name="Regex">
+                <option name="pattern">/^[a-z\d\-\_]+$/i</option>
+                <option name="match">true</option>
+                <option name="message">user.username.invalid</option>
+                <option name="groups">
+                    <value>Tracker</value>
+                </option>            </constraint>
             <constraint name="Length">
                 <option name="min">2</option>
                 <option name="minMessage">fos_user.username.short</option>

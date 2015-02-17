@@ -220,4 +220,19 @@ class Activity
     {
         return $this->project;
     }
+
+    public function isNewCommentType()
+    {
+        return $this->getType() == self::NEW_COMMENT_ISSUE_TYPE;
+    }
+
+    public function isNewIssueType()
+    {
+        return $this->getType() == self::NEW_ISSUE_TYPE;
+    }
+
+    public function isStatusChangedType()
+    {
+        return $this->getType() == self::CHANGED_STATUS_ISSUE_TYPE;
+    }
 }

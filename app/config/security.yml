@@ -27,7 +27,6 @@ security:
 
     access_control:
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: /tracking/user, roles: ROLE_ADMINISTRATOR}
+        - { path: /tracking/user/([^show]), roles: ROLE_ADMINISTRATOR}
+        - { path: /register, roles: ROLE_ADMINISTRATOR}
         - { path: /tracking, roles: ROLE_USER}

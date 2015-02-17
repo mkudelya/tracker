@@ -52,6 +52,18 @@ class IssueController extends Controller
     }
 
     /**
+     * @Route("/{issueCode}/assignee/{id}", name="_tracking_issue_by_assignee_user")
+     * @Template("TrackerBundle:Issue:list.html.twig")
+     * @return array
+     */
+    public function listByAssigneeAction($id)
+    {
+        $user = $this->getDoctrine()->getRepository('TrackerBundle:User')->find($id);
+        $issues = $this->get('issue')->getIssueListByAssigneeUser($user);
+        return array('issues' => $issues);
+    }
+
+    /**
      * @Route("/{issueCode}/collaborators", name="_tracking_issue_sublist")
      * @Template("TrackerBundle:Issue:collaborators.list.html.twig")
      * @return array

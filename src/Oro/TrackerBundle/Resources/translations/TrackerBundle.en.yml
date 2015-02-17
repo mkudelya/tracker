@@ -9,6 +9,8 @@ layout:
     activity_list: Activity list
     on: on
     collaborators_list: Collaborators list
+    assignee_issue_list: Assignee issue list
+    home: Home
 
 activity:
     activities_not_found: Activities not found
@@ -48,6 +50,10 @@ user:
     users_not_found: Users not found
     users_list: Users list
     add_new_user: Add new user
+    profile: User profile
+    email: Email
+    username: User name
+    fullname: Full name
 grid:
     show: Show
     edit: Edit

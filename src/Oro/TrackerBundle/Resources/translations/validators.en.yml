@@ -32,6 +32,8 @@ user:
         blank: Please enter a full name
         short: "[-Inf,Inf]The full name is too short"
         long: "[-Inf,Inf]The full name is too long"
+    username:
+        invalid: Accepted only characters or numbers
 
 comment:
     body:

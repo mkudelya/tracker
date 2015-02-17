@@ -1,0 +1,34 @@
+{% extends "TrackerBundle::layout.html.twig" %}
+
+{% block description %}{{ 'user.profile'|trans({}, 'TrackerBundle') }}{% endblock %}
+
+{% block page_actions %}
+[ <a href="{{ path('_tracking_user_edit', {'id': user.getId()}) }}">{{ 'grid.edit'|trans({}, 'TrackerBundle') }}</a> ]
+{% endblock %}
+
+{% block content %}
+<div class="user_profile">
+    {% if user.getWebAvatarPath() %}
+        <p><a href="{{ user.getWebAvatarPath() }}" target="_blank"><img src="{{ user.getWebAvatarPath() }}" width="10%"/></a></p>
+    {% endif %}
+    <p>{{ 'user.email'|trans({}, 'TrackerBundle') }}: {{ user.email }}</p>
+    <p>{{ 'user.username'|trans({}, 'TrackerBundle') }}: {{ user.username }}</p>
+    <p>{{ 'user.fullname'|trans({}, 'TrackerBundle') }}: {{ user.fullname }}</p>
+</div>
+<hr>
+<p>
+<p><b>{{ 'layout.assignee_issue_list'|trans({}, 'TrackerBundle') }}:</b></p>
+{{ render(controller(
+'TrackerBundle:Issue:listByAssignee',
+{'id' : user.getId()}
+)) }}
+</p>
+<hr>
+<p>
+<p><b>{{ 'layout.activity_list'|trans({}, 'TrackerBundle') }}:</b></p>
+{{ render(controller(
+'TrackerBundle:Activity:listByUser',
+{'id' : user.getId()}
+)) }}
+</p>
+{% endblock %}
