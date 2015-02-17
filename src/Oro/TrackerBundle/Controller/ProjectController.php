@@ -17,10 +17,7 @@ class ProjectController extends Controller
      */
     public function listAction()
     {
-        $projects = $this->getDoctrine()
-            ->getRepository('TrackerBundle:Project')
-            ->findAll();
-
+        $projects = $this->get('project')->getList();
         return array('projects' => $projects);
     }
 
@@ -65,6 +62,6 @@ class ProjectController extends Controller
     {
         $projectEntity = $this->getDoctrine()->getRepository('TrackerBundle:Project')->findOneByCode($projectCode);
 
-        return array('project' => $projectEntity, 'code' => $projectCode);
+        return array('project' => $projectEntity);
     }
 }
