@@ -53,6 +53,16 @@ class Issue
         return $issues->getResult();
     }
 
+    public function getCommentListByIssueCode($issueCode)
+    {
+        $issueEntity = $this->getDoctrine()->getRepository('TrackerBundle:Issue')->findOneByCode($issueCode);
+        $comments = $this->getDoctrine()
+            ->getRepository('TrackerBundle:Comment')
+            ->findBy(array('issue' => $issueEntity));
+
+        return $comments;
+    }
+
     protected function getDoctrine()
     {
         return $this->doctine;

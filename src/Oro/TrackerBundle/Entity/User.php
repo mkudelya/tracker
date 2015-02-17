@@ -42,13 +42,11 @@ class User extends BaseUser
 
     /**
      * @ORM\ManyToMany(targetEntity="Project", mappedBy="users")
-     * @ORM\JoinTable(name="users_projects")
      **/
     protected $projects;
 
     /**
      * @ORM\ManyToMany(targetEntity="Issue", mappedBy="collaborators")
-     * @ORM\JoinTable(name="issue_collaborators")
      **/
     protected $issues;
 

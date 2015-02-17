@@ -1,0 +1,27 @@
+{% block content %}
+    {% if comments|length > 0 %}
+        <table width="400">
+            <tbody>
+            {% for comment in comments %}
+                <tr>
+                    <td colspan="2">{{ comment.getUser().getFullname() }}</td>
+                </tr>
+                <tr>
+                    <td width="10%">{{ comment.getCreated()|date("m/d/Y", false) }}</td>
+                    <td>
+                        <div id="body">{{ comment.getBody() }} [ <a href="" id="edit">{{ 'grid.edit'|trans({}, 'TrackerBundle') }}</a> ] [ <a href="{{ path('_tracking_remove_comment', {'projectCode': comment.getIssue().getProject().getCode(), 'issueCode': comment.getIssue().getCode(), 'commentId':comment.getId()}) }}" id="remove">{{ 'grid.remove'|trans({}, 'TrackerBundle') }}</a> ]</div>
+                        <div id="form" style="display: none">
+                        <form action="{{ path('_tracking_edit_comment', {'projectCode': comment.getIssue().getProject().getCode(), 'issueCode': comment.getIssue().getCode(), 'commentId':comment.getId()}) }}" {{ form_enctype(comment_form) }} method="POST" class="tracker_comment_{{ comment.getId() }}">
+                            <textarea id="tracker_comment_body" name="tracker_comment[body]" required="required">{{ comment.getBody() }}</textarea>
+                            <br><input type="submit" name="{{ 'form.save'|trans({}, 'TrackerBundle') }}" value="{{ 'form.save'|trans({}, 'TrackerBundle') }}">
+                        </form>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        {{ 'issue.comments_not_found'|trans({}, 'TrackerBundle') }}
+    {% endif %}
+{% endblock %}

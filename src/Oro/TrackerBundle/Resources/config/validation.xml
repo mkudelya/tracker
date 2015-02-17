@@ -159,10 +159,6 @@
         <constraint name="NotBlank">
             <option name="message">comment.body.blank</option>
         </constraint>
-        <constraint name="Length">
-            <option name="min">2</option>
-            <option name="minMessage">comment.body.short</option>
-        </constraint>
     </property>
     </class>
 

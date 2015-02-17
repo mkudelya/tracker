@@ -13,7 +13,7 @@ class Activity
 {
     const NEW_ISSUE_TYPE = 1;
     const CHANGED_STATUS_ISSUE_TYPE = 2;
-    const COMMENTED_ISSUE_TYPE = 3;
+    const NEW_COMMENT_ISSUE_TYPE = 3;
 
     /**
      * @ORM\Id

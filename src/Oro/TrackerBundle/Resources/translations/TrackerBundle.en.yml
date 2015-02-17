@@ -1,8 +1,10 @@
 # Global strings
 layout:
     users_list: Users list
+    comments_list: Comments list
+    add_comment: Add comment
     projects_list: Projects list
-    issues_where_you_are_a_collaborator: Issues where you are a collaborator
+    issues_where_you_are_as_collaborator: Issues where you are as collaborator
     activity_list: Activity list
     on: on
 
@@ -11,6 +13,8 @@ activity:
     activity_list: Activity list
     new_issue_created: created
     issue_status_changed: changed status to
+    commented: commented
+    task: task
 
 project:
     project: Project
@@ -34,6 +38,7 @@ issue:
     subissue_list: Sub issues
     created: Created
     updated: Updated
+    comments_not_found: Comments not found
 user:
     add: Add user
     edit: Edit user
@@ -44,6 +49,7 @@ user:
 grid:
     show: Show
     edit: Edit
+    remove: Remove
 
 grid_title:
     code: Code

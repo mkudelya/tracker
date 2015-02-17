@@ -7,6 +7,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity
  * @ORM\Table(name="comments")
+ * @ORM\HasLifecycleCallbacks
  */
 class Comment
 {
@@ -18,13 +19,13 @@ class Comment
     protected $id;
 
     /**
-     * @ORM\OneToOne(targetEntity="User")
+     * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      **/
     protected $user;
 
     /**
-     * @ORM\OneToOne(targetEntity="Issue", inversedBy="comments")
+     * @ORM\ManyToOne(targetEntity="Issue", inversedBy="comments")
      * @ORM\JoinColumn(name="issue_id", referencedColumnName="id")
      **/
     protected $issue;
@@ -134,10 +135,21 @@ class Comment
     /**
      * Get issue
      *
-     * @return \Oro\TrackerBundle\Entity\Issue 
+     * @return \Oro\TrackerBundle\Entity\Issue
      */
     public function getIssue()
     {
         return $this->issue;
+    }
+
+    /**
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     */
+    public function updatedTimestamps()
+    {
+        if ($this->getCreated() == null) {
+            $this->setCreated(new \DateTime('now'));
+        }
     }
 }

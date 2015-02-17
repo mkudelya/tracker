@@ -16,7 +16,7 @@ class Activity
         $this->doctine = $container->get('doctrine');
     }
 
-    public function getActivityListByUser(User $user)
+    public function getActivityIssueListByUser(User $user)
     {
         $manager = $this->getDoctrine()->getManager();
         $issues = $manager->createQuery('select a from Oro\TrackerBundle\Entity\Activity a JOIN a.project p JOIN p.users u WHERE u.id = ?1');

@@ -11,6 +11,7 @@
                             <a href="{{ path('_tracking_issue_show', {'projectCode': activity.getProject().getCode(), 'issueCode': activity.getIssue().getCode()}) }}">
                             {{ activity.getIssue().getSummary() }}
                             </a>
+                            {{ 'activity.task'|trans({}, 'TrackerBundle') }}
                         {% elseif activity.getType() == constant('Oro\\TrackerBundle\\Entity\\Activity::CHANGED_STATUS_ISSUE_TYPE')  %}
                             {{ activity.getUser().getFullname() }}
                             {{ 'activity.issue_status_changed'|trans({}, 'TrackerBundle') }}
@@ -18,6 +19,12 @@
                             {{ 'layout.on'|trans({}, 'TrackerBundle') }}
                             <a href="{{ path('_tracking_issue_show', {'projectCode': activity.getProject().getCode(), 'issueCode': activity.getIssue().getCode()}) }}">
                             {{ activity.getIssue().getSummary() }}
+                            </a>
+                        {% elseif activity.getType() == constant('Oro\\TrackerBundle\\Entity\\Activity::NEW_COMMENT_ISSUE_TYPE')  %}
+                            {{ activity.getUser().getFullname() }}
+                            {{ 'activity.commented'|trans({}, 'TrackerBundle') }}
+                            <a href="{{ path('_tracking_issue_show', {'projectCode': activity.getProject().getCode(), 'issueCode': activity.getIssue().getCode()}) }}">
+                                {{ activity.getIssue().getSummary() }}
                             </a>
                         {% endif %}
                     </td>

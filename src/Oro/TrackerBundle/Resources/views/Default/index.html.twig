@@ -1,13 +1,15 @@
 {% extends "TrackerBundle::layout.html.twig" %}
 
 {% block content %}
-    <p>{{ 'layout.issues_where_you_are_a_collaborator'|trans({}, 'TrackerBundle') }}:</p>
+    <p><b>{{ 'layout.issues_where_you_are_as_collaborator'|trans({}, 'TrackerBundle') }}:</b></p>
         {{ render(controller(
         'TrackerBundle:Issue:listByCollaborator'
         )) }}
 
-    <p>{{ 'layout.activity_list'|trans({}, 'TrackerBundle') }}:</p>
+    <p>
+    <p><b>{{ 'layout.activity_list'|trans({}, 'TrackerBundle') }}:</b></p>
     {{ render(controller(
     'TrackerBundle:Activity:list'
     )) }}
+    </p>
 {% endblock %}

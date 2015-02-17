@@ -17,7 +17,7 @@ class ActivityController extends Controller
     public function listAction()
     {
         $user = $this->get('security.context')->getToken()->getUser();
-        $activities = $this->get('activity')->getActivityListByUser($user);
+        $activities = $this->get('activity')->getActivityIssueListByUser($user);
         return array('activities' => $activities);
     }
 }

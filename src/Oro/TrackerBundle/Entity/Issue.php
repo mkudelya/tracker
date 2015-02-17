@@ -75,6 +75,7 @@ class Issue
 
     /**
      * @ORM\ManyToMany(targetEntity="User", inversedBy="issues")
+     * @ORM\JoinTable(name="issue_collaborators")
      **/
     protected $collaborators;
 

@@ -58,6 +58,15 @@ class EntityListener
                     $entityManager->flush();
                 }
             }
+        } elseif ($entity instanceof Comment && $isNewEntity) {
+            $activityEntity = new Activity();
+            $activityEntity->setIssue($entity->getIssue());
+            $activityEntity->setUser($currentUser);
+            $activityEntity->setProject($entity->getIssue()->getProject());
+            $activityEntity->setType(Activity::NEW_COMMENT_ISSUE_TYPE);
+            $activityEntity->setBody('');
+            $entityManager->persist($activityEntity);
+            $entityManager->flush();
         }
     }
 
@@ -92,6 +101,8 @@ class EntityListener
                 $entityManager->persist($entity);
                 $entityManager->flush();
             }
+        } elseif ($entity instanceof Comment) {
+
         }
     }
 }

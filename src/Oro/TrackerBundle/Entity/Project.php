@@ -35,6 +35,7 @@ class Project
 
     /**
      * @ORM\ManyToMany(targetEntity="User", inversedBy="projects")
+     * @ORM\JoinTable(name="project_members")
      **/
     protected $users;
 

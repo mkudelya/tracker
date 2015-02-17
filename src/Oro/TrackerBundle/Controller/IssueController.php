@@ -2,7 +2,9 @@
 
 namespace Oro\TrackerBundle\Controller;
 
+use Oro\TrackerBundle\Entity\Comment;
 use Oro\TrackerBundle\Entity\Issue;
+use Oro\TrackerBundle\Form\CommentType;
 use Oro\TrackerBundle\Form\IssueType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -47,6 +49,23 @@ class IssueController extends Controller
         $user = $this->get('security.context')->getToken()->getUser();
         $issues = $this->get('issue')->getIssueListByCollaborationUser($user);
         return array('issues' => $issues);
+    }
+
+    /**
+     * @Route("/{issueCode}/comments", name="_tracking_project_comment_list")
+     * @Template("TrackerBundle:Comment:list.html.twig")
+     */
+    public function listOfCommentsAction($issueCode)
+    {
+        $comments = $this->get('issue')->getCommentListByIssueCode($issueCode);
+        $commentFormType = new CommentType();
+        $commentEntity = new Comment();
+        $form = $this->createForm($commentFormType, $commentEntity);
+
+        return array(
+            'comment_form' => $form->createView(),
+            'comments' => $comments
+        );
     }
 
     /**
@@ -113,7 +132,7 @@ class IssueController extends Controller
     }
 
     /**
-     * @Route("/{issueCode}", name="_tracking_issue_show")
+     * @Route("/{issueCode}/", name="_tracking_issue_show")
      * @Template()
      */
     public function showAction($projectCode, $issueCode)
@@ -121,10 +140,72 @@ class IssueController extends Controller
         $projectEntity = $this->getDoctrine()->getRepository('TrackerBundle:Project')->findOneByCode($projectCode);
         $issueEntity = $this->getDoctrine()->getRepository('TrackerBundle:Issue')->findOneByCode($issueCode);
 
+        $commentEntity = new Comment();
+        $commentFormType = new CommentType();
+        $form = $this->createForm($commentFormType, $commentEntity);
+
         return array(
+            'comment_form' => $form->createView(),
+            'issue' => $issueEntity,
+            'project' => $projectEntity,
+            'isStory' => $issueEntity->getType() == 'story' ? true : false,
+            'isSubtask' => $issueEntity->getParent() ? true : false
+        );
+    }
+
+    /**
+     * @Route("/{issueCode}/edit_comment/{commentId}", name="_tracking_edit_comment")
+     * @Template("TrackerBundle:Issue:show.html.twig")
+     */
+    public function editCommentAction($projectCode, $issueCode, $commentId = null)
+    {
+        $request = $this->getRequest();
+        $projectEntity = $this->getDoctrine()->getRepository('TrackerBundle:Project')->findOneByCode($projectCode);
+        $issueEntity = $this->getDoctrine()->getRepository('TrackerBundle:Issue')->findOneByCode($issueCode);
+        $manager = $this->getDoctrine()->getManager();
+        $user = $this->get('security.context')->getToken()->getUser();
+
+        if ($commentId) {
+            $commentEntity = $this->getDoctrine()->getRepository('TrackerBundle:Comment')->find($commentId);
+        } else {
+            $commentEntity = new Comment();
+        }
+
+        $commentFormType = new CommentType();
+        $form = $this->createForm($commentFormType, $commentEntity);
+
+        $form->handleRequest($request);
+
+        if ($request->getMethod() == 'POST' && $form->isValid()) {
+            $commentEntity->setIssue($issueEntity);
+            $commentEntity->setUser($user);
+            $manager->persist($commentEntity);
+            $manager->flush();
+            return $this->redirect($this->generateUrl('_tracking_issue_show', array('projectCode' => $projectCode, 'issueCode' => $issueCode)));
+        }
+
+        return array(
+            'comment_form' => $form->createView(),
             'issue' => $issueEntity,
             'project' => $projectEntity,
             'isStory' => $issueEntity->getType() == 'story' ? true : false
         );
+    }
+
+    /**
+     * @Route("/{issueCode}/remove_comment/{commentId}", name="_tracking_remove_comment")
+     * @Template("TrackerBundle:Issue:show.html.twig")
+     */
+    public function removeCommentAction($projectCode, $issueCode, $commentId = null)
+    {
+        $manager = $this->getDoctrine()->getManager();
+
+        if ($commentId) {
+            $commentEntity = $this->getDoctrine()->getRepository('TrackerBundle:Comment')->find($commentId);
+            $manager->remove($commentEntity);
+            $manager->flush();
+        }
+
+        return $this->redirect($this->generateUrl('_tracking_issue_show', array('projectCode' => $projectCode, 'issueCode' => $issueCode)));
     }
 }
