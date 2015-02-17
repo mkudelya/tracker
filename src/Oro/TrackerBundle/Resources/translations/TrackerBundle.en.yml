@@ -4,6 +4,7 @@ layout:
     comments_list: Comments list
     add_comment: Add comment
     projects_list: Projects list
+    issues_list: Issues list
     issues_where_you_are_as_collaborator: Issues where you are as collaborator
     activity_list: Activity list
     on: on

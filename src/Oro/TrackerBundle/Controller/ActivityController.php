@@ -10,14 +10,26 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 class ActivityController extends Controller
 {
     /**
-     * @Route("/list/", name="_tracking_activity_list")
-     * @Template()
+     * @Route("/list_by_user/", name="_tracking_activity_list_by_user")
+     * @Template("TrackerBundle:Activity:list.html.twig")
      * @return array
      */
-    public function listAction()
+    public function listByUserAction()
     {
         $user = $this->get('security.context')->getToken()->getUser();
         $activities = $this->get('activity')->getActivityIssueListByUser($user);
+        return array('activities' => $activities);
+    }
+
+    /**
+     * @Route("/list_by_project/{projectCode}", name="_tracking_activity_list_by_project")
+     * @Template("TrackerBundle:Activity:list.html.twig")
+     * @return array
+     */
+    public function listByProjectAction($projectCode)
+    {
+        $projectEntity = $this->getDoctrine()->getRepository('TrackerBundle:Project')->findOneByCode($projectCode);
+        $activities = $this->get('activity')->getActivityIssueListByProject($projectEntity);
         return array('activities' => $activities);
     }
 }
