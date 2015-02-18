@@ -26,6 +26,8 @@ class ProjectController extends Controller
     /**
      * @Route("/edit/{projectCode}", name="_tracking_project_edit")
      * @Template()
+     * @param null $projectCode
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function editAction($projectCode = null)
     {
@@ -57,7 +59,9 @@ class ProjectController extends Controller
                 $this->get('translator')->trans($flashId, array(), 'TrackerBundle')
             );
 
-            return $this->redirect($this->generateUrl('_tracking_project_show', array('projectCode' => $projectEntity->getCode())));
+            return $this->redirect(
+                $this->generateUrl('_tracking_project_show', array('projectCode' => $projectEntity->getCode()))
+            );
         }
 
         return array(
@@ -70,6 +74,8 @@ class ProjectController extends Controller
     /**
      * @Route("/{projectCode}", name="_tracking_project_show")
      * @Template()
+     * @param $projectCode
+     * @return array
      */
     public function showAction($projectCode)
     {

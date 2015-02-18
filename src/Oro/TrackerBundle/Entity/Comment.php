@@ -102,7 +102,7 @@ class Comment
      * @param \Oro\TrackerBundle\Entity\User $user
      * @return Comment
      */
-    public function setUser(\Oro\TrackerBundle\Entity\User $user = null)
+    public function setUser(User $user = null)
     {
         $this->user = $user;
 
@@ -125,7 +125,7 @@ class Comment
      * @param \Oro\TrackerBundle\Entity\Issue $issue
      * @return Comment
      */
-    public function setIssue(\Oro\TrackerBundle\Entity\Issue $issue = null)
+    public function setIssue(Issue $issue = null)
     {
         $this->issue = $issue;
 

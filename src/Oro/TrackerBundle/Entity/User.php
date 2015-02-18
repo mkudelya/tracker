@@ -210,7 +210,7 @@ class User extends BaseUser
      * @param \Oro\TrackerBundle\Entity\Project $projects
      * @return User
      */
-    public function addProject(\Oro\TrackerBundle\Entity\Project $projects)
+    public function addProject(Project $projects)
     {
         $this->projects[] = $projects;
 
@@ -222,7 +222,7 @@ class User extends BaseUser
      *
      * @param \Oro\TrackerBundle\Entity\Project $projects
      */
-    public function removeProject(\Oro\TrackerBundle\Entity\Project $projects)
+    public function removeProject(Project $projects)
     {
         $this->projects->removeElement($projects);
     }
@@ -243,7 +243,7 @@ class User extends BaseUser
      * @param \Oro\TrackerBundle\Entity\Issue $issues
      * @return User
      */
-    public function addIssue(\Oro\TrackerBundle\Entity\Issue $issues)
+    public function addIssue(Issue $issues)
     {
         $this->issues[] = $issues;
 
@@ -255,7 +255,7 @@ class User extends BaseUser
      *
      * @param \Oro\TrackerBundle\Entity\Issue $issues
      */
-    public function removeIssue(\Oro\TrackerBundle\Entity\Issue $issues)
+    public function removeIssue(Issue $issues)
     {
         $this->issues->removeElement($issues);
     }
@@ -276,7 +276,7 @@ class User extends BaseUser
      * @param \Oro\TrackerBundle\Entity\Activity $activities
      * @return User
      */
-    public function addActivity(\Oro\TrackerBundle\Entity\Activity $activities)
+    public function addActivity(Activity $activities)
     {
         $this->activities[] = $activities;
 
@@ -288,7 +288,7 @@ class User extends BaseUser
      *
      * @param \Oro\TrackerBundle\Entity\Activity $activities
      */
-    public function removeActivity(\Oro\TrackerBundle\Entity\Activity $activities)
+    public function removeActivity(Activity $activities)
     {
         $this->activities->removeElement($activities);
     }

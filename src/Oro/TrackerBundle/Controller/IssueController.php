@@ -35,6 +35,9 @@ class IssueController extends Controller
     /**
      * @Route("/{issueCode}/sublist", name="_tracking_issue_sublist")
      * @Template("TrackerBundle:Issue:list.html.twig")
+     * @param $projectCode
+     * @param $issueCode
+     * @return array
      */
     public function subtasksListAction($projectCode, $issueCode)
     {
@@ -56,6 +59,7 @@ class IssueController extends Controller
     /**
      * @Route("/{issueCode}/assignee/{id}", name="_tracking_issue_by_assignee_user")
      * @Template("TrackerBundle:Issue:list.html.twig")
+     * @param $id
      * @return array
      */
     public function listByAssigneeAction($id)
@@ -68,6 +72,7 @@ class IssueController extends Controller
     /**
      * @Route("/{issueCode}/collaborators", name="_tracking_issue_sublist")
      * @Template("TrackerBundle:Issue:collaborators.list.html.twig")
+     * @param $issueCode
      * @return array
      */
     public function listCollaboratorByIssueAction($issueCode)
@@ -80,6 +85,8 @@ class IssueController extends Controller
     /**
      * @Route("/{issueCode}/comments", name="_tracking_project_comment_list")
      * @Template("TrackerBundle:Comment:list.html.twig")
+     * @param $issueCode
+     * @return array
      */
     public function listOfCommentsAction($issueCode)
     {
@@ -164,7 +171,11 @@ class IssueController extends Controller
                 $this->get('translator')->trans($flashId, array(), 'TrackerBundle')
             );
 
-            return $this->redirect($this->generateUrl('_tracking_issue_show', array('projectCode' => $projectCode, 'issueCode' => $issueEntity->getCode())));
+            return $this->redirect(
+                $this->generateUrl('_tracking_issue_show', array(
+                    'projectCode' => $projectCode, 'issueCode' => $issueEntity->getCode()
+                ))
+            );
         }
 
         return array(
@@ -178,6 +189,9 @@ class IssueController extends Controller
     /**
      * @Route("/{issueCode}/", name="_tracking_issue_show")
      * @Template()
+     * @param $projectCode
+     * @param $issueCode
+     * @return array
      */
     public function showAction($projectCode, $issueCode)
     {
@@ -204,6 +218,10 @@ class IssueController extends Controller
     /**
      * @Route("/{issueCode}/edit_comment/{commentId}", name="_tracking_edit_comment")
      * @Template("TrackerBundle:Issue:show.html.twig")
+     * @param $projectCode
+     * @param $issueCode
+     * @param null $commentId
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function editCommentAction($projectCode, $issueCode, $commentId = null)
     {
@@ -249,7 +267,11 @@ class IssueController extends Controller
                 $this->get('translator')->trans($flashId, array(), 'TrackerBundle')
             );
 
-            return $this->redirect($this->generateUrl('_tracking_issue_show', array('projectCode' => $projectCode, 'issueCode' => $issueCode)));
+            return $this->redirect(
+                $this->generateUrl('_tracking_issue_show', array(
+                    'projectCode' => $projectCode, 'issueCode' => $issueCode
+                ))
+            );
         }
 
         return array(
@@ -263,6 +285,10 @@ class IssueController extends Controller
     /**
      * @Route("/{issueCode}/remove_comment/{commentId}", name="_tracking_remove_comment")
      * @Template("TrackerBundle:Issue:show.html.twig")
+     * @param $projectCode
+     * @param $issueCode
+     * @param null $commentId
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function removeCommentAction($projectCode, $issueCode, $commentId = null)
     {
@@ -285,6 +311,10 @@ class IssueController extends Controller
             );
         }
 
-        return $this->redirect($this->generateUrl('_tracking_issue_show', array('projectCode' => $projectCode, 'issueCode' => $issueCode)));
+        return $this->redirect(
+            $this->generateUrl('_tracking_issue_show', array(
+                'projectCode' => $projectCode, 'issueCode' => $issueCode
+            ))
+        );
     }
 }

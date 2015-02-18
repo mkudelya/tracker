@@ -1,6 +1,7 @@
 <?php
 namespace Oro\TrackerBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -94,7 +95,7 @@ class Activity
      * @param \Oro\TrackerBundle\Entity\Issue $issue
      * @return Activity
      */
-    public function setIssue(\Oro\TrackerBundle\Entity\Issue $issue = null)
+    public function setIssue(Issue $issue = null)
     {
         $this->issue = $issue;
 
@@ -117,7 +118,7 @@ class Activity
      * @param \Oro\TrackerBundle\Entity\User $user
      * @return Activity
      */
-    public function setUser(\Oro\TrackerBundle\Entity\User $user = null)
+    public function setUser(User $user = null)
     {
         $this->user = $user;
 
@@ -195,7 +196,7 @@ class Activity
      */
     public function __construct()
     {
-        $this->user = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->user = new ArrayCollection();
     }
 
     /**
@@ -204,7 +205,7 @@ class Activity
      * @param \Oro\TrackerBundle\Entity\Project $project
      * @return Activity
      */
-    public function setProject(\Oro\TrackerBundle\Entity\Project $project = null)
+    public function setProject(Project $project = null)
     {
         $this->project = $project;
 

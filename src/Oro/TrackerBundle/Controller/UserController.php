@@ -31,6 +31,8 @@ class UserController extends Controller
     /**
      * @Route("/show/{username}", name="_tracking_user_profile")
      * @Template()
+     * @param null $username
+     * @return array
      */
     public function showAction($username = null)
     {
@@ -51,6 +53,8 @@ class UserController extends Controller
     /**
      * @Route("/edit/{id}", name="_tracking_user_edit")
      * @Template()
+     * @param $id
+     * @return array
      */
     public function editAction($id)
     {
@@ -78,6 +82,8 @@ class UserController extends Controller
     /**
      * @Route("/update/{id}", name="_tracking_user_update")
      * @Template()
+     * @param $id
+     * @return null|\Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function updateAction($id)
     {
@@ -89,7 +95,6 @@ class UserController extends Controller
         /** @var $userManager \FOS\UserBundle\Model\UserManagerInterface */
         $userManager = $this->get('fos_user.user_manager');
         /** @var $dispatcher \Symfony\Component\EventDispatcher\EventDispatcherInterface */
-        $dispatcher = $this->get('event_dispatcher');
 
         $user = $userManager->findUserBy(array("id" => $id));
         $user->setEnabled(true);

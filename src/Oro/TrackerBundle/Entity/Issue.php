@@ -5,6 +5,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 /**
  * @ORM\Entity
  * @ORM\Table(name="issues")
@@ -114,10 +116,10 @@ class Issue
      */
     public function __construct()
     {
-        $this->collaborators = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->children = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->comments = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->activities = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->collaborators = new ArrayCollection();
+        $this->children = new ArrayCollection();
+        $this->comments = new ArrayCollection();
+        $this->activities = new ArrayCollection();
     }
 
     /**
@@ -347,7 +349,7 @@ class Issue
      * @param \Oro\TrackerBundle\Entity\User $collaborators
      * @return Issue
      */
-    public function addCollaborator(\Oro\TrackerBundle\Entity\User $collaborators)
+    public function addCollaborator(User $collaborators)
     {
         $this->collaborators[] = $collaborators;
 
@@ -359,7 +361,7 @@ class Issue
      *
      * @param \Oro\TrackerBundle\Entity\User $collaborators
      */
-    public function removeCollaborator(\Oro\TrackerBundle\Entity\User $collaborators)
+    public function removeCollaborator(User $collaborators)
     {
         $this->collaborators->removeElement($collaborators);
     }
@@ -395,7 +397,7 @@ class Issue
      * @param \Oro\TrackerBundle\Entity\Issue $parent
      * @return Issue
      */
-    public function setParent(\Oro\TrackerBundle\Entity\Issue $parent = null)
+    public function setParent(Issue $parent = null)
     {
         $this->parent = $parent;
 
@@ -418,7 +420,7 @@ class Issue
      * @param \Oro\TrackerBundle\Entity\Issue $children
      * @return Issue
      */
-    public function addChild(\Oro\TrackerBundle\Entity\Issue $children)
+    public function addChild(Issue $children)
     {
         $this->children[] = $children;
 
@@ -430,7 +432,7 @@ class Issue
      *
      * @param \Oro\TrackerBundle\Entity\Issue $children
      */
-    public function removeChild(\Oro\TrackerBundle\Entity\Issue $children)
+    public function removeChild(Issue $children)
     {
         $this->children->removeElement($children);
     }
@@ -451,7 +453,7 @@ class Issue
      * @param \Oro\TrackerBundle\Entity\Comment $comments
      * @return Issue
      */
-    public function addComment(\Oro\TrackerBundle\Entity\Comment $comments)
+    public function addComment(Comment $comments)
     {
         $this->comments[] = $comments;
 
@@ -463,7 +465,7 @@ class Issue
      *
      * @param \Oro\TrackerBundle\Entity\Comment $comments
      */
-    public function removeComment(\Oro\TrackerBundle\Entity\Comment $comments)
+    public function removeComment(Comment $comments)
     {
         $this->comments->removeElement($comments);
     }
@@ -484,7 +486,7 @@ class Issue
      * @param \Oro\TrackerBundle\Entity\Activity $activities
      * @return Issue
      */
-    public function addActivity(\Oro\TrackerBundle\Entity\Activity $activities)
+    public function addActivity(Activity $activities)
     {
         $this->activities[] = $activities;
 
@@ -496,7 +498,7 @@ class Issue
      *
      * @param \Oro\TrackerBundle\Entity\Activity $activities
      */
-    public function removeActivity(\Oro\TrackerBundle\Entity\Activity $activities)
+    public function removeActivity(Activity $activities)
     {
         $this->activities->removeElement($activities);
     }
@@ -530,7 +532,7 @@ class Issue
      * @param \Oro\TrackerBundle\Entity\Project $project
      * @return Issue
      */
-    public function setProject(\Oro\TrackerBundle\Entity\Project $project = null)
+    public function setProject(Project $project = null)
     {
         $this->project = $project;
 
@@ -558,7 +560,7 @@ class Issue
      * @param \Oro\TrackerBundle\Entity\User $reporter
      * @return Issue
      */
-    public function setReporter(\Oro\TrackerBundle\Entity\User $reporter = null)
+    public function setReporter(User $reporter = null)
     {
         $this->reporter = $reporter;
 
@@ -581,7 +583,7 @@ class Issue
      * @param \Oro\TrackerBundle\Entity\User $assignee
      * @return Issue
      */
-    public function setAssignee(\Oro\TrackerBundle\Entity\User $assignee = null)
+    public function setAssignee(User $assignee = null)
     {
         $this->assignee = $assignee;
 

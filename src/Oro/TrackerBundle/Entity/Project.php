@@ -3,6 +3,7 @@ namespace Oro\TrackerBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity
@@ -138,7 +139,7 @@ class Project
      * @param \Oro\TrackerBundle\Entity\Issue $issues
      * @return Project
      */
-    public function addIssue(\Oro\TrackerBundle\Entity\Issue $issues)
+    public function addIssue(Issue $issues)
     {
         $this->issues[] = $issues;
 
@@ -150,7 +151,7 @@ class Project
      *
      * @param \Oro\TrackerBundle\Entity\Issue $issues
      */
-    public function removeIssue(\Oro\TrackerBundle\Entity\Issue $issues)
+    public function removeIssue(Issue $issues)
     {
         $this->issues->removeElement($issues);
     }
@@ -171,7 +172,7 @@ class Project
      * @param \Oro\TrackerBundle\Entity\Activity $activities
      * @return Project
      */
-    public function addActivity(\Oro\TrackerBundle\Entity\Activity $activities)
+    public function addActivity(Activity $activities)
     {
         $this->activities[] = $activities;
 
@@ -183,7 +184,7 @@ class Project
      *
      * @param \Oro\TrackerBundle\Entity\Activity $activities
      */
-    public function removeActivity(\Oro\TrackerBundle\Entity\Activity $activities)
+    public function removeActivity(Activity $activities)
     {
         $this->activities->removeElement($activities);
     }
@@ -217,9 +218,9 @@ class Project
      */
     public function __construct()
     {
-        $this->members = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->issues = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->activities = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->members = new ArrayCollection();
+        $this->issues = new ArrayCollection();
+        $this->activities = new ArrayCollection();
     }
 
     /**
@@ -228,7 +229,7 @@ class Project
      * @param \Oro\TrackerBundle\Entity\User $members
      * @return Project
      */
-    public function addMember(\Oro\TrackerBundle\Entity\User $members)
+    public function addMember(User $members)
     {
         $this->members[] = $members;
 
@@ -240,7 +241,7 @@ class Project
      *
      * @param \Oro\TrackerBundle\Entity\User $members
      */
-    public function removeMember(\Oro\TrackerBundle\Entity\User $members)
+    public function removeMember(User $members)
     {
         $this->members->removeElement($members);
     }
