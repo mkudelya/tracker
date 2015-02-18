@@ -49,7 +49,7 @@ class Issue
         $manager = $this->getDoctrine()->getManager();
         $issues = $manager->createQuery('select i from Oro\TrackerBundle\Entity\Issue i JOIN i.collaborators u WHERE u = ?1 and i.status != ?2 and i.parent IS NULL');
         $issues->setParameter(1, $user);
-        $issues->setParameter(2, 'closed');
+        $issues->setParameter(2, 'Closed');
 
         return $issues->getResult();
     }
@@ -59,7 +59,7 @@ class Issue
         $manager = $this->getDoctrine()->getManager();
         $issues = $manager->createQuery('select i from Oro\TrackerBundle\Entity\Issue i WHERE i.assignee = ?1 and i.status != ?2 and i.parent IS NULL');
         $issues->setParameter(1, $user);
-        $issues->setParameter(2, 'closed');
+        $issues->setParameter(2, 'Closed');
 
         return $issues->getResult();
     }

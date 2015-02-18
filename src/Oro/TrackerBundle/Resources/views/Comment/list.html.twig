@@ -9,7 +9,15 @@
                 <tr>
                     <td width="10%">{{ comment.getCreated()|date("m/d/Y", false) }}</td>
                     <td>
-                        <div id="body">{{ comment.getBody() }} [ <a href="" id="edit">{{ 'grid.edit'|trans({}, 'TrackerBundle') }}</a> ] [ <a href="{{ path('_tracking_remove_comment', {'projectCode': comment.getIssue().getProject().getCode(), 'issueCode': comment.getIssue().getCode(), 'commentId':comment.getId()}) }}" id="remove">{{ 'grid.remove'|trans({}, 'TrackerBundle') }}</a> ]</div>
+                        <div id="body">
+                            {{ comment.getBody() }}
+                            {% if (is_granted('edit', comment)) %}
+                            [ <a href="" id="edit">{{ 'grid.edit'|trans({}, 'TrackerBundle') }}</a> ]
+                            {% endif %}
+                            {% if (is_granted('delete', comment)) %}
+                            [ <a href="{{ path('_tracking_remove_comment', {'projectCode': comment.getIssue().getProject().getCode(), 'issueCode': comment.getIssue().getCode(), 'commentId':comment.getId()}) }}" id="remove">{{ 'grid.remove'|trans({}, 'TrackerBundle') }}</a> ]
+                            {% endif  %}
+                        </div>
                         <div id="form" style="display: none">
                         <form action="{{ path('_tracking_edit_comment', {'projectCode': comment.getIssue().getProject().getCode(), 'issueCode': comment.getIssue().getCode(), 'commentId':comment.getId()}) }}" {{ form_enctype(comment_form) }} method="POST" class="tracker_comment_{{ comment.getId() }}">
                             <textarea id="tracker_comment_body" name="tracker_comment[body]" required="required">{{ comment.getBody() }}</textarea>

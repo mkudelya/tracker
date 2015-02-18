@@ -13,7 +13,7 @@ class ProjectType extends AbstractType
         $builder->add('label');
         $builder->add('summary');
         $builder->add('code');
-        $builder->add('users');
+        $builder->add('members');
         $builder->add('Save', 'submit');
     }
 

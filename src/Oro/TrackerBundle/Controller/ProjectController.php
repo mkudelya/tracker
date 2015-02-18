@@ -6,6 +6,8 @@ use Oro\TrackerBundle\Entity\Project;
 use Oro\TrackerBundle\Form\ProjectType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
@@ -38,12 +40,23 @@ class ProjectController extends Controller
             $projectEntity = new Project();
         }
 
+        if (false === $this->get('security.context')->isGranted('edit', $projectEntity)) {
+            throw new AccessDeniedException('Unauthorised access!');
+        }
+
         $form = $this->createForm(new ProjectType(), $projectEntity);
         $form->handleRequest($request);
 
         if ($request->getMethod() == 'POST' && $form->isValid()) {
             $manager->persist($projectEntity);
             $manager->flush();
+
+            $flashId = $isAdd ? 'flash.add.project' : 'flash.update.project';
+            $request->getSession()->getFlashBag()->add(
+                'notice',
+                $this->get('translator')->trans($flashId, array(), 'TrackerBundle')
+            );
+
             return $this->redirect($this->generateUrl('_tracking_project_show', array('projectCode' => $projectEntity->getCode())));
         }
 
@@ -61,6 +74,10 @@ class ProjectController extends Controller
     public function showAction($projectCode)
     {
         $projectEntity = $this->getDoctrine()->getRepository('TrackerBundle:Project')->findOneByCode($projectCode);
+
+        if (false === $this->get('security.context')->isGranted('view', $projectEntity)) {
+            throw new AccessDeniedException('Unauthorised access!');
+        }
 
         return array('project' => $projectEntity);
     }

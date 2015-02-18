@@ -18,7 +18,7 @@
                 {% if is_granted('ROLE_ADMINISTRATOR') %}
                     <li>[ <a href="{{ path('_tracking_user_list') }}">{{ 'layout.users_list'|trans({}, 'TrackerBundle') }}</a> ]</li>
                 {% endif %}
-                {% if is_granted('ROLE_MANAGER') %}
+                {% if is_granted('ROLE_MANAGER') or is_granted('ROLE_OPERATOR') %}
                     <li>[ <a href="{{ path('_tracking_project_list') }}">{{ 'layout.projects_list'|trans({}, 'TrackerBundle') }}</a> ]</li>
                 {% endif %}
                 {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}

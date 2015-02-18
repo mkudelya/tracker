@@ -37,7 +37,7 @@ class Project
      * @ORM\ManyToMany(targetEntity="User", inversedBy="projects")
      * @ORM\JoinTable(name="project_members")
      **/
-    protected $users;
+    protected $members;
 
     /**
      * @ORM\OneToMany(targetEntity="Issue", mappedBy="project")
@@ -45,17 +45,9 @@ class Project
     protected $issues;
 
     /**
-     * @ORM\OneToMany(targetEntity="Activity", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="Activity", mappedBy="project")
      **/
     protected $activities;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->users = new \Doctrine\Common\Collections\ArrayCollection();
-    }
 
     /**
      * Get id
@@ -141,39 +133,6 @@ class Project
     }
 
     /**
-     * Add users
-     *
-     * @param \Oro\TrackerBundle\Entity\User $users
-     * @return Project
-     */
-    public function addUser(\Oro\TrackerBundle\Entity\User $users)
-    {
-        $this->users[] = $users;
-
-        return $this;
-    }
-
-    /**
-     * Remove users
-     *
-     * @param \Oro\TrackerBundle\Entity\User $users
-     */
-    public function removeUser(\Oro\TrackerBundle\Entity\User $users)
-    {
-        $this->users->removeElement($users);
-    }
-
-    /**
-     * Get users
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getUsers()
-    {
-        return $this->users;
-    }
-
-    /**
      * Add issues
      *
      * @param \Oro\TrackerBundle\Entity\Issue $issues
@@ -232,10 +191,67 @@ class Project
     /**
      * Get activities
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getActivities()
     {
         return $this->activities;
+    }
+
+    public function hasMember($user)
+    {
+        $members = $this->getMembers();
+
+        if ($members->count()) {
+            foreach ($members as $member) {
+                if ($member->getId() == $user->getId()) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->members = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->issues = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->activities = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add members
+     *
+     * @param \Oro\TrackerBundle\Entity\User $members
+     * @return Project
+     */
+    public function addMember(\Oro\TrackerBundle\Entity\User $members)
+    {
+        $this->members[] = $members;
+
+        return $this;
+    }
+
+    /**
+     * Remove members
+     *
+     * @param \Oro\TrackerBundle\Entity\User $members
+     */
+    public function removeMember(\Oro\TrackerBundle\Entity\User $members)
+    {
+        $this->members->removeElement($members);
+    }
+
+    /**
+     * Get members
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getMembers()
+    {
+        return $this->members;
     }
 }

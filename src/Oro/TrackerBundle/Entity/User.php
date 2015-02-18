@@ -41,7 +41,7 @@ class User extends BaseUser
     protected $tempAvatar;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Project", mappedBy="users")
+     * @ORM\ManyToMany(targetEntity="Project", mappedBy="members")
      **/
     protected $projects;
 

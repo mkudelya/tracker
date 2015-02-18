@@ -10,9 +10,13 @@
 {% endblock %}
 
 {% block page_actions %}
-[ <a href="{{ path('_tracking_project_edit') }}">{{ 'project.add'|trans({}, 'TrackerBundle') }}</a> ]<br>
-[ <a href="{{ path('_tracking_project_edit', {'projectCode': project.getCode()}) }}">{{ 'project.edit'|trans({}, 'TrackerBundle') }}</a> ]<br>
-[ <a href="{{ path('_tracking_issue_edit', {'projectCode': project.getCode()}) }}">{{ 'issue.add'|trans({}, 'TrackerBundle') }}</a> ]<br>
+    {% if is_granted('ROLE_ADMINISTRATOR') or is_granted('ROLE_MANAGER') %}
+        [ <a href="{{ path('_tracking_project_edit') }}">{{ 'project.add'|trans({}, 'TrackerBundle') }}</a> ]<br>
+        [ <a href="{{ path('_tracking_project_edit', {'projectCode': project.getCode()}) }}">{{ 'project.edit'|trans({}, 'TrackerBundle') }}</a> ]<br>
+    {% endif %}
+    {% if is_granted('add_issue', project) %}
+        [ <a href="{{ path('_tracking_issue_edit', {'projectCode': project.getCode()}) }}">{{ 'issue.add'|trans({}, 'TrackerBundle') }}</a> ]<br>
+    {% endif %}
 {% endblock %}
 
 {% block content %}

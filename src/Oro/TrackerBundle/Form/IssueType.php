@@ -16,14 +16,25 @@ class IssueType extends AbstractType
     protected $processMethod;
 
     protected $types = array(
-        'bug' => 'Bug',
-        'task' => 'Task'
+        'Bug' => 'Bug',
+        'Task' => 'Task'
     );
 
     protected $status = array(
-        'open' => 'Open',
-        'in progress' => 'In Progress',
-        'closed' => 'Closed'
+        'Open' => 'Open',
+        'In Progress' => 'In Progress',
+        'Closed' => 'Closed'
+    );
+
+    protected $resolution = array(
+        '' => '',
+        'Fixed' => 'Fixed',
+        'Won\'t Fix' => 'Won\'t Fix',
+        'Duplicate' => 'Duplicate',
+        'Incomplete' => 'Incomplete',
+        'Cannot Reproduce' => 'Cannot Reproduce',
+        'Done' => 'Done',
+        'Won\'t Do' => 'Won\'t Do',
     );
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -48,6 +59,11 @@ class IssueType extends AbstractType
         $builder->add('status', 'choice', array(
             'choices'   => $this->status,
             'required'  => true
+        ));
+
+        $builder->add('resolution', 'choice', array(
+            'choices'   => $this->resolution,
+            'required'  => false
         ));
         $builder->add('assignee');
         $builder->add('Save', 'submit');

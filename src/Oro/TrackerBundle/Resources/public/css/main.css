@@ -66,6 +66,7 @@ ul#demo-list a {
     margin: 10px 0 !important;
     padding: 5px !important;
     font-weight: bold;
+    width: 800px;
 }
 .sf-reset .error {
     color: red;

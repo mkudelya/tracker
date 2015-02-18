@@ -1,6 +1,7 @@
 services:
     tracker_user.registration.type:
         class: Oro\TrackerBundle\Form\RegistrationType
+        arguments: ['@service_container']
         tags:
             - { name: form.type, alias: tracker_user_registration }
 
@@ -22,3 +23,21 @@ services:
     activity:
         class: Oro\TrackerBundle\Service\Activity
         arguments: ['@service_container']
+
+    security.access.project_voter:
+        class:      Oro\TrackerBundle\Security\Authorization\Voter\ProjectVoter
+        public:     false
+        tags:
+           - { name: security.voter }
+
+    security.access.issue_voter:
+        class:      Oro\TrackerBundle\Security\Authorization\Voter\IssueVoter
+        public:     false
+        tags:
+           - { name: security.voter }
+
+    security.access.comment_voter:
+        class:      Oro\TrackerBundle\Security\Authorization\Voter\CommentVoter
+        public:     false
+        tags:
+           - { name: security.voter }

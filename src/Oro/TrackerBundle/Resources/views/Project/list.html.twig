@@ -5,7 +5,9 @@
 {% endblock %}
 
 {% block page_actions %}
-[ <a href="{{ path('_tracking_project_edit') }}">{{ 'project.add'|trans({}, 'TrackerBundle') }}</a> ]
+    {% if is_granted('ROLE_ADMINISTRATOR') or is_granted('ROLE_MANAGER') %}
+        [ <a href="{{ path('_tracking_project_edit') }}">{{ 'project.add'|trans({}, 'TrackerBundle') }}</a> ]
+    {% endif %}
 {% endblock %}
 
 {% block content %}
@@ -26,8 +28,12 @@
                         <td>{{ project.getSummary() }}</td>
                         <td>{{ project.getLabel() }}</td>
                         <td>
-                            <a href="{{ path('_tracking_project_show', {'projectCode':project.getCode()}) }}">{{ 'grid.show'|trans({}, 'TrackerBundle') }}</a> |
-                            <a href="{{ path('_tracking_project_edit', {'projectCode':project.getCode()}) }}">{{ 'grid.edit'|trans({}, 'TrackerBundle') }}</a>
+                            {% if is_granted('view', project) %}
+                            <a href="{{ path('_tracking_project_show', {'projectCode':project.getCode()}) }}">{{ 'grid.show'|trans({}, 'TrackerBundle') }}</a>
+                            {% endif %}
+                            {% if is_granted('edit', project) %}
+                            | <a href="{{ path('_tracking_project_edit', {'projectCode':project.getCode()}) }}">{{ 'grid.edit'|trans({}, 'TrackerBundle') }}</a>
+                            {% endif %}
                         </td>
                     </tr>
                 {% endfor %}

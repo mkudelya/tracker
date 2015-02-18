@@ -20,7 +20,7 @@ class Activity
     public function getActivityIssueListWhereUserIsProjectMember(User $user)
     {
         $manager = $this->getDoctrine()->getManager();
-        $activities = $manager->createQuery('select a from Oro\TrackerBundle\Entity\Activity a JOIN a.project p JOIN p.users u WHERE u = ?1 ORDER BY a.created DESC');
+        $activities = $manager->createQuery('select a from Oro\TrackerBundle\Entity\Activity a JOIN a.project p JOIN p.members u WHERE u = ?1 ORDER BY a.created DESC');
         $activities->setParameter(1, $user);
         return $activities->getResult();
     }

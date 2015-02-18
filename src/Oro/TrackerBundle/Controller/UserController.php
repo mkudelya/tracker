@@ -2,6 +2,9 @@
 
 namespace Oro\TrackerBundle\Controller;
 
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -34,6 +37,10 @@ class UserController extends Controller
         if (!empty($username)) {
             $manager = $this->getDoctrine()->getManager();
             $userEntity = $manager->getRepository('TrackerBundle:User')->findOneByUsername($username);
+
+            if ($userEntity == null) {
+                throw new NotFoundHttpException('Sorry not existing!');
+            }
         } else {
             $userEntity = $this->get('security.context')->getToken()->getUser();
         }
@@ -47,11 +54,22 @@ class UserController extends Controller
      */
     public function editAction($id)
     {
+        $currentUserEntity = $this->get('security.context')->getToken()->getUser();
+
         $formFactory = $this->get('fos_user.registration.form.factory');
         $form = $formFactory->createForm();
 
         $userManager = $this->get('fos_user.user_manager');
         $user = $userManager->findUserBy(array("id" => $id));
+
+        if ($user == null) {
+            throw new NotFoundHttpException('Sorry not existing!');
+        }
+
+        if (!$currentUserEntity->hasRole('ROLE_ADMINISTRATOR') && $currentUserEntity->getId() != $user->getId()) {
+            throw new AccessDeniedException('Unauthorised access!');
+        }
+
         $form->setData($user);
 
         return array('form' => $form->createView(), 'user' => $user, 'id' => $id);
@@ -63,6 +81,8 @@ class UserController extends Controller
      */
     public function updateAction($id)
     {
+        $currentUserEntity = $this->get('security.context')->getToken()->getUser();
+
         $request = $this->getRequest();
         /** @var $formFactory \FOS\UserBundle\Form\Factory\FactoryInterface */
         $formFactory = $this->get('fos_user.registration.form.factory');
@@ -74,10 +94,13 @@ class UserController extends Controller
         $user = $userManager->findUserBy(array("id" => $id));
         $user->setEnabled(true);
 
-        $event = new GetResponseUserEvent($user, $request);
+        if (!$currentUserEntity->hasRole('ROLE_ADMINISTRATOR') && $currentUserEntity->getId() != $user->getId()) {
+            throw new AccessDeniedException('Unauthorised access!');
+        }
 
-        if (null !== $event->getResponse()) {
-            return $event->getResponse();
+        $requestParams = $request->request->get('fos_user_registration_form');
+        if (!$currentUserEntity->hasRole('ROLE_ADMINISTRATOR') && isset($requestParams['roles'])) {
+            throw new AccessDeniedException('Unauthorised access!');
         }
 
         $form = $formFactory->createForm();
@@ -94,11 +117,15 @@ class UserController extends Controller
 
             $request->getSession()->getFlashBag()->add(
                 'notice',
-                'User has been updated!'
+                $this->get('translator')->trans('flash.update.user', array(), 'TrackerBundle')
             );
 
             if (null === $response = $event->getResponse()) {
-                $url = $this->generateUrl('_tracking_user_list');
+                if ($currentUserEntity->hasRole('ROLE_ADMINISTRATOR')) {
+                    $url = $this->generateUrl('_tracking_user_list');
+                } else {
+                    $url = $this->generateUrl('_tracking_user_profile');
+                }
                 $response = new RedirectResponse($url);
             }
 

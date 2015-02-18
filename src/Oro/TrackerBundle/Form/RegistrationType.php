@@ -11,33 +11,52 @@ use Symfony\Component\Form\FormEvents;
 
 use Oro\TrackerBundle\Entity\Role as Role;
 
+use Symfony\Component\DependencyInjection\ContainerInterface as Container;
+
 class RegistrationType extends AbstractType
 {
+    protected $container = null;
+
+    public function __construct(Container $container)
+    {
+        $this->container = $container;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $roles = new Role();
+        $isAdmin = $this
+            ->container
+            ->get('security.context')
+            ->getToken()
+            ->getUser()
+            ->hasRole(Role::ROLE_ADMINISTRATOR);
+
         $builder->add('fullname');
         $builder->add('avatarFile');
-        $builder->add('roles', 'choice', array(
-            'choices'   => $roles->getAvailableRoles(),
-            'multiple'  => true,
-            'required'  => true
-        ));
 
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+        if ($isAdmin) {
+            $builder->add('roles', 'choice', array(
+                'choices' => (new Role())->getAvailableRoles(),
+                'multiple' => true,
+                'required' => true
+            ));
+        }
 
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($isAdmin) {
             $user = $event->getData();
 
             if ($user && $user->getId()) {
                 $form = $event->getForm();
                 $userRoles = $user->getRoles();
 
-                $form->add('roles', 'choice', array(
-                    'choices'   => (new Role)->getAvailableRoles(),
-                    'data' => $userRoles,
-                    'multiple'  => true,
-                    'required'  => true
-                ));
+                if ($isAdmin) {
+                    $form->add('roles', 'choice', array(
+                        'choices' => (new Role())->getAvailableRoles(),
+                        'data' => $userRoles,
+                        'multiple' => true,
+                        'required' => true
+                    ));
+                }
 
                 $form->add('plainPassword', 'repeated', array(
                     'type' => 'password',

@@ -1,7 +1,6 @@
 {% extends "TrackerBundle::layout.html.twig" %}
 
 {% block description %}
-    <a href="{{ path('_tracking_user_list') }}">{{ 'user.users_list'|trans({}, 'TrackerBundle') }}</a> :
     {{ 'user.edit'|trans({}, 'TrackerBundle') }}
 {% endblock %}
 
@@ -43,11 +42,13 @@
         {{ form_widget(form.avatarFile) }}
     </div>
 
-    <div>
-        {{ form_label(form.roles) }}
-        {{ form_errors(form.roles) }}
-        {{ form_widget(form.roles) }}
-    </div>
+    {% if form.roles is defined %}
+        <div>
+            {{ form_label(form.roles) }}
+            {{ form_errors(form.roles) }}
+            {{ form_widget(form.roles) }}
+        </div>
+    {% endif %}
 
     <input type="submit" value="{{ 'form.save'|trans({}, 'TrackerBundle') }}"/>
     {{ form_end(form) }}

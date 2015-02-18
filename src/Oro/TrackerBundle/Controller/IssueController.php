@@ -8,6 +8,8 @@ use Oro\TrackerBundle\Form\CommentType;
 use Oro\TrackerBundle\Form\IssueType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
@@ -120,7 +122,14 @@ class IssueController extends Controller
 
         if ($methodType == self::IS_EDIT_TASK) {
             $issueEntity = $manager->getRepository('TrackerBundle:Issue')->findOneByCode($issueCode);
+
+            if (false === $this->get('security.context')->isGranted('edit', $issueEntity)) {
+                throw new AccessDeniedException('Unauthorised access!');
+            }
         } else {
+            if (false === $this->get('security.context')->isGranted('add_issue', $projectEntity)) {
+                throw new AccessDeniedException('Unauthorised access!');
+            }
             $issueEntity = new Issue();
         }
 
@@ -144,6 +153,17 @@ class IssueController extends Controller
             $manager->persist($issueEntity);
             $manager->flush();
 
+            if ($methodType == self::IS_ADD_TASK || $methodType == self::IS_ADD_SUBTASK) {
+                $flashId = 'flash.add.issue';
+            } else {
+                $flashId = 'flash.update.issue';
+            }
+
+            $request->getSession()->getFlashBag()->add(
+                'notice',
+                $this->get('translator')->trans($flashId, array(), 'TrackerBundle')
+            );
+
             return $this->redirect($this->generateUrl('_tracking_issue_show', array('projectCode' => $projectCode, 'issueCode' => $issueEntity->getCode())));
         }
 
@@ -163,6 +183,10 @@ class IssueController extends Controller
     {
         $projectEntity = $this->getDoctrine()->getRepository('TrackerBundle:Project')->findOneByCode($projectCode);
         $issueEntity = $this->getDoctrine()->getRepository('TrackerBundle:Issue')->findOneByCode($issueCode);
+
+        if (false === $this->get('security.context')->isGranted('view', $issueEntity)) {
+            throw new AccessDeniedException('Unauthorised access!');
+        }
 
         $commentEntity = new Comment();
         $commentFormType = new CommentType();
@@ -188,11 +212,19 @@ class IssueController extends Controller
         $issueEntity = $this->getDoctrine()->getRepository('TrackerBundle:Issue')->findOneByCode($issueCode);
         $manager = $this->getDoctrine()->getManager();
         $user = $this->get('security.context')->getToken()->getUser();
+        $isAdd = false;
 
         if ($commentId) {
             $commentEntity = $this->getDoctrine()->getRepository('TrackerBundle:Comment')->find($commentId);
+            if (false === $this->get('security.context')->isGranted('edit', $commentEntity)) {
+                throw new AccessDeniedException('Unauthorised access!');
+            }
         } else {
+            $isAdd = true;
             $commentEntity = new Comment();
+            if (false === $this->get('security.context')->isGranted('add_comment', $issueEntity)) {
+                throw new AccessDeniedException('Unauthorised access!');
+            }
         }
 
         $commentFormType = new CommentType();
@@ -205,6 +237,18 @@ class IssueController extends Controller
             $commentEntity->setUser($user);
             $manager->persist($commentEntity);
             $manager->flush();
+
+            if ($isAdd) {
+                $flashId = 'flash.add.comment';
+            } else {
+                $flashId = 'flash.update.comment';
+            }
+
+            $request->getSession()->getFlashBag()->add(
+                'notice',
+                $this->get('translator')->trans($flashId, array(), 'TrackerBundle')
+            );
+
             return $this->redirect($this->generateUrl('_tracking_issue_show', array('projectCode' => $projectCode, 'issueCode' => $issueCode)));
         }
 
@@ -222,12 +266,23 @@ class IssueController extends Controller
      */
     public function removeCommentAction($projectCode, $issueCode, $commentId = null)
     {
+        $request = $this->getRequest();
         $manager = $this->getDoctrine()->getManager();
 
         if ($commentId) {
             $commentEntity = $this->getDoctrine()->getRepository('TrackerBundle:Comment')->find($commentId);
+
+            if (false === $this->get('security.context')->isGranted('delete', $commentEntity)) {
+                throw new AccessDeniedException('Unauthorised access!');
+            }
+
             $manager->remove($commentEntity);
             $manager->flush();
+
+            $request->getSession()->getFlashBag()->add(
+                'notice',
+                $this->get('translator')->trans('flash.delete.comment', array(), 'TrackerBundle')
+            );
         }
 
         return $this->redirect($this->generateUrl('_tracking_issue_show', array('projectCode' => $projectCode, 'issueCode' => $issueCode)));

@@ -76,3 +76,16 @@ grid_title:
 
 form:
     save: Save
+
+flash:
+    add:
+        project: Project has been added
+        issue: Issue has been added
+        comment: Comment has been added
+    update:
+        user: User has been updated
+        project: Project has been updated
+        issue: Issue has been updated
+        comment: Comment has been updated
+    delete:
+        comment: Comment has been deleted
