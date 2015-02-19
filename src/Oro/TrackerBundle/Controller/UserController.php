@@ -36,6 +36,8 @@ class UserController extends Controller
      */
     public function showAction($username = null)
     {
+        $currentUser = $this->get('security.context')->getToken()->getUser();
+
         if (!empty($username)) {
             $manager = $this->getDoctrine()->getManager();
             $userEntity = $manager->getRepository('TrackerBundle:User')->findOneByUsername($username);
@@ -47,7 +49,7 @@ class UserController extends Controller
             $userEntity = $this->get('security.context')->getToken()->getUser();
         }
 
-        return array('user' => $userEntity);
+        return array('user' => $userEntity, 'currentUser' => $currentUser);
     }
 
     /**

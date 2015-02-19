@@ -3,7 +3,9 @@
 {% block description %}{{ 'user.profile'|trans({}, 'TrackerBundle') }}{% endblock %}
 
 {% block page_actions %}
-[ <a href="{{ path('_tracking_user_edit', {'id': user.getId()}) }}">{{ 'grid.edit'|trans({}, 'TrackerBundle') }}</a> ]
+    {% if is_granted('ROLE_ADMINISTRATOR') or currentUser.getId() == user.getId() %}
+        [ <a href="{{ path('_tracking_user_edit', {'id': user.getId()}) }}">{{ 'grid.edit'|trans({}, 'TrackerBundle') }}</a> ]
+    {% endif %}
 {% endblock %}
 
 {% block content %}
