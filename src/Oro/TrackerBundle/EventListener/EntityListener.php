@@ -46,6 +46,7 @@ class EntityListener
                 $activityEntity->setBody('');
                 $entityManager->persist($activityEntity);
                 $entityManager->flush();
+                $this->activityEmailNotification($activityEntity);
             } else {
                 $uow = $entityManager->getUnitOfWork();
                 $uow->computeChangeSets();
@@ -56,6 +57,7 @@ class EntityListener
                     $activityEntity->setBody($changeset['status'][1]);
                     $entityManager->persist($activityEntity);
                     $entityManager->flush();
+                    $this->activityEmailNotification($activityEntity);
                 }
             }
         } elseif ($entity instanceof Comment && $isNewEntity) {
@@ -67,6 +69,7 @@ class EntityListener
             $activityEntity->setBody('');
             $entityManager->persist($activityEntity);
             $entityManager->flush();
+            $this->activityEmailNotification($activityEntity);
         }
     }
 
@@ -111,6 +114,27 @@ class EntityListener
                 $entity->getIssue()->addCollaborator($entity->getUser());
                 $entityManager->persist($entity);
                 $entityManager->flush();
+            }
+        }
+    }
+
+    protected function activityEmailNotification(Activity $activity)
+    {
+        $issue = $activity->getIssue();
+        $collaborators = $issue->getCollaborators();
+
+        if ($collaborators->count()) {
+            foreach ($collaborators as $user) {
+                $message = \Swift_Message::newInstance()
+                    ->setSubject('Notification task - "'.$issue->getSummary().'"')
+                    ->setFrom('robot@localhost')
+                    ->setTo($user->getEmail())
+                    ->setBody($this->container->get('templating')->render(
+                        'TrackerBundle:Activity:email.html.twig',
+                        array('activity' => $activity)
+                    ), 'text/html');
+
+                $this->container->get('mailer')->send($message);
             }
         }
     }
