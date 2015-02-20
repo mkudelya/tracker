@@ -20,19 +20,19 @@ class EntityListener
     public function postPersist(LifecycleEventArgs $args)
     {
         $this->updateCollaborators($args);
-        return;
         $this->addToActivity($args, true);
     }
 
     public function postUpdate(LifecycleEventArgs $args)
     {
         $this->updateCollaborators($args);
-        return;
         $this->addToActivity($args, false);
     }
 
     public function addToActivity(LifecycleEventArgs $args, $isNewEntity)
     {
+        $a = $this->container->get('security.context');
+        $q = $this->container->get('security.context')->getToken();
         $entity = $args->getEntity();
         $entityManager = $args->getEntityManager();
         $currentUser = $this->container->get('security.context')->getToken()->getUser();
@@ -87,8 +87,6 @@ class EntityListener
                 ->get('issue')
                 ->isUserCollaborator($entity, $entity->getReporter());
 
-            return;
-            
             $isAssigneeCollaborator = $this
                 ->container
                 ->get('issue')
@@ -123,7 +121,7 @@ class EntityListener
         }
     }
 
-    protected function activityEmailNotification(Activity $activity)
+    public function activityEmailNotification(Activity $activity)
     {
         $issue = $activity->getIssue();
         $collaborators = $issue->getCollaborators();
