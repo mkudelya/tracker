@@ -51,6 +51,17 @@ class Comment
     }
 
     /**
+     * Set id
+     *
+     * @param integer $id
+     * @return integer
+     */
+    public function setId($id)
+    {
+        return $this->id = (int) $id;
+    }
+
+    /**
      * Set body
      *
      * @param string $body

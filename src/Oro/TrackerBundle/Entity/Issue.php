@@ -133,6 +133,17 @@ class Issue
     }
 
     /**
+     * Set id
+     *
+     * @param integer $id
+     * @return integer
+     */
+    public function setId($id)
+    {
+        return $this->id = (int) $id;
+    }
+
+    /**
      * Set summary
      *
      * @param string $summary

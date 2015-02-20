@@ -20,12 +20,14 @@ class EntityListener
     public function postPersist(LifecycleEventArgs $args)
     {
         $this->updateCollaborators($args);
+        return;
         $this->addToActivity($args, true);
     }
 
     public function postUpdate(LifecycleEventArgs $args)
     {
         $this->updateCollaborators($args);
+        return;
         $this->addToActivity($args, false);
     }
 
@@ -84,6 +86,9 @@ class EntityListener
                 ->container
                 ->get('issue')
                 ->isUserCollaborator($entity, $entity->getReporter());
+
+            return;
+            
             $isAssigneeCollaborator = $this
                 ->container
                 ->get('issue')

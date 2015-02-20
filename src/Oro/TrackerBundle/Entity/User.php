@@ -55,12 +55,6 @@ class User extends BaseUser
      **/
     protected $activities;
 
-    public function __construct()
-    {
-        parent::__construct();
-        // your own logic
-    }
-
     /**
      * Get id
      *
@@ -69,6 +63,17 @@ class User extends BaseUser
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set id
+     *
+     * @param integer $id
+     * @return integer
+     */
+    public function setId($id)
+    {
+        return $this->id = (int) $id;
     }
 
     /**
@@ -301,5 +306,14 @@ class User extends BaseUser
     public function getActivities()
     {
         return $this->activities;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->projects = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->issues = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->activities = new \Doctrine\Common\Collections\ArrayCollection();
     }
 }
