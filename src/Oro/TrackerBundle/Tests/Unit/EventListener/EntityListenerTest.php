@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\TrackerBundle\Tests\EventListener;
+namespace Oro\TrackerBundle\Tests\Unit\EventListener;
 
 use Oro\TrackerBundle\EventListener\EntityListener;
 use Doctrine\Common\Collections\ArrayCollection;

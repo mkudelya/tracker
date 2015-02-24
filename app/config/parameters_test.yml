@@ -1,0 +1,14 @@
+parameters:
+    database_driver: pdo_mysql
+    database_host: 127.0.0.1
+    database_port: null
+    database_name: tracker_test
+    database_user: root
+    database_password:
+    mailer_transport: gmail
+    mailer_host: null
+    mailer_user: mkudelya@gmail.com
+    mailer_password: Ujhkev776
+    locale: en
+    secret: ThisTokenIsNotSoSecretChangeIt
+    delivery_address: mkudelia@magecore.com
