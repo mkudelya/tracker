@@ -315,5 +315,7 @@ class User extends BaseUser
         $this->projects = new \Doctrine\Common\Collections\ArrayCollection();
         $this->issues = new \Doctrine\Common\Collections\ArrayCollection();
         $this->activities = new \Doctrine\Common\Collections\ArrayCollection();
+
+        parent::__construct();
     }
 }

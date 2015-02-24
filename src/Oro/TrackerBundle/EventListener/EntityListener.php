@@ -31,8 +31,6 @@ class EntityListener
 
     public function addToActivity(LifecycleEventArgs $args, $isNewEntity)
     {
-        $a = $this->container->get('security.context');
-        $q = $this->container->get('security.context')->getToken();
         $entity = $args->getEntity();
         $entityManager = $args->getEntityManager();
         $currentUser = $this->container->get('security.context')->getToken()->getUser();

@@ -23,6 +23,8 @@ class LoadDataFixtures extends AbstractFixture implements ContainerAwareInterfac
     public function setContainer(ContainerInterface $container = null)
     {
         $this->container = $container;
+
+        return $this;
     }
 
     /**
@@ -32,17 +34,18 @@ class LoadDataFixtures extends AbstractFixture implements ContainerAwareInterfac
     {
         $this->em = $manager;
 
-        $this->createUser();
+        $this->createAdminUser();
 
         $this->em->flush();
     }
 
-    public function createUser()
+    public function createAdminUser()
     {
         $userManager = $this->container->get('fos_user.user_manager');
         $user = $userManager->createUser();
         $user->setEnabled(true);
         $user->setUsername('test');
+        $user->setFullName('Admin');
         $user->setEmail('test@test.te');
         $user->setPlainPassword('test');
 

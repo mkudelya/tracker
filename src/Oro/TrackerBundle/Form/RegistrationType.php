@@ -10,6 +10,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
 use Oro\TrackerBundle\Entity\Role as Role;
+use Oro\TrackerBundle\Entity\User;
 
 use Symfony\Component\DependencyInjection\ContainerInterface as Container;
 
@@ -24,12 +25,12 @@ class RegistrationType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $isAdmin = $this
-            ->container
-            ->get('security.context')
-            ->getToken()
-            ->getUser()
-            ->hasRole(Role::ROLE_ADMINISTRATOR);
+        $isAdmin = false;
+
+        $user = $this->container->get('security.context')->getToken()->getUser();
+        if ($user instanceof User) {
+            $isAdmin = $user->hasRole(Role::ROLE_ADMINISTRATOR);
+        }
 
         $builder->add('fullname');
         $builder->add('avatarFile');
