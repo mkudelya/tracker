@@ -11,7 +11,11 @@
                             <a href="{{ path('_tracking_issue_show', {'projectCode': activity.getProject().getCode(), 'issueCode': activity.getIssue().getCode()}) }}">
                             {{ activity.getIssue().getSummary() }}
                             </a>
-                            {{ 'activity.task'|trans({}, 'TrackerBundle') }}
+                            {% if activity.getIssue().getParent() %}
+                                {{ 'activity.subtask'|trans({}, 'TrackerBundle') }}
+                            {% else %}
+                                {{ 'activity.task'|trans({}, 'TrackerBundle') }}
+                            {% endif %}
                         {% elseif activity.isStatusChangedType()  %}
                             <a href="{{ path('_tracking_user_profile', {'username': activity.getUser().getUsername() }) }}">{{ activity.getUser().getFullname() }}</a>
                             {{ 'activity.issue_status_changed'|trans({}, 'TrackerBundle') }}

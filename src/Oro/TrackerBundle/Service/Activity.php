@@ -48,7 +48,7 @@ class Activity
     {
         $manager = $this->getDoctrine()->getManager();
         $activities = $manager->createQuery('select a from Oro\TrackerBundle\Entity\Activity a JOIN a.issue i
-        WHERE i = ?1 ORDER BY a.created DESC');
+        WHERE i.id = ?1 or i.parent = ?1 ORDER BY a.created DESC');
         $activities->setParameter(1, $issue);
         return $activities->getResult();
     }

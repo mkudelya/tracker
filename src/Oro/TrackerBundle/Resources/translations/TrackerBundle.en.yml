@@ -19,6 +19,7 @@ activity:
     issue_status_changed: changed status to
     commented: commented
     task: task
+    subtask: sub-task
 
 project:
     project: Project

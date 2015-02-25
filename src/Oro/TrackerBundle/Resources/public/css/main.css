@@ -6,6 +6,11 @@ h1.title {
     font-size: 45px;
     padding-bottom: 30px;
 }
+
+.search {
+    display: none;
+}
+
 .sf-reset h2 {
     font-weight:   bold;
     color:         #FFFFFF;
