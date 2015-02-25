@@ -8,7 +8,6 @@ use Symfony\Component\HttpFoundation\Request;
 use FOS\UserBundle\Event\GetResponseUserEvent;
 use FOS\UserBundle\FOSUserEvents;
 use FOS\UserBundle\Event\FormEvent;
-use FOS\UserBundle\Event\FilterUserResponseEvent;
 
 class RegistrationController extends BaseController
 {
@@ -46,7 +45,7 @@ class RegistrationController extends BaseController
 
             $request->getSession()->getFlashBag()->add(
                 'notice',
-                'User has been created!'
+                $this->get('translator')->trans('flash.add.user', array(), 'TrackerBundle')
             );
 
             if (null === $response = $event->getResponse()) {

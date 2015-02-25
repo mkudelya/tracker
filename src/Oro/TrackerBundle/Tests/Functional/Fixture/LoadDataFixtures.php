@@ -7,15 +7,20 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-use Oro\TrackerBundle\Entity\User;
+use Oro\TrackerBundle\Entity\Role;
 
 class LoadDataFixtures extends AbstractFixture implements ContainerAwareInterface
 {
+    const ADMIN_USERNAME = 'test';
+    const ADMIN_PASSWORD = 'test';
+
     /** @var ObjectManager */
     protected $em;
 
     /** @var ContainerInterface */
     protected $container;
+
+    protected $adminUser;
 
     /**
      * @param ContainerInterface|null $container A ContainerInterface instance or null
@@ -33,22 +38,25 @@ class LoadDataFixtures extends AbstractFixture implements ContainerAwareInterfac
     public function load(ObjectManager $manager)
     {
         $this->em = $manager;
-
         $this->createAdminUser();
-
         $this->em->flush();
     }
 
     public function createAdminUser()
     {
         $userManager = $this->container->get('fos_user.user_manager');
-        $user = $userManager->createUser();
-        $user->setEnabled(true);
-        $user->setUsername('test');
-        $user->setFullName('Admin');
-        $user->setEmail('test@test.te');
-        $user->setPlainPassword('test');
+        $this->adminUser = $userManager->createUser();
+        $this->adminUser->addRole(Role::ROLE_ADMINISTRATOR);
+        $this->adminUser->setEnabled(true);
+        $this->adminUser->setUsername(self::ADMIN_USERNAME);
+        $this->adminUser->setFullName('Admin');
+        $this->adminUser->setEmail('test@test.te');
+        $this->adminUser->setPlainPassword(self::ADMIN_PASSWORD);
+        $this->em->persist($this->adminUser);
+    }
 
-        $userManager->updateUser($user);
+    public function getAdminUser()
+    {
+        return $this->adminUser;
     }
 }

@@ -5,9 +5,8 @@
 {% endblock %}
 
 {% block content %}
-<form action="{{ path('_tracking_user_update', {'id': id}) }}" {{ form_enctype(form) }} method="POST" class="tracker_user_update">
+<form action="{{ path('_tracking_user_update', {'id': id}) }}" {{ form_enctype(form) }} method="POST" class="fos_user_registration_form">
 
-    {{ form_start(form) }}
     {{ form_errors(form) }}
 
     <div>
@@ -50,7 +49,7 @@
         </div>
     {% endif %}
 
-    <input type="submit" value="{{ 'form.save'|trans({}, 'TrackerBundle') }}"/>
+    <button type="submit" name="save">{{ 'form.save'|trans({}, 'TrackerBundle') }}</button>
     {{ form_end(form) }}
 </form>
 {% endblock %}

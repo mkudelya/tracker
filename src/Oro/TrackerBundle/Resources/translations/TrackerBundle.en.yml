@@ -79,6 +79,7 @@ form:
 
 flash:
     add:
+        user: User has been added
         project: Project has been added
         issue: Issue has been added
         comment: Comment has been added

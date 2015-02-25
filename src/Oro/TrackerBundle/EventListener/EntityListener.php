@@ -6,6 +6,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Oro\TrackerBundle\Entity\Issue;
 use Oro\TrackerBundle\Entity\Activity;
 use Oro\TrackerBundle\Entity\Comment;
+use Oro\TrackerBundle\Entity\User;
 use Symfony\Component\DependencyInjection\ContainerInterface as Container;
 
 class EntityListener
@@ -33,7 +34,14 @@ class EntityListener
     {
         $entity = $args->getEntity();
         $entityManager = $args->getEntityManager();
-        $currentUser = $this->container->get('security.context')->getToken()->getUser();
+
+        $token = $this->container->get('security.context')->getToken();
+
+        if ($token) {
+            $currentUser = $token->getUser();
+        } else {
+            $currentUser = new User();
+        }
 
         if ($entity instanceof Issue) {
             $activityEntity = new Activity();

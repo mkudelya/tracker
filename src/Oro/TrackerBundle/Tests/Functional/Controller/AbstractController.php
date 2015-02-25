@@ -3,34 +3,69 @@ namespace Oro\TrackerBundle\Tests\Functional\Controller;
 
 use Oro\TrackerBundle\Tests\Functional\Fixture\LoadDataFixtures;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Doctrine\ORM\Tools\SchemaTool;
+use \Doctrine\Common\DataFixtures\Purger\ORMPurger;
+use \Doctrine\Common\DataFixtures\Executor\ORMExecutor;
+use \Doctrine\Common\DataFixtures\Loader;
 
 abstract class AbstractController extends WebTestCase
 {
-    protected $client;
+    protected static $loginUsername = LoadDataFixtures::ADMIN_USERNAME;
 
-    protected $container;
+    protected static $loginPassword = LoadDataFixtures::ADMIN_PASSWORD;
 
-    protected $em;
+    protected static $client;
 
-    public function setUp()
+    protected static $container;
+
+    protected static $em;
+
+    protected static $fixture;
+
+    public static function setUpBeforeClass()
     {
-        static::$kernel = static::createKernel();
-        static::$kernel->boot();
+        self::$client = self::createClient();
+        self::$client->followRedirects(true);
+        self::$container = self::$client->getKernel()->getContainer();
+        self::$em = self::$container->get('doctrine')->getManager();
+ 
+        // Purge tables
+        self::$em->getConnection()->executeUpdate("SET foreign_key_checks = 0;");
+        $purger = new ORMPurger(self::$em);
+        $executor = new ORMExecutor(self::$em, $purger);
+        $executor->purge();
+        self::$em->getConnection()->executeUpdate("SET foreign_key_checks = 1;");
 
-        $this->container = static::$kernel->getContainer();
-        $this->em = $this->container->get('doctrine')->getManager();
-        $classes = $this->em->getMetadataFactory()->getAllMetadata();
-        $tool = new SchemaTool($this->em);
-        $tool->dropSchema($classes);
-        $tool->createSchema($classes);
-        (new LoadDataFixtures())->setContainer($this->container)->load($this->em);
+        // Load fixtures
+        $loader = new Loader;
+        $fixtures = new LoadDataFixtures();
+        $fixtures->setContainer(self::$container);
+        $loader->addFixture($fixtures);
+        $executor->execute($loader->getFixtures());
 
-        $this->client = $this->createClient();
+        self::authUser();
+
+        self::$fixture = $fixtures;
     }
 
-    public function getUrl($route, $params = array())
+    public function getFixture()
     {
-        $this->container->get('router')->generate($route, $params, false);
+        return self::$fixture;
+    }
+
+    public static function authUser()
+    {
+        $crawler = self::$client->request('GET', self::getUrl('fos_user_security_login'));
+
+        $form = $crawler->selectButton('_submit')->form();
+
+        $form['_username'] = self::$loginUsername;
+        $form['_password'] = self::$loginPassword;
+
+        self::$client->submit($form);
+    }
+
+    public static function getUrl($route, $params = array())
+    {
+        return self::$container->get('router')->generate($route, $params, false);
     }
 }

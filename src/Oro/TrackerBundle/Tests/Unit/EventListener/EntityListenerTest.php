@@ -121,7 +121,7 @@ class EntityListenerTest extends \PHPUnit_Framework_TestCase
 
         $this->mockIssueEntity->expects($this->exactly(2))
             ->method('addCollaborator')
-            ->with($this->mockAssigneeEntity);
+            ->with($this->isType('object'));
 
         $this->mockEntityManager->expects($this->exactly(1))
             ->method('flush');

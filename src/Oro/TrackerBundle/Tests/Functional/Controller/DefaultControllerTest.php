@@ -1,17 +1,18 @@
 <?php
+
 namespace Oro\TrackerBundle\Tests\Functional\Controller;
 
 class DefaultControllerTest extends AbstractController
 {
-//    public function testIndexAction()
-//    {
-//        echo $this->getUrl('tracker_homepage');
-//
-//        $crawler = $this->client->request('GET', $this->getUrl('tracker_homepage'));
-//
-//        $this->assertGreaterThan(
-//            0,
-//            $crawler->filter('html:contains("abc")')->count()
-//        );
-//    }
+    public function testIndexAction()
+    {
+        $crawler = self::$client->request('GET', self::getUrl('tracker_homepage'));
+
+        $this->assertTrue(self::$client->getResponse()->isSuccessful());
+
+        $this->assertEquals(
+            1,
+            $crawler->filter('html:contains("Logout")')->count()
+        );
+    }
 }
