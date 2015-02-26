@@ -1,10 +1,11 @@
 <?php
+
 namespace Oro\TrackerBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
+use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
@@ -111,6 +112,7 @@ class Issue
      * @ORM\Column(type="datetime")
      */
     protected $updated;
+
     /**
      * Constructor
      */
@@ -387,6 +389,10 @@ class Issue
         return $this->collaborators;
     }
 
+    /**
+     * @param \Oro\TrackerBundle\Entity\User $user
+     * @return bool
+     */
     public function hasCollaborator($user)
     {
         $collaborators = $this->getCollaborators();
@@ -560,6 +566,9 @@ class Issue
         return $this->project;
     }
 
+    /**
+     * @return string
+     */
     public function __toString()
     {
         return $this->getCode();

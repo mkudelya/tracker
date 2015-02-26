@@ -1,8 +1,11 @@
 <?php
+
 namespace Oro\TrackerBundle\Entity;
 
 use FOS\UserBundle\Model\User as BaseUser;
+
 use Doctrine\ORM\Mapping as ORM;
+
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -149,6 +152,9 @@ class User extends BaseUser
         return $this->avatar;
     }
 
+    /**
+     * @return mixed
+     */
     public function getAbsoluteAvatarPath()
     {
         return null === $this->avatar
@@ -156,6 +162,9 @@ class User extends BaseUser
             : $this->getUploadRootAvatarDir().'/'.$this->avatar;
     }
 
+    /**
+     * @return mixed
+     */
     public function getWebAvatarPath()
     {
         return null === $this->avatar
@@ -163,16 +172,25 @@ class User extends BaseUser
             : '/'.$this->getUploadAvatarDir().'/'.$this->avatar;
     }
 
+    /**
+     * @return string
+     */
     protected function getUploadRootAvatarDir()
     {
         return __DIR__.'/../../../../web/'.$this->getUploadAvatarDir();
     }
 
+    /**
+     * @return string
+     */
     protected function getUploadAvatarDir()
     {
         return 'uploads/avatars';
     }
 
+    /**
+     * Pre upload
+     */
     public function preUpload()
     {
         if (null !== $this->getAvatarFile()) {
@@ -181,6 +199,9 @@ class User extends BaseUser
         }
     }
 
+    /**
+     * Upload
+     */
     public function upload()
     {
 
@@ -199,6 +220,9 @@ class User extends BaseUser
         $this->avatarFile = null;
     }
 
+    /**
+     * Remove avatar
+     */
     protected function removeAvatar()
     {
         $avatar = $this->getUploadRootAvatarDir()."/".$this->getAvatar();
@@ -307,6 +331,7 @@ class User extends BaseUser
     {
         return $this->activities;
     }
+
     /**
      * Constructor
      */

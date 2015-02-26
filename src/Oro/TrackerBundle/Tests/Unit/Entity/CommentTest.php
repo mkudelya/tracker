@@ -11,11 +11,17 @@ class CommentTest extends AbstractEntityTestCase
      */
     protected $entity;
 
+    /**
+     * @return string
+     */
     public function getEntityFQCN()
     {
         return 'Oro\TrackerBundle\Entity\Comment';
     }
 
+    /**
+     * @return array
+     */
     public function getSetDataProvider()
     {
         $body = 'body';

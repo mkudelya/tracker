@@ -2,16 +2,16 @@
 
 namespace Oro\TrackerBundle\Controller;
 
-use Oro\TrackerBundle\Entity\Comment;
-use Oro\TrackerBundle\Entity\Issue;
-use Oro\TrackerBundle\Form\CommentType;
-use Oro\TrackerBundle\Form\IssueType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+
+use Oro\TrackerBundle\Entity\Comment;
+use Oro\TrackerBundle\Entity\Issue;
+use Oro\TrackerBundle\Form\CommentType;
+use Oro\TrackerBundle\Form\IssueType;
 
 class IssueController extends Controller
 {
@@ -23,7 +23,7 @@ class IssueController extends Controller
     /**
      * @Route("/list/", name="_tracking_issue_list")
      * @Template()
-     * @param $projectCode
+     * @param string $projectCode
      * @return array
      */
     public function listAction($projectCode)
@@ -35,8 +35,8 @@ class IssueController extends Controller
     /**
      * @Route("/{issueCode}/sublist", name="_tracking_issue_sublist")
      * @Template("TrackerBundle:Issue:list.html.twig")
-     * @param $projectCode
-     * @param $issueCode
+     * @param string $projectCode
+     * @param string $issueCode
      * @return array
      */
     public function subtasksListAction($projectCode, $issueCode)
@@ -59,7 +59,7 @@ class IssueController extends Controller
     /**
      * @Route("/{issueCode}/assignee/{id}", name="_tracking_issue_by_assignee_user")
      * @Template("TrackerBundle:Issue:list.html.twig")
-     * @param $id
+     * @param integer $id
      * @return array
      */
     public function listByAssigneeAction($id)
@@ -72,7 +72,7 @@ class IssueController extends Controller
     /**
      * @Route("/{issueCode}/collaborators", name="_tracking_issue_sublist")
      * @Template("TrackerBundle:Issue:collaborators.list.html.twig")
-     * @param $issueCode
+     * @param string $issueCode
      * @return array
      */
     public function listCollaboratorByIssueAction($issueCode)
@@ -85,7 +85,7 @@ class IssueController extends Controller
     /**
      * @Route("/{issueCode}/comments", name="_tracking_project_comment_list")
      * @Template("TrackerBundle:Comment:list.html.twig")
-     * @param $issueCode
+     * @param string $issueCode
      * @return array
      */
     public function listOfCommentsAction($issueCode)
@@ -106,8 +106,8 @@ class IssueController extends Controller
      * @Route("/addsubtask/{issueCode}", name="_tracking_issue_add_subtask")
      * @Template()
      * @param string $projectCode
-     * @param int $issueCode
-     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @param integer $issueCode
+     * @return mixed
      */
     public function editAction($projectCode, $issueCode = null)
     {
@@ -189,8 +189,8 @@ class IssueController extends Controller
     /**
      * @Route("/{issueCode}/", name="_tracking_issue_show")
      * @Template()
-     * @param $projectCode
-     * @param $issueCode
+     * @param string $projectCode
+     * @param string $issueCode
      * @return array
      */
     public function showAction($projectCode, $issueCode)
@@ -218,10 +218,10 @@ class IssueController extends Controller
     /**
      * @Route("/{issueCode}/edit_comment/{commentId}", name="_tracking_edit_comment")
      * @Template("TrackerBundle:Issue:show.html.twig")
-     * @param $projectCode
-     * @param $issueCode
-     * @param null $commentId
-     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @param string $projectCode
+     * @param string $issueCode
+     * @param integer $commentId
+     * @return mixed
      */
     public function editCommentAction($projectCode, $issueCode, $commentId = null)
     {
@@ -285,10 +285,10 @@ class IssueController extends Controller
     /**
      * @Route("/{issueCode}/remove_comment/{commentId}", name="_tracking_remove_comment")
      * @Template("TrackerBundle:Issue:show.html.twig")
-     * @param $projectCode
-     * @param $issueCode
-     * @param null $commentId
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @param string $projectCode
+     * @param string $issueCode
+     * @param integer $commentId
+     * @return mixed
      */
     public function removeCommentAction($projectCode, $issueCode, $commentId = null)
     {

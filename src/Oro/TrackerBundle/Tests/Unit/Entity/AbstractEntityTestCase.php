@@ -6,6 +6,9 @@ abstract class AbstractEntityTestCase extends \PHPUnit_Framework_TestCase
 {
     const TEST_ID = 123;
 
+    /**
+     * @var mixed
+     */
     protected $entity;
 
     protected function setUp()

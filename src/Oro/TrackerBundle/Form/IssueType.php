@@ -2,30 +2,39 @@
 
 namespace Oro\TrackerBundle\Form;
 
-use Oro\TrackerBundle\Controller\IssueController;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
+use Oro\TrackerBundle\Controller\IssueController;
+
 class IssueType extends AbstractType
 {
     /**
-     * Add/edit issue
-     * @var int
+     * @var integer
      */
     protected $processMethod;
 
+    /**
+     * @var array
+     */
     protected $types = array(
         'Bug' => 'Bug',
         'Task' => 'Task'
     );
 
+    /**
+     * @var array
+     */
     protected $status = array(
         'Open' => 'Open',
         'In Progress' => 'In Progress',
         'Closed' => 'Closed'
     );
 
+    /**
+     * @var array
+     */
     protected $resolution = array(
         '' => '',
         'Fixed' => 'Fixed',
@@ -37,6 +46,10 @@ class IssueType extends AbstractType
         'Won\'t Do' => 'Won\'t Do',
     );
 
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('summary');
@@ -69,6 +82,9 @@ class IssueType extends AbstractType
         $builder->add('Save', 'submit');
     }
 
+    /**
+     * @param OptionsResolverInterface $resolver
+     */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
@@ -76,16 +92,25 @@ class IssueType extends AbstractType
         ));
     }
 
+    /**
+     * @return string
+     */
     public function getName()
     {
         return 'tracker_issue';
     }
 
+    /**
+     * @param integer $method
+     */
     public function setProcessMethod($method)
     {
         $this->processMethod = $method;
     }
 
+    /**
+     * @return integer
+     */
     public function getProcessMethod()
     {
         return $this->processMethod;

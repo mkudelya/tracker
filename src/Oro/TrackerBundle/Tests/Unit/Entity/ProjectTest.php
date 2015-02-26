@@ -11,11 +11,17 @@ class ProjectTest extends AbstractEntityTestCase
      */
     protected $entity;
 
+    /**
+     * @return string
+     */
     public function getEntityFQCN()
     {
         return 'Oro\TrackerBundle\Entity\Project';
     }
 
+    /**
+     * @return array
+     */
     public function getSetDataProvider()
     {
         $label = 'label';

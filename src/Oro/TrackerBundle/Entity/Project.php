@@ -1,9 +1,11 @@
 <?php
+
 namespace Oro\TrackerBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\Common\Collections\ArrayCollection;
+
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity
@@ -210,6 +212,10 @@ class Project
         return $this->activities;
     }
 
+    /**
+     * @param \Oro\TrackerBundle\Entity\User $user
+     * @return bool
+     */
     public function hasMember($user)
     {
         $members = $this->getMembers();
@@ -224,6 +230,7 @@ class Project
 
         return false;
     }
+
     /**
      * Constructor
      */

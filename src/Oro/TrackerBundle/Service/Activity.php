@@ -1,22 +1,38 @@
 <?php
+
 namespace Oro\TrackerBundle\Service;
+
+use Symfony\Component\DependencyInjection\ContainerInterface as Container;
 
 use Oro\TrackerBundle\Entity\User;
 use Oro\TrackerBundle\Entity\Project;
 use Oro\TrackerBundle\Entity\Issue as IssueEntity;
-use Symfony\Component\DependencyInjection\ContainerInterface as Container;
 
 class Activity
 {
+    /**
+     * @var Container
+     */
     protected $container;
+
+    /**
+     * @var \Doctrine\Bundle\DoctrineBundle\Registry
+     */
     protected $doctine;
 
+    /**
+     * @param Container $container
+     */
     public function __construct(Container $container)
     {
         $this->container = $container;
         $this->doctine = $container->get('doctrine');
     }
 
+    /**
+     * @param User $user
+     * @return mixed
+     */
     public function getActivityIssueListWhereUserIsProjectMember(User $user)
     {
         $manager = $this->getDoctrine()->getManager();
@@ -26,6 +42,10 @@ class Activity
         return $activities->getResult();
     }
 
+    /**
+     * @param User $user
+     * @return mixed
+     */
     public function getActivityIssueListByUser(User $user)
     {
         $manager = $this->getDoctrine()->getManager();
@@ -35,6 +55,10 @@ class Activity
         return $activities->getResult();
     }
 
+    /**
+     * @param Project $project
+     * @return mixed
+     */
     public function getActivityIssueListByProject(Project $project)
     {
         $manager = $this->getDoctrine()->getManager();
@@ -44,6 +68,10 @@ class Activity
         return $activities->getResult();
     }
 
+    /**
+     * @param IssueEntity $issue
+     * @return mixed
+     */
     public function getActivityIssueListByIssue(IssueEntity $issue)
     {
         $manager = $this->getDoctrine()->getManager();
@@ -53,6 +81,9 @@ class Activity
         return $activities->getResult();
     }
 
+    /**
+     * @return \Doctrine\Bundle\DoctrineBundle\Registry
+     */
     protected function getDoctrine()
     {
         return $this->doctine;

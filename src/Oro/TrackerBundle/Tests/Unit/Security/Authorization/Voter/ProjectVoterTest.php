@@ -3,6 +3,7 @@
 namespace Oro\TrackerBundle\Tests\Unit\Security\Authorization\Voter;
 
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
+
 use Oro\TrackerBundle\Security\Authorization\Voter\ProjectVoter;
 use Oro\TrackerBundle\Entity\Project;
 use Oro\TrackerBundle\Entity\User;
@@ -12,8 +13,20 @@ class ProjectVoterTest extends \PHPUnit_Framework_TestCase
 {
     /** @var ProjectVoter */
     protected $voter;
+
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
     protected $mockUsernamePasswordToken;
+
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
     protected $mockUserEntity;
+
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
     protected $mockObject;
 
     protected function setUp()

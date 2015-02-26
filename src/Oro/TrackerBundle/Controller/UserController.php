@@ -4,14 +4,12 @@ namespace Oro\TrackerBundle\Controller;
 
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-use FOS\UserBundle\Event\GetResponseUserEvent;
 use FOS\UserBundle\Event\FormEvent;
 
 class UserController extends Controller
@@ -19,6 +17,7 @@ class UserController extends Controller
     /**
      * @Route("/list", name="_tracking_user_list")
      * @Template()
+     * @return array
      */
     public function listAction()
     {
@@ -31,7 +30,7 @@ class UserController extends Controller
     /**
      * @Route("/show/{username}", name="_tracking_user_profile")
      * @Template()
-     * @param null $username
+     * @param string $username
      * @return array
      */
     public function showAction($username = null)
@@ -55,7 +54,7 @@ class UserController extends Controller
     /**
      * @Route("/edit/{id}", name="_tracking_user_edit")
      * @Template()
-     * @param $id
+     * @param integer $id
      * @return array
      */
     public function editAction($id)
@@ -84,8 +83,8 @@ class UserController extends Controller
     /**
      * @Route("/update/{id}", name="_tracking_user_update")
      * @Template()
-     * @param $id
-     * @return null|\Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @param integer $id
+     * @return mixed
      */
     public function updateAction($id)
     {

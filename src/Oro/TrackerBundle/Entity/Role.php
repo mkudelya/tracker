@@ -1,4 +1,5 @@
 <?php
+
 namespace Oro\TrackerBundle\Entity;
 
 class Role
@@ -13,6 +14,9 @@ class Role
         self::ROLE_OPERATOR => 'Operator'
     );
 
+    /**
+     * @return array
+     */
     public function getAvailableRoles()
     {
         return $this->roles;

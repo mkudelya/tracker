@@ -1,8 +1,10 @@
 <?php
+
 namespace Oro\TrackerBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -202,6 +204,7 @@ class Activity
     {
         return $this->type;
     }
+
     /**
      * Constructor
      */
@@ -233,16 +236,25 @@ class Activity
         return $this->project;
     }
 
+    /**
+     * @return bool
+     */
     public function isNewCommentType()
     {
         return $this->getType() == self::NEW_COMMENT_ISSUE_TYPE;
     }
 
+    /**
+     * @return bool
+     */
     public function isNewIssueType()
     {
         return $this->getType() == self::NEW_ISSUE_TYPE;
     }
 
+    /**
+     * @return bool
+     */
     public function isStatusChangedType()
     {
         return $this->getType() == self::CHANGED_STATUS_ISSUE_TYPE;

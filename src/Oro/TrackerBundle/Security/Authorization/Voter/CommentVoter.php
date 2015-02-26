@@ -1,11 +1,13 @@
 <?php
+
 namespace Oro\TrackerBundle\Security\Authorization\Voter;
 
-use Oro\TrackerBundle\Entity\Comment;
-use Oro\TrackerBundle\Entity\Role;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+
+use Oro\TrackerBundle\Entity\Comment;
+use Oro\TrackerBundle\Entity\Role;
 
 class CommentVoter implements VoterInterface
 {
@@ -13,6 +15,10 @@ class CommentVoter implements VoterInterface
     const DELETE = 'delete';
     const EDIT = 'edit';
 
+    /**
+     * @param string $attribute
+     * @return bool
+     */
     public function supportsAttribute($attribute)
     {
         return in_array($attribute, array(
@@ -22,6 +28,10 @@ class CommentVoter implements VoterInterface
         ));
     }
 
+    /**
+     * @param string $class
+     * @return bool
+     */
     public function supportsClass($class)
     {
         $supportedClass = 'Oro\TrackerBundle\Entity\Comment';

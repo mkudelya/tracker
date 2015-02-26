@@ -1,4 +1,5 @@
 <?php
+
 namespace Oro\TrackerBundle\Tests\Functional\Fixture;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
@@ -14,16 +15,24 @@ class LoadDataFixtures extends AbstractFixture implements ContainerAwareInterfac
     const ADMIN_USERNAME = 'test';
     const ADMIN_PASSWORD = 'test';
 
-    /** @var ObjectManager */
+    /**
+     * @var ObjectManager
+     */
     protected $em;
 
-    /** @var ContainerInterface */
+    /**
+     * @var ContainerInterface
+     */
     protected $container;
 
+    /**
+     * @var \Oro\TrackerBundle\Entity\User
+     */
     protected $adminUser;
 
     /**
-     * @param ContainerInterface|null $container A ContainerInterface instance or null
+     * @param ContainerInterface $container
+     * @return $this
      */
     public function setContainer(ContainerInterface $container = null)
     {
@@ -55,6 +64,9 @@ class LoadDataFixtures extends AbstractFixture implements ContainerAwareInterfac
         $this->em->persist($this->adminUser);
     }
 
+    /**
+     * @return \Oro\TrackerBundle\Entity\User
+     */
     public function getAdminUser()
     {
         return $this->adminUser;

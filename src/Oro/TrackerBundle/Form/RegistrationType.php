@@ -4,25 +4,33 @@ namespace Oro\TrackerBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface as Container;
 
 use Oro\TrackerBundle\Entity\Role as Role;
 use Oro\TrackerBundle\Entity\User;
 
-use Symfony\Component\DependencyInjection\ContainerInterface as Container;
-
 class RegistrationType extends AbstractType
 {
+    /**
+     * @var Container
+     */
     protected $container = null;
 
+    /**
+     * @param Container $container
+     */
     public function __construct(Container $container)
     {
         $this->container = $container;
     }
 
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $isAdmin = false;
@@ -71,6 +79,9 @@ class RegistrationType extends AbstractType
         });
     }
 
+    /**
+     * @param OptionsResolverInterface $resolver
+     */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
@@ -79,11 +90,17 @@ class RegistrationType extends AbstractType
         ));
     }
 
+    /**
+     * @return string
+     */
     public function getParent()
     {
         return 'fos_user_registration';
     }
 
+    /**
+     * @return string
+     */
     public function getName()
     {
         return 'tracker_user_registration';

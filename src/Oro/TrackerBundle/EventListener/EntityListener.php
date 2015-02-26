@@ -1,35 +1,54 @@
 <?php
+
 namespace Oro\TrackerBundle\EventListener;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
+
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface as Container;
+
 use Oro\TrackerBundle\Entity\Issue;
 use Oro\TrackerBundle\Entity\Activity;
 use Oro\TrackerBundle\Entity\Comment;
 use Oro\TrackerBundle\Entity\User;
-use Symfony\Component\DependencyInjection\ContainerInterface as Container;
 
 class EntityListener
 {
+    /**
+     * @var Container
+     */
     private $container;
 
+    /**
+     * @param Container $container
+     */
     public function __construct(Container $container)
     {
         $this->container = $container;
     }
 
+    /**
+     * @param LifecycleEventArgs $args
+     */
     public function postPersist(LifecycleEventArgs $args)
     {
         $this->updateCollaborators($args);
         $this->addToActivity($args, true);
     }
 
+    /**
+     * @param LifecycleEventArgs $args
+     */
     public function postUpdate(LifecycleEventArgs $args)
     {
         $this->updateCollaborators($args);
         $this->addToActivity($args, false);
     }
 
+    /**
+     * @param LifecycleEventArgs $args
+     * @param bool $isNewEntity
+     */
     public function addToActivity(LifecycleEventArgs $args, $isNewEntity)
     {
         $entity = $args->getEntity();
@@ -81,6 +100,9 @@ class EntityListener
         }
     }
 
+    /**
+     * @param LifecycleEventArgs $args
+     */
     public function updateCollaborators(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
@@ -127,6 +149,9 @@ class EntityListener
         }
     }
 
+    /**
+     * @param Activity $activity
+     */
     public function activityEmailNotification(Activity $activity)
     {
         $issue = $activity->getIssue();

@@ -11,11 +11,17 @@ class IssueTest extends AbstractEntityTestCase
      */
     protected $entity;
 
+    /**
+     * @return string
+     */
     public function getEntityFQCN()
     {
         return 'Oro\TrackerBundle\Entity\Issue';
     }
 
+    /**
+     * @return array
+     */
     public function getSetDataProvider()
     {
         $summary = 'summary';

@@ -2,20 +2,21 @@
 
 namespace Oro\TrackerBundle\Controller;
 
-use Oro\TrackerBundle\Entity\Project;
-use Oro\TrackerBundle\Form\ProjectType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+
+use Oro\TrackerBundle\Entity\Project;
+use Oro\TrackerBundle\Form\ProjectType;
 
 class ProjectController extends Controller
 {
     /**
      * @Route("/list", name="_tracking_project_list")
      * @Template()
+     * @return array
      */
     public function listAction()
     {
@@ -26,8 +27,8 @@ class ProjectController extends Controller
     /**
      * @Route("/edit/{projectCode}", name="_tracking_project_edit")
      * @Template()
-     * @param null $projectCode
-     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @param string $projectCode
+     * @return mixed
      */
     public function editAction($projectCode = null)
     {
@@ -74,7 +75,7 @@ class ProjectController extends Controller
     /**
      * @Route("/{projectCode}", name="_tracking_project_show")
      * @Template()
-     * @param $projectCode
+     * @param string $projectCode
      * @return array
      */
     public function showAction($projectCode)

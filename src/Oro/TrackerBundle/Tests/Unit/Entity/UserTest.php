@@ -2,9 +2,9 @@
 
 namespace Oro\TrackerBundle\Tests\Unit\Entity;
 
-use Oro\TrackerBundle\Entity\User;
-
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+
+use Oro\TrackerBundle\Entity\User;
 
 class UserTest extends AbstractEntityTestCase
 {
@@ -13,11 +13,17 @@ class UserTest extends AbstractEntityTestCase
      */
     protected $entity;
 
+    /**
+     * @return string
+     */
     public function getEntityFQCN()
     {
         return 'Oro\TrackerBundle\Entity\User';
     }
 
+    /**
+     * @return array
+     */
     public function getSetDataProvider()
     {
         $fullname = 'full';

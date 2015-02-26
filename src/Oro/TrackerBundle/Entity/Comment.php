@@ -1,4 +1,5 @@
 <?php
+
 namespace Oro\TrackerBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;

@@ -3,6 +3,7 @@
 namespace Oro\TrackerBundle\Tests\Unit\Security\Authorization\Voter;
 
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
+
 use Oro\TrackerBundle\Security\Authorization\Voter\CommentVoter;
 use Oro\TrackerBundle\Entity\Comment;
 use Oro\TrackerBundle\Entity\User;
@@ -12,8 +13,20 @@ class CommentVoterTest extends \PHPUnit_Framework_TestCase
 {
     /** @var CommentVoter */
     protected $voter;
+
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
     protected $mockUsernamePasswordToken;
+
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
     protected $mockUserEntity;
+
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
     protected $mockObject;
 
     protected function setUp()

@@ -1,11 +1,14 @@
 <?php
+
 namespace Oro\TrackerBundle\Tests\Functional\Controller;
 
-use Oro\TrackerBundle\Tests\Functional\Fixture\LoadDataFixtures;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+
 use \Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use \Doctrine\Common\DataFixtures\Executor\ORMExecutor;
 use \Doctrine\Common\DataFixtures\Loader;
+
+use Oro\TrackerBundle\Tests\Functional\Fixture\LoadDataFixtures;
 
 abstract class AbstractController extends WebTestCase
 {
@@ -47,6 +50,9 @@ abstract class AbstractController extends WebTestCase
         self::$fixture = $fixtures;
     }
 
+    /**
+     * @return LoadDataFixtures
+     */
     public function getFixture()
     {
         return self::$fixture;
@@ -64,6 +70,11 @@ abstract class AbstractController extends WebTestCase
         self::$client->submit($form);
     }
 
+    /**
+     * @param string $route
+     * @param array $params
+     * @return string
+     */
     public static function getUrl($route, $params = array())
     {
         return self::$container->get('router')->generate($route, $params, false);

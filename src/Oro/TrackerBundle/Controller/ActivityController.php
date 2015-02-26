@@ -24,7 +24,7 @@ class ActivityController extends Controller
     /**
      * @Route("/list/user{id}", name="_tracking_activity_list_by_user")
      * @Template("TrackerBundle:Activity:list.html.twig")
-     * @param $id
+     * @param integer $id
      * @return array
      */
     public function listByUserAction($id)
@@ -38,7 +38,7 @@ class ActivityController extends Controller
     /**
      * @Route("/list_by_project/{projectCode}", name="_tracking_activity_list_by_project")
      * @Template("TrackerBundle:Activity:list.html.twig")
-     * @param $projectCode
+     * @param string $projectCode
      * @return array
      */
     public function listByProjectAction($projectCode)
@@ -51,7 +51,7 @@ class ActivityController extends Controller
     /**
      * @Route("/list_by_issue/{issueCode}", name="_tracking_activity_list_by_issue")
      * @Template("TrackerBundle:Activity:list.html.twig")
-     * @param $issueCode
+     * @param string $issueCode
      * @return array
      */
     public function listByIssueAction($issueCode)
