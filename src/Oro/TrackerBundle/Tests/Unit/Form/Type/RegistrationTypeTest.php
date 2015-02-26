@@ -40,7 +40,7 @@ class RegistrationTypeTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $builder->expects($this->exactly(2))->method('add');
+        $builder->expects($this->exactly(3))->method('add');
         $this->type->buildForm($builder, []);
     }
 

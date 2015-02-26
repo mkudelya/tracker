@@ -11,6 +11,9 @@ layout:
     collaborators_list: Collaborators list
     assignee_issue_list: Assignee issue list
     home: Home
+    unauthorised_access: Unauthorised access
+    sorry_not_existing: Sorry not existing
+    error: Error
 
 activity:
     activities_not_found: Activities not found
@@ -45,6 +48,7 @@ issue:
     updated: Updated
     comments_not_found: Comments not found
     collaborators_not_found: Collaborators not found
+
 user:
     add: Add user
     edit: Edit user
@@ -55,6 +59,8 @@ user:
     email: Email
     username: User name
     fullname: Full name
+    timezone: Time zone
+
 grid:
     show: Show
     edit: Edit

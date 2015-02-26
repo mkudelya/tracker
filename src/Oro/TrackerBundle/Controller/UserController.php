@@ -42,7 +42,9 @@ class UserController extends Controller
             $userEntity = $manager->getRepository('TrackerBundle:User')->findOneByUsername($username);
 
             if ($userEntity == null) {
-                throw new NotFoundHttpException('Sorry not existing!');
+                throw new NotFoundHttpException(
+                    $this->get('translator')->trans('layout.sorry_not_existing', array(), 'TrackerBundle')
+                );
             }
         } else {
             $userEntity = $this->get('security.context')->getToken()->getUser();
@@ -68,11 +70,15 @@ class UserController extends Controller
         $user = $userManager->findUserBy(array("id" => $id));
 
         if ($user == null) {
-            throw new NotFoundHttpException('Sorry not existing!');
+            throw new NotFoundHttpException(
+                $this->get('translator')->trans('layout.sorry_not_existing', array(), 'TrackerBundle')
+            );
         }
 
         if (!$currentUserEntity->hasRole('ROLE_ADMINISTRATOR') && $currentUserEntity->getId() != $user->getId()) {
-            throw new AccessDeniedException('Unauthorised access!');
+            throw new AccessDeniedException(
+                $this->get('translator')->trans('layout.unauthorised_access', array(), 'TrackerBundle')
+            );
         }
 
         $form->setData($user);
@@ -101,12 +107,16 @@ class UserController extends Controller
         $user->setEnabled(true);
 
         if (!$currentUserEntity->hasRole('ROLE_ADMINISTRATOR') && $currentUserEntity->getId() != $user->getId()) {
-            throw new AccessDeniedException('Unauthorised access!');
+            throw new AccessDeniedException(
+                $this->get('translator')->trans('layout.unauthorised_access', array(), 'TrackerBundle')
+            );
         }
 
         $requestParams = $request->request->get('fos_user_registration_form');
         if (!$currentUserEntity->hasRole('ROLE_ADMINISTRATOR') && isset($requestParams['roles'])) {
-            throw new AccessDeniedException('Unauthorised access!');
+            throw new AccessDeniedException(
+                $this->get('translator')->trans('layout.unauthorised_access', array(), 'TrackerBundle')
+            );
         }
 
         $form = $formFactory->createForm();

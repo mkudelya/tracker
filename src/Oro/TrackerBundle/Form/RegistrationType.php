@@ -50,13 +50,11 @@ class RegistrationType extends AbstractType
         }
 
         $builder->add('fullname');
-        if ($isAdmin) {
-            $builder->add('timezone', 'choice', array(
-                'choices' => $this->timezones,
-                'multiple' => false,
-                'required' => true
-            ));
-        }
+        $builder->add('timezone', 'choice', array(
+            'choices' => $this->timezones,
+            'multiple' => false,
+            'required' => true
+        ));
         $builder->add('avatarFile');
 
         if ($isAdmin) {

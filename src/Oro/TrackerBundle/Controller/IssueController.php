@@ -130,11 +130,15 @@ class IssueController extends Controller
             $issueEntity = $manager->getRepository('TrackerBundle:Issue')->findOneByCode($issueCode);
 
             if (false === $this->get('security.context')->isGranted('edit', $issueEntity)) {
-                throw new AccessDeniedException('Unauthorised access!');
+                throw new AccessDeniedException(
+                    $this->get('translator')->trans('layout.unauthorised_access', array(), 'TrackerBundle')
+                );
             }
         } else {
             if (false === $this->get('security.context')->isGranted('add_issue', $projectEntity)) {
-                throw new AccessDeniedException('Unauthorised access!');
+                throw new AccessDeniedException(
+                    $this->get('translator')->trans('layout.unauthorised_access', array(), 'TrackerBundle')
+                );
             }
             $issueEntity = new Issue();
         }
@@ -198,7 +202,9 @@ class IssueController extends Controller
         $issueEntity = $this->getDoctrine()->getRepository('TrackerBundle:Issue')->findOneByCode($issueCode);
 
         if (false === $this->get('security.context')->isGranted('view', $issueEntity)) {
-            throw new AccessDeniedException('Unauthorised access!');
+            throw new AccessDeniedException(
+                $this->get('translator')->trans('layout.unauthorised_access', array(), 'TrackerBundle')
+            );
         }
 
         $commentEntity = new Comment();
@@ -234,13 +240,17 @@ class IssueController extends Controller
         if ($commentId) {
             $commentEntity = $this->getDoctrine()->getRepository('TrackerBundle:Comment')->find($commentId);
             if (false === $this->get('security.context')->isGranted('edit', $commentEntity)) {
-                throw new AccessDeniedException('Unauthorised access!');
+                throw new AccessDeniedException(
+                    $this->get('translator')->trans('layout.unauthorised_access', array(), 'TrackerBundle')
+                );
             }
         } else {
             $isAdd = true;
             $commentEntity = new Comment();
             if (false === $this->get('security.context')->isGranted('add_comment', $issueEntity)) {
-                throw new AccessDeniedException('Unauthorised access!');
+                throw new AccessDeniedException(
+                    $this->get('translator')->trans('layout.unauthorised_access', array(), 'TrackerBundle')
+                );
             }
         }
 
@@ -298,7 +308,9 @@ class IssueController extends Controller
             $commentEntity = $this->getDoctrine()->getRepository('TrackerBundle:Comment')->find($commentId);
 
             if (false === $this->get('security.context')->isGranted('delete', $commentEntity)) {
-                throw new AccessDeniedException('Unauthorised access!');
+                throw new AccessDeniedException(
+                    $this->get('translator')->trans('layout.unauthorised_access', array(), 'TrackerBundle')
+                );
             }
 
             $manager->remove($commentEntity);

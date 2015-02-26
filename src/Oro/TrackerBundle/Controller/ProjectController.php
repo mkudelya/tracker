@@ -44,7 +44,9 @@ class ProjectController extends Controller
         }
 
         if (false === $this->get('security.context')->isGranted('edit', $projectEntity)) {
-            throw new AccessDeniedException('Unauthorised access!');
+            throw new AccessDeniedException(
+                $this->get('translator')->trans('layout.unauthorised_access', array(), 'TrackerBundle')
+            );
         }
 
         $form = $this->createForm(new ProjectType(), $projectEntity);
@@ -83,7 +85,9 @@ class ProjectController extends Controller
         $projectEntity = $this->getDoctrine()->getRepository('TrackerBundle:Project')->findOneByCode($projectCode);
 
         if (false === $this->get('security.context')->isGranted('view', $projectEntity)) {
-            throw new AccessDeniedException('Unauthorised access!');
+            throw new AccessDeniedException(
+                $this->get('translator')->trans('layout.unauthorised_access', array(), 'TrackerBundle')
+            );
         }
 
         return array('project' => $projectEntity);

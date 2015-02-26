@@ -13,7 +13,9 @@
     {% block content_header %}
         <ul id="menu">
             {% block content_header_more %}
-                <li>[ <a href="{{ path('tracker_homepage') }}">{{ 'layout.home'|trans({}, 'TrackerBundle') }}</a> ]</li>
+                {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                    <li>[ <a href="{{ path('tracker_homepage') }}">{{ 'layout.home'|trans({}, 'TrackerBundle') }}</a> ]</li>
+                {% endif %}
 
                 {% if is_granted('ROLE_ADMINISTRATOR') %}
                     <li>[ <a href="{{ path('_tracking_user_list') }}">{{ 'layout.users_list'|trans({}, 'TrackerBundle') }}</a> ]</li>

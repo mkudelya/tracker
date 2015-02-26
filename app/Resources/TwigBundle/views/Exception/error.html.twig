@@ -1,0 +1,7 @@
+{% extends "TrackerBundle::layout.html.twig" %}
+
+{% block content %}
+
+    {{ 'layout.error'|trans({}, 'TrackerBundle') }}: {{ exception.message }}
+
+{% endblock %}
