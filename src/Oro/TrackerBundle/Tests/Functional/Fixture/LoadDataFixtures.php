@@ -59,6 +59,7 @@ class LoadDataFixtures extends AbstractFixture implements ContainerAwareInterfac
         $this->adminUser->setEnabled(true);
         $this->adminUser->setUsername(self::ADMIN_USERNAME);
         $this->adminUser->setFullName('Admin');
+        $this->adminUser->setTimezone('America/Los_Angeles');
         $this->adminUser->setEmail('test@test.te');
         $this->adminUser->setPlainPassword(self::ADMIN_PASSWORD);
         $this->em->persist($this->adminUser);

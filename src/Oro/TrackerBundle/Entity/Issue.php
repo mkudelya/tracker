@@ -536,10 +536,10 @@ class Issue
      */
     public function updatedTimestamps()
     {
-        $this->setUpdated(new \DateTime('now'));
+        $this->setUpdated(new \DateTime('now', new \DateTimeZone('UTC')));
 
         if ($this->getCreated() == null) {
-            $this->setCreated(new \DateTime('now'));
+            $this->setCreated(new \DateTime('now', new \DateTimeZone('UTC')));
         }
     }
 

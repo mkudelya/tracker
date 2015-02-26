@@ -33,6 +33,12 @@
     </div>
 
     <div>
+        {{ form_label(form.timezone) }}
+        {{ form_errors(form.timezone) }}
+        {{ form_widget(form.timezone) }}
+    </div>
+
+    <div>
         {{ form_label(form.avatarFile) }}
         {% if user.getWebAvatarPath() %}
             <a href="{{ user.getWebAvatarPath() }}" target="_blank"><img src="{{ user.getWebAvatarPath() }}" width="2%"/></a>

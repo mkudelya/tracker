@@ -15,6 +15,15 @@ use Oro\TrackerBundle\Entity\User;
 class RegistrationType extends AbstractType
 {
     /**
+     * @var array
+     */
+    protected $timezones = array (
+        'America/Los_Angeles' => 'America - Los Angeles',
+        'Europe/Kiev' => 'Ukraine - Kiev',
+        'Australia/Sydney' => 'Australia - Sydney',
+    );
+
+    /**
      * @var Container
      */
     protected $container = null;
@@ -41,6 +50,13 @@ class RegistrationType extends AbstractType
         }
 
         $builder->add('fullname');
+        if ($isAdmin) {
+            $builder->add('timezone', 'choice', array(
+                'choices' => $this->timezones,
+                'multiple' => false,
+                'required' => true
+            ));
+        }
         $builder->add('avatarFile');
 
         if ($isAdmin) {

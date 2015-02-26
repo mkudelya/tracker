@@ -20,16 +20,18 @@
 {% endblock %}
 
 {% block content %}
+    <br/>
     <p>
-    <p><b>{{ 'layout.issues_list'|trans({}, 'TrackerBundle') }}</b></p>
+    <b>{{ 'layout.issues_list'|trans({}, 'TrackerBundle') }}</b>
     {{ render(controller(
     'TrackerBundle:Issue:list',
     {'projectCode': project.getCode()}
     )) }}
     </p>
     <hr>
+    <br/>
     <p>
-    <p><b>{{ 'layout.activity_list'|trans({}, 'TrackerBundle') }}:</b></p>
+    <b>{{ 'layout.activity_list'|trans({}, 'TrackerBundle') }}:</b>
     {{ render(controller(
     'TrackerBundle:Activity:listByProject',
     {'projectCode': project.getCode()}

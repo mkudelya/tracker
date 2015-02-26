@@ -1,13 +1,13 @@
 {% block content %}
     {% if comments|length > 0 %}
-        <table width="400">
+        <table width="700">
             <tbody>
             {% for comment in comments %}
                 <tr>
                     <td colspan="2">{{ comment.getUser().getFullname() }}</td>
                 </tr>
                 <tr>
-                    <td width="10%">{{ comment.getCreated()|date("m/d/Y", false) }}</td>
+                    <td width="28%">{{ comment.getCreated()|date('j F Y H:i', app.user.getTimezone()) }}</td>
                     <td>
                         <div id="body">
                             {{ comment.getBody() }}

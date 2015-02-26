@@ -2,16 +2,17 @@
 
 {% block content %}
     <p>
-    <p><b>{{ 'layout.issues_where_you_are_as_collaborator'|trans({}, 'TrackerBundle') }}:</b></p>
+        <b>{{ 'layout.issues_where_you_are_as_collaborator'|trans({}, 'TrackerBundle') }}:</b>
         {{ render(controller(
         'TrackerBundle:Issue:listByCollaborator'
         )) }}
     </p>
     <hr>
+    <br/>
     <p>
-    <p><b>{{ 'layout.activity_list'|trans({}, 'TrackerBundle') }}:</b></p>
-    {{ render(controller(
-    'TrackerBundle:Activity:listWhereUserIsProjectMember'
-    )) }}
+        <b>{{ 'layout.activity_list'|trans({}, 'TrackerBundle') }}:</b>
+        {{ render(controller(
+        'TrackerBundle:Activity:listWhereUserIsProjectMember'
+        )) }}
     </p>
 {% endblock %}

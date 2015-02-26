@@ -41,12 +41,6 @@ p {
     text-align:       center;
     padding:          26px 20px;
 }
-.sf-reset .symfony-blocks-welcome > div.block-demo {
-    margin-right: 0;
-}
-.sf-reset .symfony-blocks-welcome .illustration {
-    padding-bottom: 20px;
-}
 .sf-reset .symfony-blocks-help > div {
     width:        254px;
     float:        left;

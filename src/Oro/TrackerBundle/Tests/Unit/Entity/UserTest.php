@@ -2,8 +2,6 @@
 
 namespace Oro\TrackerBundle\Tests\Unit\Entity;
 
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-
 use Oro\TrackerBundle\Entity\User;
 
 class UserTest extends AbstractEntityTestCase
@@ -28,18 +26,18 @@ class UserTest extends AbstractEntityTestCase
     {
         $fullname = 'full';
         $avatar = 'avatar';
+        $timezone = 'America/Los_Angeles';
 
         return [
             'id' => ['id', 1, 1],
             'fullname'     => ['fullname', $fullname, $fullname],
             'avatar' => ['avatar', $avatar, $avatar],
+            'timezone' => ['timezone', $timezone, $timezone],
         ];
     }
 
     public function testAvatar()
     {
-        $this->assertEquals(null, $this->entity->upload());
-
         $avatarFileMock =  $this
             ->getMockBuilder('Symfony\Component\HttpFoundation\File\UploadedFile')
             ->disableOriginalConstructor()

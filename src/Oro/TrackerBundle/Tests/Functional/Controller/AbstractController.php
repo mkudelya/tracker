@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use \Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use \Doctrine\Common\DataFixtures\Executor\ORMExecutor;
 use \Doctrine\Common\DataFixtures\Loader;
+use \Doctrine\ORM\Tools\SchemaTool;
 
 use Oro\TrackerBundle\Tests\Functional\Fixture\LoadDataFixtures;
 
@@ -16,12 +17,21 @@ abstract class AbstractController extends WebTestCase
 
     protected static $loginPassword = LoadDataFixtures::ADMIN_PASSWORD;
 
+    /**
+     * @var \Symfony\Bundle\FrameworkBundle\Client
+     */
     protected static $client;
 
     protected static $container;
 
+    /**
+     * @var \Doctrine\ORM\EntityManager
+     */
     protected static $em;
 
+    /**
+     * @var \Oro\TrackerBundle\Tests\Functional\Fixture\LoadDataFixtures
+     */
     protected static $fixture;
 
     public static function setUpBeforeClass()
@@ -30,20 +40,19 @@ abstract class AbstractController extends WebTestCase
         self::$client->followRedirects(true);
         self::$container = self::$client->getKernel()->getContainer();
         self::$em = self::$container->get('doctrine')->getManager();
- 
-        // Purge tables
-        self::$em->getConnection()->executeUpdate("SET foreign_key_checks = 0;");
-        $purger = new ORMPurger(self::$em);
-        $executor = new ORMExecutor(self::$em, $purger);
-        $executor->purge();
-        self::$em->getConnection()->executeUpdate("SET foreign_key_checks = 1;");
+
+        $tool = new SchemaTool(self::$em);
+        $classes = self::$em->getMetadataFactory()->getAllMetadata();
+        $tool->dropSchema($classes);
+        $tool->updateSchema($classes);
 
         // Load fixtures
         $loader = new Loader;
         $fixtures = new LoadDataFixtures();
         $fixtures->setContainer(self::$container);
         $loader->addFixture($fixtures);
-        $executor->execute($loader->getFixtures());
+        $purger = new ORMPurger(self::$em);
+        (new ORMExecutor(self::$em, $purger))->execute($loader->getFixtures());
 
         self::authUser();
 

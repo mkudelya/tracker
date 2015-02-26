@@ -35,11 +35,10 @@ class IssueController extends Controller
     /**
      * @Route("/{issueCode}/sublist", name="_tracking_issue_sublist")
      * @Template("TrackerBundle:Issue:list.html.twig")
-     * @param string $projectCode
      * @param string $issueCode
      * @return array
      */
-    public function subtasksListAction($projectCode, $issueCode)
+    public function subtasksListAction($issueCode)
     {
         $issues = $this->get('issue')->getIssueSubListByIssueCode($issueCode);
         return array('issues' => $issues);

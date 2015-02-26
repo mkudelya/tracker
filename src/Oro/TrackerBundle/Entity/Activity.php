@@ -178,7 +178,7 @@ class Activity
     public function updatedTimestamps()
     {
         if ($this->getCreated() == null) {
-            $this->setCreated(new \DateTime('now'));
+            $this->setCreated(new \DateTime('now', new \DateTimeZone('UTC')));
         }
     }
 

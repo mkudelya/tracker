@@ -1,6 +1,6 @@
 {% block content %}
     {% if users|length > 0 %}
-        <table width="300">
+        <table width="700">
             <tbody>
             {% for user in users %}
                 <tr>
@@ -10,6 +10,6 @@
             </tbody>
         </table>
     {% else %}
-        {{ 'issue.collaborators_list'|trans({}, 'TrackerBundle') }}
+        {{ 'issue.collaborators_not_found'|trans({}, 'TrackerBundle') }}
     {% endif %}
 {% endblock %}

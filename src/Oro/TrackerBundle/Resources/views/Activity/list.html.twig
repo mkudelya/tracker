@@ -1,9 +1,10 @@
 {% block content %}
     {% if activities|length > 0 %}
-        <table width="400">
+        <table width="700">
             <tbody>
             {% for activity in activities %}
                 <tr>
+                    <td width="28%">{{ activity.getCreated()|date('j F Y H:i', app.user.getTimezone()) }}</td>
                     <td>
                         {% if activity.isNewIssueType() %}
                             <a href="{{ path('_tracking_user_profile', {'username': activity.getUser().getUsername() }) }}">{{ activity.getUser().getFullname() }}</a>

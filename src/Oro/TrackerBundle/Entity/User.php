@@ -5,6 +5,7 @@ namespace Oro\TrackerBundle\Entity;
 use FOS\UserBundle\Model\User as BaseUser;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -57,6 +58,11 @@ class User extends BaseUser
      * @ORM\OneToMany(targetEntity="Activity", mappedBy="user")
      **/
     protected $activities;
+
+    /**
+     * @ORM\Column(type="string", length=100)
+     */
+    protected $timezone;
 
     /**
      * Get id
@@ -337,10 +343,33 @@ class User extends BaseUser
      */
     public function __construct()
     {
-        $this->projects = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->issues = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->activities = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->projects = new ArrayCollection();
+        $this->issues = new ArrayCollection();
+        $this->activities = new ArrayCollection();
 
         parent::__construct();
+    }
+
+    /**
+     * Set timezone
+     *
+     * @param string $timezone
+     * @return User
+     */
+    public function setTimezone($timezone)
+    {
+        $this->timezone = $timezone;
+
+        return $this;
+    }
+
+    /**
+     * Get timezone
+     *
+     * @return string
+     */
+    public function getTimezone()
+    {
+        return $this->timezone;
     }
 }

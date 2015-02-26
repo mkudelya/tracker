@@ -15,6 +15,7 @@ class UserControllerTest extends AbstractController
         $form['fos_user_registration_form[plainPassword][first]'] = '111';
         $form['fos_user_registration_form[plainPassword][second]'] = '111';
         $form['fos_user_registration_form[fullname]'] = 'Full Name';
+        $form['fos_user_registration_form[timezone]'] = 'America/Los_Angeles';
         $form['fos_user_registration_form[roles]'] = 'ROLE_MANAGER';
 
         $crawler = self::$client->submit($form);

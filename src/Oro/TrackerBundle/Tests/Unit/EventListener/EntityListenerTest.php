@@ -95,10 +95,6 @@ class EntityListenerTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock('Oro\TrackerBundle\Service\Issue');
 
-        $this->mockAuthenticationToken = $this->getMockBuilder('Symfony\Component\Security\Core\Authentication\Token')
-            ->disableOriginalConstructor()
-            ->getMock();
-
         //Security context
         $this->mockSecurityContext->expects($this->any())
             ->method('getToken')

@@ -23,29 +23,30 @@
 {% endblock %}
 
 {% block content %}
-    <p>{{ 'issue.project'|trans({}, 'TrackerBundle') }} : {{ issue.getProject().getSummary() }}</p>
-    <p>{{ 'issue.type'|trans({}, 'TrackerBundle') }} : {{ issue.getType() }}</p>
-    <p>{{ 'issue.reporter'|trans({}, 'TrackerBundle') }} : {{ issue.getReporter().getFullName() }}</p>
-    <p>{{ 'issue.assignee'|trans({}, 'TrackerBundle') }} : {{ issue.getAssignee().getFullName() }}</p>
-    <p>{{ 'issue.status'|trans({}, 'TrackerBundle') }} : {{ issue.getStatus() }}</p>
-    <p>{{ 'issue.resolution'|trans({}, 'TrackerBundle') }} : {{ issue.getResolution() }}</p>
+    <p>{{ 'issue.project'|trans({}, 'TrackerBundle') }}: {{ issue.getProject().getSummary() }}</p>
+    <p>{{ 'issue.type'|trans({}, 'TrackerBundle') }}: {{ issue.getType() }}</p>
+    <p>{{ 'issue.reporter'|trans({}, 'TrackerBundle') }}: {{ issue.getReporter().getFullName() }}</p>
+    <p>{{ 'issue.assignee'|trans({}, 'TrackerBundle') }}: {{ issue.getAssignee().getFullName() }}</p>
+    <p>{{ 'issue.status'|trans({}, 'TrackerBundle') }}: {{ issue.getStatus() }}</p>
+    <p>{{ 'issue.resolution'|trans({}, 'TrackerBundle') }}: {{ issue.getResolution() }}</p>
 
-    <p>{{ 'issue.created'|trans({}, 'TrackerBundle') }} : {{ issue.getCreated()|date("m/d/Y", false) }}</p>
-    <p>{{ 'issue.updated'|trans({}, 'TrackerBundle') }} : {{ issue.getUpdated()|date("m/d/Y", false) }}</p>
+    <p>{{ 'issue.created'|trans({}, 'TrackerBundle') }}: {{ issue.getCreated()|date("j F Y H:i", app.user.getTimezone()) }}</p>
+    <p>{{ 'issue.updated'|trans({}, 'TrackerBundle') }}: {{ issue.getUpdated()|date("j F Y H:i", app.user.getTimezone()) }}</p>
 
-    <p>{{ 'issue.description'|trans({}, 'TrackerBundle') }} : {{ issue.getDescription() }}</p>
-
+    <p>{{ 'issue.description'|trans({}, 'TrackerBundle') }}: {{ issue.getDescription() }}</p>
     <hr>
+    <br/>
     <p>
-    <p><b>{{ 'layout.activity_list'|trans({}, 'TrackerBundle') }}:</b></p>
+    <b>{{ 'layout.activity_list'|trans({}, 'TrackerBundle') }}:</b>
     {{ render(controller(
     'TrackerBundle:Activity:listByIssue',
     {'issueCode': issue.getCode()}
     )) }}
     </p>
     <hr>
+    <br/>
     <p>
-    <p><b>{{ 'layout.collaborators_list'|trans({}, 'TrackerBundle') }}:</b></p>
+    <b>{{ 'layout.collaborators_list'|trans({}, 'TrackerBundle') }}:</b>
     {{ render(controller(
     'TrackerBundle:Issue:listCollaboratorByIssue',
     {'issueCode': issue.getCode()}
@@ -53,8 +54,9 @@
     </p>
     <hr>
     {% if isStory %}
+        <br/>
         <p>
-        <p><b>{{ 'issue.subissue_list'|trans({}, 'TrackerBundle') }}:</b></p>
+        <b>{{ 'issue.subissue_list'|trans({}, 'TrackerBundle') }}:</b>
         {{ render(controller(
         'TrackerBundle:Issue:subtasksList',
         {'projectCode': project.getCode(), 'issueCode': issue.getCode()}
@@ -62,9 +64,9 @@
         </p>
         <hr>
     {% endif %}
-
+    <br/>
     <p>
-    <p><b>{{ 'layout.comments_list'|trans({}, 'TrackerBundle') }}:</b></p>
+    <b>{{ 'layout.comments_list'|trans({}, 'TrackerBundle') }}:</b>
     {{ render(controller(
     'TrackerBundle:Issue:listOfComments',
     {'issueCode': issue.getCode()}
@@ -72,11 +74,12 @@
     </p>
     {% if is_granted('add_comment', issue) %}
         <hr>
+        <br/>
         <p>
-            <p><b>{{ 'layout.add_comment'|trans({}, 'TrackerBundle') }}:</b></p>
-            <form action="{{ path('_tracking_edit_comment', {'projectCode': project.getCode(), 'issueCode': issue.getCode()}) }}" {{ form_enctype(comment_form) }} method="POST" class="tracker_comment">
-                {{ form_widget(comment_form) }}
-            </form>
+        <b>{{ 'layout.add_comment'|trans({}, 'TrackerBundle') }}:</b>
+        <form action="{{ path('_tracking_edit_comment', {'projectCode': project.getCode(), 'issueCode': issue.getCode()}) }}" {{ form_enctype(comment_form) }} method="POST" class="tracker_comment">
+            {{ form_widget(comment_form) }}
+        </form>
         </p>
     {% endif %}
 
