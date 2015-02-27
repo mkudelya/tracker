@@ -21,11 +21,14 @@ class IssueVoter implements VoterInterface
      */
     public function supportsAttribute($attribute)
     {
-        return in_array($attribute, array(
-            self::ADD_COMMENT,
-            self::VIEW,
-            self::EDIT,
-        ));
+        return in_array(
+            $attribute,
+            array(
+                self::ADD_COMMENT,
+                self::VIEW,
+                self::EDIT
+            )
+        );
     }
 
     /**
@@ -73,10 +76,6 @@ class IssueVoter implements VoterInterface
 
         switch($attribute) {
             case self::ADD_COMMENT:
-                if ($object->getProject()->hasMember($user)) {
-                    return VoterInterface::ACCESS_GRANTED;
-                }
-                break;
             case self::VIEW:
             case self::EDIT:
                 if ($object->getProject()->hasMember($user)) {

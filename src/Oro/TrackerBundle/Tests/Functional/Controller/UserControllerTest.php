@@ -30,10 +30,14 @@ class UserControllerTest extends AbstractController
 
     public function testEdit()
     {
-        $crawler = self::$client->request('GET', $this->getUrl(
-            '_tracking_user_edit',
-            array('id' => self::getFixture()->getAdminUser()->getId())
-        ));
+        $crawler = self::$client->request(
+            'GET',
+            $this->getUrl(
+                '_tracking_user_edit',
+                array(
+                    'id' => self::getFixture()->getAdminUser()->getId())
+            )
+        );
 
         $form = $crawler->selectButton('save')->form();
 
@@ -51,10 +55,13 @@ class UserControllerTest extends AbstractController
 
     public function testShowUserProfile()
     {
-        $crawler = self::$client->request('GET', $this->getUrl(
-            '_tracking_user_profile',
-            array('username' => self::getFixture()->getAdminUser()->getUsername())
-        ));
+        $crawler = self::$client->request(
+            'GET',
+            $this->getUrl(
+                '_tracking_user_profile',
+                array('username' => self::getFixture()->getAdminUser()->getUsername())
+            )
+        );
 
         $this->assertTrue(self::$client->getResponse()->isSuccessful());
 

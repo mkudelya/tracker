@@ -46,10 +46,13 @@ class IssueControllerTest extends AbstractController
 
     public function testAddSubIssue()
     {
-        $crawler = self::$client->request('GET', $this->getUrl(
-            '_tracking_issue_show',
-            array('projectCode' => 'SECOND', 'issueCode' => 'STORY1')
-        ));
+        $crawler = self::$client->request(
+            'GET',
+            $this->getUrl(
+                '_tracking_issue_show',
+                array('projectCode' => 'SECOND', 'issueCode' => 'STORY1')
+            )
+        );
 
         $addIssueLink = $crawler->filter('a:contains("Add sub-issue")')->link();
         $crawler = self::$client->click($addIssueLink);
@@ -73,10 +76,13 @@ class IssueControllerTest extends AbstractController
 
     public function testEditIssue()
     {
-        $crawler = self::$client->request('GET', $this->getUrl(
-            '_tracking_issue_edit',
-            array('projectCode' => 'SECOND', 'issueCode' => 'STORY1')
-        ));
+        $crawler = self::$client->request(
+            'GET',
+            $this->getUrl(
+                '_tracking_issue_edit',
+                array('projectCode' => 'SECOND', 'issueCode' => 'STORY1')
+            )
+        );
 
         $form = $crawler->selectButton('tracker_issue[Save]')->form();
 
@@ -97,10 +103,13 @@ class IssueControllerTest extends AbstractController
 
     public function testShowIssue()
     {
-        $crawler = self::$client->request('GET', $this->getUrl(
-            '_tracking_issue_show',
-            array('projectCode' => 'SECOND', 'issueCode' => 'STORY1')
-        ));
+        $crawler = self::$client->request(
+            'GET',
+            $this->getUrl(
+                '_tracking_issue_show',
+                array('projectCode' => 'SECOND', 'issueCode' => 'STORY1')
+            )
+        );
 
         $this->assertEquals(
             1,
@@ -110,10 +119,13 @@ class IssueControllerTest extends AbstractController
 
     public function testAddComment()
     {
-        $crawler = self::$client->request('GET', $this->getUrl(
-            '_tracking_issue_show',
-            array('projectCode' => 'SECOND', 'issueCode' => 'STORY1')
-        ));
+        $crawler = self::$client->request(
+            'GET',
+            $this->getUrl(
+                '_tracking_issue_show',
+                array('projectCode' => 'SECOND', 'issueCode' => 'STORY1')
+            )
+        );
 
         $form = $crawler->selectButton('tracker_comment[Save]')->form();
 
@@ -131,10 +143,13 @@ class IssueControllerTest extends AbstractController
 
     public function testUpdateComment()
     {
-        $crawler = self::$client->request('GET', $this->getUrl(
-            '_tracking_issue_show',
-            array('projectCode' => 'SECOND', 'issueCode' => 'STORY1')
-        ));
+        $crawler = self::$client->request(
+            'GET',
+            $this->getUrl(
+                '_tracking_issue_show',
+                array('projectCode' => 'SECOND', 'issueCode' => 'STORY1')
+            )
+        );
 
         $form = $crawler->selectButton('Save')->form();
 
@@ -152,10 +167,13 @@ class IssueControllerTest extends AbstractController
 
     public function testRemoveComment()
     {
-        $crawler = self::$client->request('GET', $this->getUrl(
-            '_tracking_issue_show',
-            array('projectCode' => 'SECOND', 'issueCode' => 'STORY1')
-        ));
+        $crawler = self::$client->request(
+            'GET',
+            $this->getUrl(
+                '_tracking_issue_show',
+                array('projectCode' => 'SECOND', 'issueCode' => 'STORY1')
+            )
+        );
 
         $addIssueLink = $crawler->filter('div#body a:contains("Remove")')->link();
         $crawler = self::$client->click($addIssueLink);

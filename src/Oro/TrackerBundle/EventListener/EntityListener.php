@@ -163,10 +163,13 @@ class EntityListener
                     ->setSubject('Notification task - "'.$issue->getSummary().'"')
                     ->setFrom('robot@localhost')
                     ->setTo($user->getEmail())
-                    ->setBody($this->container->get('templating')->render(
-                        'TrackerBundle:Activity:email.html.twig',
-                        array('activity' => $activity)
-                    ), 'text/html');
+                    ->setBody(
+                        $this->container->get('templating')->render(
+                            'TrackerBundle:Activity:email.html.twig',
+                            array('activity' => $activity)
+                        ),
+                        'text/html'
+                    );
 
                 $this->container->get('mailer')->send($message);
             }

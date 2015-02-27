@@ -49,10 +49,13 @@ class ProjectControllerTest extends AbstractController
 
     public function testShowProject()
     {
-        $crawler = self::$client->request('GET', $this->getUrl(
-            '_tracking_project_show',
-            array('projectCode' => 'FIRST_CHANGED')
-        ));
+        $crawler = self::$client->request(
+            'GET',
+            $this->getUrl(
+                '_tracking_project_show',
+                array('projectCode' => 'FIRST_CHANGED')
+            )
+        );
 
         $this->assertEquals(
             1,

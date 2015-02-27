@@ -18,9 +18,17 @@ class IssueTest extends \PHPUnit_Framework_TestCase
 
         //doctrine
         $this->mockDoctrine = $this->getMockBuilder('\stdClass')
-            ->setMethods(array(
-                'getManager', 'createQuery', 'getResult', 'setParameter', 'getRepository', 'findOneByCode', 'findBy'
-            ))
+            ->setMethods(
+                array(
+                   'getManager',
+                   'createQuery',
+                   'getResult',
+                   'setParameter',
+                   'getRepository',
+                   'findOneByCode',
+                   'findBy'
+                )
+            )
             ->getMock();
 
         $this->mockDoctrine->expects($this->any())

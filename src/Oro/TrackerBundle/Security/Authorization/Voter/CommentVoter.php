@@ -21,11 +21,14 @@ class CommentVoter implements VoterInterface
      */
     public function supportsAttribute($attribute)
     {
-        return in_array($attribute, array(
-            self::ADD,
-            self::DELETE,
-            self::EDIT,
-        ));
+        return in_array(
+            $attribute,
+            array(
+                self::ADD,
+                self::DELETE,
+                self::EDIT
+            )
+        );
     }
 
     /**

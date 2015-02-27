@@ -21,11 +21,14 @@ class ProjectVoter implements VoterInterface
      */
     public function supportsAttribute($attribute)
     {
-        return in_array($attribute, array(
-            self::ADD_ISSUE,
-            self::VIEW,
-            self::EDIT,
-        ));
+        return in_array(
+            $attribute,
+            array(
+                self::ADD_ISSUE,
+                self::VIEW,
+                self::EDIT
+            )
+        );
     }
 
     /**

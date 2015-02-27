@@ -62,22 +62,34 @@ class IssueType extends AbstractType
 
         if ($this->getProcessMethod() == IssueController::IS_ADD_TASK ||
             $this->getProcessMethod() == IssueController::IS_ADD_SUBTASK) {
-            $builder->add('type', 'choice', array(
-                'choices' => $this->types,
-                'required' => true
-            ));
+            $builder->add(
+                'type',
+                'choice',
+                array(
+                    'choices' => $this->types,
+                    'required' => true
+                )
+            );
         }
 
         $builder->add('priority');
-        $builder->add('status', 'choice', array(
-            'choices'   => $this->status,
-            'required'  => true
-        ));
+        $builder->add(
+            'status',
+            'choice',
+            array(
+                'choices'   => $this->status,
+                'required'  => true
+            )
+        );
 
-        $builder->add('resolution', 'choice', array(
-            'choices'   => $this->resolution,
-            'required'  => false
-        ));
+        $builder->add(
+            'resolution',
+            'choice',
+            array(
+                'choices'   => $this->resolution,
+                'required'  => false
+            )
+        );
         $builder->add('assignee');
         $builder->add('Save', 'submit');
     }
@@ -87,9 +99,11 @@ class IssueType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults(
+            array(
             'data_class' => 'Oro\TrackerBundle\Entity\Issue'
-        ));
+            )
+        );
     }
 
     /**

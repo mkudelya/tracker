@@ -175,9 +175,12 @@ class IssueController extends Controller
             );
 
             return $this->redirect(
-                $this->generateUrl('_tracking_issue_show', array(
-                    'projectCode' => $projectCode, 'issueCode' => $issueEntity->getCode()
-                ))
+                $this->generateUrl(
+                    '_tracking_issue_show',
+                    array(
+                        'projectCode' => $projectCode, 'issueCode' => $issueEntity->getCode()
+                    )
+                )
             );
         }
 
@@ -277,9 +280,12 @@ class IssueController extends Controller
             );
 
             return $this->redirect(
-                $this->generateUrl('_tracking_issue_show', array(
-                    'projectCode' => $projectCode, 'issueCode' => $issueCode
-                ))
+                $this->generateUrl(
+                    '_tracking_issue_show',
+                    array(
+                        'projectCode' => $projectCode, 'issueCode' => $issueCode
+                    )
+                )
             );
         }
 
@@ -323,9 +329,12 @@ class IssueController extends Controller
         }
 
         return $this->redirect(
-            $this->generateUrl('_tracking_issue_show', array(
-                'projectCode' => $projectCode, 'issueCode' => $issueCode
-            ))
+            $this->generateUrl(
+                '_tracking_issue_show',
+                array(
+                    'projectCode' => $projectCode, 'issueCode' => $issueCode
+                )
+            )
         );
     }
 }

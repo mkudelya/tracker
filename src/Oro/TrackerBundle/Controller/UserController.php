@@ -148,10 +148,13 @@ class UserController extends Controller
             return $response;
         }
 
-        return $this->render('TrackerBundle:User:edit.html.twig', array(
-            'form' => $form->createView(),
-            'user' => $user,
-            'id' => $id
-        ));
+        return $this->render(
+            'TrackerBundle:User:edit.html.twig',
+            array(
+                'form' => $form->createView(),
+                'user' => $user,
+                'id' => $id
+            )
+        );
     }
 }
