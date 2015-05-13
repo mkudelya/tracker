@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block description %}
-    {% if methodType == constant('Oro\\Bundle\\OroTrackerBundle\\Controller\\IssueController::IS_EDIT_TASK') %}
+    {% if methodType == constant('Oro\\Bundle\\TrackerBundle\\Controller\\IssueController::IS_EDIT_TASK') %}
         {{ 'issue.edit'|trans({}, 'OroTrackerBundle') }}
     {% else %}
         {{ 'issue.add'|trans({}, 'OroTrackerBundle') }}
@@ -18,7 +18,7 @@
 
 {% block content %}
     <form action="
-    {% if methodType == constant('Oro\\Bundle\\OroTrackerBundle\\Controller\\IssueController::IS_ADD_SUBTASK') %}
+    {% if methodType == constant('Oro\\Bundle\\TrackerBundle\\Controller\\IssueController::IS_ADD_SUBTASK') %}
         {{ path('_tracking_issue_add_subtask', {'projectCode': project.getCode(), 'issueCode': issueCode}) }}
     {% else %}
         {{ path('_tracking_issue_edit', {'projectCode': project.getCode(), 'issueCode': issueCode}) }}
