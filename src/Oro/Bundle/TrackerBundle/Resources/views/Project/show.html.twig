@@ -1,0 +1,40 @@
+{% extends "OroTrackerBundle::layout.html.twig" %}
+
+{% block breadcrumb %}
+    <a href="{{ path('_tracking_project_list') }}">{{ 'project.projects_list'|trans({}, 'OroTrackerBundle') }}</a> /
+        <a href="{{ path('_tracking_project_show', {'projectCode':project.getCode()}) }}">{{ project.getCode() }}</a>
+{% endblock %}
+
+{% block description %}
+{{ project.getSummary() }}
+{% endblock %}
+
+{% block page_actions %}
+    {% if is_granted('ROLE_ADMINISTRATOR') or is_granted('ROLE_MANAGER') %}
+        [ <a href="{{ path('_tracking_project_edit') }}">{{ 'project.add'|trans({}, 'OroTrackerBundle') }}</a> ]<br>
+        [ <a href="{{ path('_tracking_project_edit', {'projectCode': project.getCode()}) }}">{{ 'project.edit'|trans({}, 'OroTrackerBundle') }}</a> ]<br>
+    {% endif %}
+    {% if is_granted('add_issue', project) %}
+        [ <a href="{{ path('_tracking_issue_edit', {'projectCode': project.getCode()}) }}">{{ 'issue.add'|trans({}, 'OroTrackerBundle') }}</a> ]<br>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <br/>
+    <p>
+    <b>{{ 'layout.issues_list'|trans({}, 'OroTrackerBundle') }}</b>
+    {{ render(controller(
+    'OroTrackerBundle:Issue:list',
+    {'projectCode': project.getCode()}
+    )) }}
+    </p>
+    <hr>
+    <br/>
+    <p>
+    <b>{{ 'layout.activity_list'|trans({}, 'OroTrackerBundle') }}:</b>
+    {{ render(controller(
+    'OroTrackerBundle:Activity:listByProject',
+    {'projectCode': project.getCode()}
+    )) }}
+    </p>
+{% endblock %}

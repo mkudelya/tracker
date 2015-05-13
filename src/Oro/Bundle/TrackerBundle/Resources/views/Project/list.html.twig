@@ -1,0 +1,45 @@
+{% extends "OroTrackerBundle::layout.html.twig" %}
+
+{% block description %}
+    {{ 'project.projects_list'|trans({}, 'OroTrackerBundle') }}
+{% endblock %}
+
+{% block page_actions %}
+    {% if is_granted('ROLE_ADMINISTRATOR') or is_granted('ROLE_MANAGER') %}
+        [ <a href="{{ path('_tracking_project_edit') }}">{{ 'project.add'|trans({}, 'OroTrackerBundle') }}</a> ]
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    {% if projects|length > 0 %}
+        <table width="850">
+            <thead>
+                <tr>
+                    <th width="10%">{{ 'grid_title.code'|trans({}, 'OroTrackerBundle') }}</th>
+                    <th width="30%">{{ 'grid_title.summary'|trans({}, 'OroTrackerBundle') }}</th>
+                    <th width="20%">{{ 'grid_title.label'|trans({}, 'OroTrackerBundle') }}</th>
+                    <th width="10%">{{ 'grid_title.actions'|trans({}, 'OroTrackerBundle') }}</th>
+                </tr>
+            <thead>
+            <tbody>
+                {% for project in projects %}
+                    <tr>
+                        <td>{{ project.getCode() }}</td>
+                        <td>{{ project.getSummary() }}</td>
+                        <td>{{ project.getLabel() }}</td>
+                        <td>
+                            {% if is_granted('view', project) %}
+                            <a href="{{ path('_tracking_project_show', {'projectCode':project.getCode()}) }}">{{ 'grid.show'|trans({}, 'OroTrackerBundle') }}</a>
+                            {% endif %}
+                            {% if is_granted('edit', project) %}
+                            | <a href="{{ path('_tracking_project_edit', {'projectCode':project.getCode()}) }}">{{ 'grid.edit'|trans({}, 'OroTrackerBundle') }}</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        {{ 'project.projects_not_found'|trans({}, 'OroTrackerBundle') }}
+    {% endif %}
+{% endblock %}

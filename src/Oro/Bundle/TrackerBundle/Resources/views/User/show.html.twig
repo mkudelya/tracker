@@ -1,0 +1,39 @@
+{% extends "OroTrackerBundle::layout.html.twig" %}
+
+{% block description %}{{ 'user.profile'|trans({}, 'OroTrackerBundle') }}{% endblock %}
+
+{% block page_actions %}
+    {% if is_granted('ROLE_ADMINISTRATOR') or currentUser.getId() == user.getId() %}
+        [ <a href="{{ path('_tracking_user_edit', {'id': user.getId()}) }}">{{ 'grid.edit'|trans({}, 'OroTrackerBundle') }}</a> ]
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="user_profile">
+    {% if user.getWebAvatarPath() %}
+        <p><a href="{{ user.getWebAvatarPath() }}" target="_blank"><img src="{{ user.getWebAvatarPath() }}" width="10%"/></a></p>
+    {% endif %}
+    <p>{{ 'user.email'|trans({}, 'OroTrackerBundle') }}: {{ user.email }}</p>
+    <p>{{ 'user.username'|trans({}, 'OroTrackerBundle') }}: {{ user.username }}</p>
+    <p>{{ 'user.fullname'|trans({}, 'OroTrackerBundle') }}: {{ user.fullname }}</p>
+    <p>{{ 'user.timezone'|trans({}, 'OroTrackerBundle') }}: {{ user.timezone }}</p>
+</div>
+<hr>
+<br/>
+<p>
+<b>{{ 'layout.assignee_issue_list'|trans({}, 'OroTrackerBundle') }}:</b>
+{{ render(controller(
+'OroTrackerBundle:Issue:listByAssignee',
+{'id' : user.getId()}
+)) }}
+</p>
+<hr>
+<br/>
+<p>
+<b>{{ 'layout.activity_list'|trans({}, 'OroTrackerBundle') }}:</b>
+{{ render(controller(
+'OroTrackerBundle:Activity:listByUser',
+{'id' : user.getId()}
+)) }}
+</p>
+{% endblock %}

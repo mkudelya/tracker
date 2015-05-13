@@ -1,0 +1,268 @@
+<?xml version="1.0" ?>
+<constraint-mapping xmlns="http://symfony.com/schema/dic/constraint-mapping"
+                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xsi:schemaLocation="http://symfony.com/schema/dic/constraint-mapping
+        http://symfony.com/schema/dic/constraint-mapping/constraint-mapping-1.0.xsd">
+
+    <class name="Oro\Bundle\TrackerBundle\Entity\User">
+        <property name="avatarFile">
+            <constraint name="File">
+                <option name="maxSize">6000000</option>
+            </constraint>
+        </property>
+
+        <property name="username">
+            <constraint name="NotBlank">
+                <option name="message">fos_user.username.blank</option>
+                <option name="groups">
+                    <value>Tracker</value>
+                </option>
+            </constraint>
+            <constraint name="Regex">
+                <option name="pattern">/^[a-z\d\-\_]+$/i</option>
+                <option name="match">true</option>
+                <option name="message">user.username.invalid</option>
+                <option name="groups">
+                    <value>Tracker</value>
+                </option>            </constraint>
+            <constraint name="Length">
+                <option name="min">2</option>
+                <option name="minMessage">fos_user.username.short</option>
+                <option name="max">255</option>
+                <option name="maxMessage">fos_user.username.long</option>
+                <option name="groups">
+                    <value>Tracker</value>
+                </option>
+            </constraint>
+        </property>
+
+        <property name="email">
+            <constraint name="NotBlank">
+                <option name="message">fos_user.email.blank</option>
+                <option name="groups">
+                    <value>Tracker</value>
+                </option>
+            </constraint>
+            <constraint name="Length">
+                <option name="min">2</option>
+                <option name="minMessage">fos_user.email.short</option>
+                <option name="max">254</option>
+                <option name="maxMessage">fos_user.email.long</option>
+                <option name="groups">
+                    <value>Tracker</value>
+                </option>
+            </constraint>
+            <constraint name="Email">
+                <option name="message">fos_user.email.invalid</option>
+                <option name="groups">
+                    <value>Tracker</value>
+                </option>
+            </constraint>
+        </property>
+
+        <property name="plainPassword">
+            <constraint name="Length">
+                <option name="min">2</option>
+                <option name="max">4096</option>
+                <option name="minMessage">fos_user.password.short</option>
+                <option name="groups">
+                    <value>Tracker</value>
+                </option>
+            </constraint>
+        </property>
+
+        <property name="fullname">
+            <constraint name="NotBlank">
+                <option name="message">user.fullname.blank</option>
+                <option name="groups">
+                    <value>Tracker</value>
+                </option>
+            </constraint>
+            <constraint name="Length">
+                <option name="min">2</option>
+                <option name="minMessage">fos_user.fullname.short</option>
+                <option name="max">255</option>
+                <option name="maxMessage">fos_user.fullname.long</option>
+                <option name="groups">
+                    <value>Tracker</value>
+                </option>
+            </constraint>
+        </property>
+    </class>
+
+    <class name="Oro\Bundle\TrackerBundle\Entity\Project">
+        <property name="label">
+            <constraint name="NotBlank">
+                <option name="message">project.label.blank</option>
+            </constraint>
+            <constraint name="Length">
+                <option name="min">2</option>
+                <option name="minMessage">project.label.short</option>
+                <option name="max">255</option>
+                <option name="maxMessage">project.label.long</option>
+            </constraint>
+        </property>
+        <property name="summary">
+            <constraint name="NotBlank">
+                <option name="message">project.summary.blank</option>
+            </constraint>
+            <constraint name="Length">
+                <option name="min">2</option>
+                <option name="minMessage">project.summary.short</option>
+            </constraint>
+        </property>
+        <property name="code">
+            <constraint name="NotBlank">
+                <option name="message">project.code.blank</option>
+            </constraint>
+            <constraint name="Length">
+                <option name="min">1</option>
+                <option name="minMessage">tracker.code.short</option>
+                <option name="max">255</option>
+                <option name="maxMessage">tracker.code.long</option>
+             </constraint>
+        </property>
+    </class>
+
+    <class name="Oro\Bundle\TrackerBundle\Entity\Issue">
+        <property name="summary">
+            <constraint name="NotBlank">
+                <option name="message">issue.summary.blank</option>
+            </constraint>
+            <constraint name="Length">
+                <option name="min">2</option>
+                <option name="minMessage">issue.summary.short</option>
+            </constraint>
+        </property>
+        <property name="code">
+            <constraint name="NotBlank">
+                <option name="message">issue.code.blank</option>
+            </constraint>
+            <constraint name="Length">
+                <option name="min">1</option>
+                <option name="minMessage">issue.code.short</option>
+                <option name="max">255</option>
+                <option name="maxMessage">issue.code.long</option>
+            </constraint>
+        </property>
+        <property name="description">
+            <constraint name="NotBlank">
+                <option name="message">issue.description.blank</option>
+            </constraint>
+            <constraint name="Length">
+                <option name="min">2</option>
+                <option name="minMessage">issue.description.short</option>
+            </constraint>
+        </property>
+        <property name="assignee">
+            <constraint name="NotBlank">
+                <option name="message">issue.assignee.blank</option>
+            </constraint>
+        </property>
+    </class>
+
+    <class name="Oro\Bundle\TrackerBundle\Entity\Comment">
+    <property name="body">
+        <constraint name="NotBlank">
+            <option name="message">comment.body.blank</option>
+        </constraint>
+    </property>
+    </class>
+
+    <class name="FOS\UserBundle\Model\Group">
+        <property name="name">
+            <constraint name="NotBlank">
+                <option name="message">fos_user.group.blank</option>
+                <option name="groups">Tracker</option>
+            </constraint>
+            <constraint name="Length">
+                <option name="min">2</option>
+                <option name="minMessage">fos_user.group.short</option>
+                <option name="max">255</option>
+                <option name="maxMessage">fos_user.group.long</option>
+                <option name="groups">Tracker</option>
+            </constraint>
+        </property>
+    </class>
+
+    <!-- Propel classes. This should stay in sync with the Model classes -->
+
+    <class name="FOS\UserBundle\Propel\User">
+
+        <property name="username">
+            <constraint name="NotBlank">
+                <option name="message">fos_user.username.blank</option>
+                <option name="groups">
+                    <value>Tracker</value>
+                </option>
+            </constraint>
+            <constraint name="Length">
+                <option name="min">2</option>
+                <option name="minMessage">fos_user.username.short</option>
+                <option name="max">255</option>
+                <option name="maxMessage">fos_user.username.long</option>
+                <option name="groups">
+                    <value>Tracker</value>
+                </option>
+            </constraint>
+        </property>
+
+        <property name="email">
+            <constraint name="NotBlank">
+                <option name="message">fos_user.email.blank</option>
+                <option name="groups">
+                    <value>Tracker</value>
+                </option>
+            </constraint>
+            <constraint name="Length">
+                <option name="min">2</option>
+                <option name="minMessage">fos_user.email.short</option>
+                <option name="max">255</option>
+                <option name="maxMessage">fos_user.email.long</option>
+                <option name="groups">
+                    <value>Tracker</value>
+                </option>
+            </constraint>
+            <constraint name="Email">
+                <option name="message">fos_user.email.invalid</option>
+                <option name="groups">
+                    <value>Tracker</value>
+                </option>
+            </constraint>
+        </property>
+
+        <property name="plainPassword">
+            <constraint name="NotBlank">
+                <option name="message">fos_user.password.blank</option>
+                <option name="groups">
+                    <value>Tracker</value>
+                </option>
+            </constraint>
+            <constraint name="Length">
+                <option name="min">2</option>
+                <option name="max">4096</option>
+                <option name="minMessage">fos_user.password.short</option>
+                <option name="groups">
+                    <value>Tracker</value>
+                </option>
+            </constraint>
+        </property>
+    </class>
+
+    <class name="FOS\UserBundle\Propel\Group">
+        <property name="name">
+            <constraint name="NotBlank">
+                <option name="message">fos_user.group.blank</option>
+                <option name="groups">Tracker</option>
+            </constraint>
+            <constraint name="Length">
+                <option name="min">2</option>
+                <option name="minMessage">fos_user.group.short</option>
+                <option name="max">255</option>
+                <option name="maxMessage">fos_user.group.long</option>
+                <option name="groups">Tracker</option>
+            </constraint>
+        </property>
+    </class>
+
+</constraint-mapping>

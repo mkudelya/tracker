@@ -1,4 +1,4 @@
 tracker:
-    resource: "@TrackerBundle/Resources/config/routing.yml"
+    resource: "@OroTrackerBundle/Resources/config/routing.yml"
     prefix:   /
 

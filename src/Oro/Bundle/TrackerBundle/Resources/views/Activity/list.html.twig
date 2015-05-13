@@ -1,0 +1,43 @@
+{% block content %}
+    {% if activities|length > 0 %}
+        <table width="700">
+            <tbody>
+            {% for activity in activities %}
+                <tr>
+                    <td width="28%">{{ activity.getCreated()|date('j F Y H:i', app.user.getTimezone()) }}</td>
+                    <td>
+                        {% if activity.isNewIssueType() %}
+                            <a href="{{ path('_tracking_user_profile', {'username': activity.getUser().getUsername() }) }}">{{ activity.getUser().getFullname() }}</a>
+                            {{ 'activity.new_issue_created'|trans({}, 'OroTrackerBundle') }}
+                            <a href="{{ path('_tracking_issue_show', {'projectCode': activity.getProject().getCode(), 'issueCode': activity.getIssue().getCode()}) }}">
+                            {{ activity.getIssue().getSummary() }}
+                            </a>
+                            {% if activity.getIssue().getParent() %}
+                                {{ 'activity.subtask'|trans({}, 'OroTrackerBundle') }}
+                            {% else %}
+                                {{ 'activity.task'|trans({}, 'OroTrackerBundle') }}
+                            {% endif %}
+                        {% elseif activity.isStatusChangedType()  %}
+                            <a href="{{ path('_tracking_user_profile', {'username': activity.getUser().getUsername() }) }}">{{ activity.getUser().getFullname() }}</a>
+                            {{ 'activity.issue_status_changed'|trans({}, 'OroTrackerBundle') }}
+                            '{{ activity.getBody() }}'
+                            {{ 'layout.on'|trans({}, 'OroTrackerBundle') }}
+                            <a href="{{ path('_tracking_issue_show', {'projectCode': activity.getProject().getCode(), 'issueCode': activity.getIssue().getCode()}) }}">
+                            {{ activity.getIssue().getSummary() }}
+                            </a>
+                        {% elseif activity.isNewCommentType()  %}
+                            <a href="{{ path('_tracking_user_profile', {'username': activity.getUser().getUsername() }) }}">{{ activity.getUser().getFullname() }}</a>
+                            {{ 'activity.commented'|trans({}, 'OroTrackerBundle') }}
+                            <a href="{{ path('_tracking_issue_show', {'projectCode': activity.getProject().getCode(), 'issueCode': activity.getIssue().getCode()}) }}">
+                                {{ activity.getIssue().getSummary() }}
+                            </a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        {{ 'activity.activities_not_found'|trans({}, 'OroTrackerBundle') }}
+    {% endif %}
+{% endblock %}

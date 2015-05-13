@@ -1,0 +1,53 @@
+{% extends "TwigBundle::layout.html.twig" %}
+
+{% block head %}
+    <link rel="icon" sizes="16x16" href="{{ asset('favicon.ico') }}" />
+    <link rel="stylesheet" href="{{ asset('bundles/tracker/css/main.css') }}" />
+    <script src="{{ asset('bundles/orotracker/js/jquery-1.11.2.min.js') }}"></script>
+
+{% endblock %}
+
+{% block title 'Tracking Bundle' %}
+
+{% block body %}
+    {% block content_header %}
+        <ul id="menu">
+            {% block content_header_more %}
+                {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                    <li>[ <a href="{{ path('tracker_homepage') }}">{{ 'layout.home'|trans({}, 'OroTrackerBundle') }}</a> ]</li>
+                {% endif %}
+
+                {% if is_granted('ROLE_ADMINISTRATOR') %}
+                    <li>[ <a href="{{ path('_tracking_user_list') }}">{{ 'layout.users_list'|trans({}, 'OroTrackerBundle') }}</a> ]</li>
+                {% endif %}
+                {% if is_granted('ROLE_MANAGER') or is_granted('ROLE_OPERATOR') %}
+                    <li>[ <a href="{{ path('_tracking_project_list') }}">{{ 'layout.projects_list'|trans({}, 'OroTrackerBundle') }}</a> ]</li>
+                {% endif %}
+                {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                    <li>[ <a href="{{ path('_tracking_user_profile') }}">{{ app.user.username }}</a> ]</li>
+                    <li>[ <a href="{{ path('fos_user_security_logout') }}">{{ 'layout.logout'|trans({}, 'FOSUserBundle') }}</a> ]</li>
+                {% else %}
+                    <li><a href="{{ path('fos_user_security_login') }}">{{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a></li>
+                {% endif %}
+            {% endblock %}
+        </ul>
+
+        <div style="clear: both"></div>
+    {% endblock %}
+
+    <div class="block">
+        {% for flashMessage in app.session.flashbag.get('notice') %}
+            <div class="flash-message">
+                {{ flashMessage }}
+            </div>
+        {% endfor %}
+
+        <div class="breadcrumb">{% block breadcrumb %}{% endblock %}</div>
+        <div class="description">{% block description %}{% endblock %}</div>
+
+        {% block content %}{% endblock %}
+        {% block fos_user_content %}{% endblock fos_user_content %}
+        <div class="page-actions">{% block page_actions %} {% endblock %}</div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends "OroTrackerBundle::layout.html.twig" %}
+
+{% block breadcrumb %}
+    <a href="{{ path('_tracking_project_list') }}">{{ 'project.projects_list'|trans({}, 'OroTrackerBundle') }}</a>
+    {% if projectCode %} / <a href="{{ path('_tracking_project_show', {'projectCode':projectCode}) }}">{{ projectCode }}</a> {% endif %}
+{% endblock %}
+
+{% block description %}
+    {% if isAdd %}
+        {{ 'project.add'|trans({}, 'OroTrackerBundle') }}
+    {% else %}
+        {{ 'project.edit'|trans({}, 'OroTrackerBundle') }}
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+<form action="{{ path('_tracking_project_edit', {'projectCode': projectCode}) }}" {{ form_enctype(form) }} method="POST" class="tracker_project">
+{{ form_widget(form) }}
+</form>
+{% endblock %}

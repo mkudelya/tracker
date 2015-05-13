@@ -1,0 +1,35 @@
+{% block content %}
+    {% if comments|length > 0 %}
+        <table width="700">
+            <tbody>
+            {% for comment in comments %}
+                <tr>
+                    <td colspan="2">{{ comment.getUser().getFullname() }}</td>
+                </tr>
+                <tr>
+                    <td width="28%">{{ comment.getCreated()|date('j F Y H:i', app.user.getTimezone()) }}</td>
+                    <td>
+                        <div id="body">
+                            {{ comment.getBody() }}
+                            {% if (is_granted('edit', comment)) %}
+                            [ <a href="" id="edit">{{ 'grid.edit'|trans({}, 'OroTrackerBundle') }}</a> ]
+                            {% endif %}
+                            {% if (is_granted('delete', comment)) %}
+                            [ <a href="{{ path('_tracking_remove_comment', {'projectCode': comment.getIssue().getProject().getCode(), 'issueCode': comment.getIssue().getCode(), 'commentId':comment.getId()}) }}" id="remove">{{ 'grid.remove'|trans({}, 'OroTrackerBundle') }}</a> ]
+                            {% endif  %}
+                        </div>
+                        <div id="form" style="display: none">
+                        <form action="{{ path('_tracking_edit_comment', {'projectCode': comment.getIssue().getProject().getCode(), 'issueCode': comment.getIssue().getCode(), 'commentId':comment.getId()}) }}" {{ form_enctype(comment_form) }} method="POST" class="tracker_comment_{{ comment.getId() }}">
+                            <textarea id="tracker_comment_body" name="tracker_comment[body]" required="required">{{ comment.getBody() }}</textarea>
+                            <br><input type="submit" name="{{ 'form.save'|trans({}, 'OroTrackerBundle') }}" value="{{ 'form.save'|trans({}, 'OroTrackerBundle') }}">
+                        </form>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        {{ 'issue.comments_not_found'|trans({}, 'OroTrackerBundle') }}
+    {% endif %}
+{% endblock %}

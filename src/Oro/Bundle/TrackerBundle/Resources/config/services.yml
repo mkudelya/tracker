@@ -1,0 +1,43 @@
+services:
+    tracker_user.registration.type:
+        class: Oro\Bundle\TrackerBundle\Form\RegistrationType
+        arguments: ['@service_container']
+        tags:
+            - { name: form.type, alias: tracker_user_registration }
+
+    event.listener:
+        class: Oro\Bundle\TrackerBundle\EventListener\EntityListener
+        arguments: ['@service_container']
+        tags:
+            - { name: doctrine.event_listener, event: postPersist }
+            - { name: doctrine.event_listener, event: postUpdate }
+
+    project:
+        class: Oro\Bundle\TrackerBundle\Service\Project
+        arguments: ['@service_container']
+
+    issue:
+        class: Oro\Bundle\TrackerBundle\Service\Issue
+        arguments: ['@service_container']
+
+    activity:
+        class: Oro\Bundle\TrackerBundle\Service\Activity
+        arguments: ['@service_container']
+
+    security.access.project_voter:
+        class:      Oro\Bundle\TrackerBundle\Security\Authorization\Voter\ProjectVoter
+        public:     false
+        tags:
+           - { name: security.voter }
+
+    security.access.issue_voter:
+        class:      Oro\Bundle\TrackerBundle\Security\Authorization\Voter\IssueVoter
+        public:     false
+        tags:
+           - { name: security.voter }
+
+    security.access.comment_voter:
+        class:      Oro\Bundle\TrackerBundle\Security\Authorization\Voter\CommentVoter
+        public:     false
+        tags:
+           - { name: security.voter }

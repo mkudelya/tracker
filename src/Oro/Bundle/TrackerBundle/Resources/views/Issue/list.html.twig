@@ -1,0 +1,41 @@
+{% block content %}
+    {% if issues|length > 0 %}
+        <table width="850">
+            <thead>
+                <tr>
+                    <th width="5%">{{ 'grid_title.code'|trans({}, 'OroTrackerBundle') }}</th>
+                    <th width="10%">{{ 'grid_title.summary'|trans({}, 'OroTrackerBundle') }}</th>
+                    <th width="2%">{{ 'grid_title.type'|trans({}, 'OroTrackerBundle') }}</th>
+                    <th width="5%">{{ 'grid_title.status'|trans({}, 'OroTrackerBundle') }}</th>
+                    <th width="5%">{{ 'grid_title.resolution'|trans({}, 'OroTrackerBundle') }}</th>
+                    <th width="5%">{{ 'grid_title.assignee'|trans({}, 'OroTrackerBundle') }}</th>
+                    <th width="5%">{{ 'grid_title.reporter'|trans({}, 'OroTrackerBundle') }}</th>
+                    <th width="5%">{{ 'grid_title.actions'|trans({}, 'OroTrackerBundle') }}</th>
+                </tr>
+            </thead>
+                <tbody>
+                {% for issue in issues %}
+                    <tr>
+                        <td>{{ issue.getCode() }}</td>
+                        <td>{{ issue.getSummary() }}</td>
+                        <td>{{ issue.getType() }}</td>
+                        <td>{{ issue.getStatus() }}</td>
+                        <td>{{ issue.getResolution() }}</td>
+                        <td><a href="{{ path('_tracking_user_profile', {'username': issue.getAssignee().getUsername() }) }}">{{ issue.getAssignee() }}</a></td>
+                        <td><a href="{{ path('_tracking_user_profile', {'username': issue.getReporter().getUsername() }) }}">{{ issue.getReporter() }}</a></td>
+                        <td>
+                            {% if is_granted('view', issue) %}
+                            <a href="{{ path('_tracking_issue_show', {'projectCode': issue.getProject().getCode(), 'issueCode': issue.getCode()}) }}">{{ 'grid.show'|trans({}, 'OroTrackerBundle') }}</a> |
+                            {% endif %}
+                            {% if is_granted('edit', issue) %}
+                            <a href="{{ path('_tracking_issue_edit', {'projectCode': issue.getProject().getCode(), 'issueCode': issue.getCode()}) }}">{{ 'grid.edit'|trans({}, 'OroTrackerBundle') }}</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        {{ 'issue.issues_not_found'|trans({}, 'OroTrackerBundle') }}
+    {% endif %}
+{% endblock %}
