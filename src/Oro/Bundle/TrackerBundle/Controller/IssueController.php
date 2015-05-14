@@ -63,7 +63,7 @@ class IssueController extends Controller
      */
     public function listByAssigneeAction($id)
     {
-        $user = $this->getDoctrine()->getRepository('OroTrackerBundle:User')->find($id);
+        $user = $this->getDoctrine()->getRepository('OroUserBundle:User')->find($id);
         $issues = $this->get('issue')->getIssueListByAssigneeUser($user);
         return array('issues' => $issues);
     }

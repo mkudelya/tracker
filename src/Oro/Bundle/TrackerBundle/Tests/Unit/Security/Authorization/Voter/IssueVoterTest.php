@@ -6,8 +6,8 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 use Oro\Bundle\TrackerBundle\Security\Authorization\Voter\IssueVoter;
 use Oro\Bundle\TrackerBundle\Entity\Issue;
-use Oro\Bundle\TrackerBundle\Entity\User;
-use Oro\Bundle\TrackerBundle\Entity\Role;
+use Oro\Bundle\UserBundle\Entity\User;
+use Oro\Bundle\UserBundle\Entity\Role;
 
 class IssueVoterTest extends \PHPUnit_Framework_TestCase
 {
@@ -44,7 +44,7 @@ class IssueVoterTest extends \PHPUnit_Framework_TestCase
             ->getMock();
 
         $this->mockUserEntity = $this
-            ->getMockBuilder('Oro\Bundle\TrackerBundle\Entity\User')
+            ->getMockBuilder('Oro\Bundle\UserBundle\Entity\User')
             ->disableOriginalConstructor()
             ->getMock();
 

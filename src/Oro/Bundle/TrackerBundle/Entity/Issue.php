@@ -8,6 +8,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
+use Oro\Bundle\UserBundle\Entity\User;
+
 /**
  * @ORM\Entity
  * @ORM\Table(name="issues")
@@ -59,13 +61,13 @@ class Issue
     protected $resolution;
 
     /**
-     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
      * @ORM\JoinColumn(name="reporter_id", referencedColumnName="id")
      **/
     protected $reporter;
 
     /**
-     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
      * @ORM\JoinColumn(name="assignee_id", referencedColumnName="id")
      **/
     protected $assignee;
@@ -77,7 +79,7 @@ class Issue
     protected $project;
 
     /**
-     * @ORM\ManyToMany(targetEntity="User", inversedBy="issues")
+     * @ORM\ManyToMany(targetEntity="Oro\Bundle\UserBundle\Entity\User", inversedBy="issues")
      * @ORM\JoinTable(name="issue_collaborators")
      **/
     protected $collaborators;
@@ -359,7 +361,7 @@ class Issue
     /**
      * Add collaborators
      *
-     * @param \Oro\Bundle\TrackerBundle\Entity\User $collaborators
+     * @param \Oro\Bundle\UserBundle\Entity\User $collaborators
      * @return Issue
      */
     public function addCollaborator(User $collaborators)
@@ -372,7 +374,7 @@ class Issue
     /**
      * Remove collaborators
      *
-     * @param \Oro\Bundle\TrackerBundle\Entity\User $collaborators
+     * @param \Oro\Bundle\UserBundle\Entity\User $collaborators
      */
     public function removeCollaborator(User $collaborators)
     {
@@ -390,7 +392,7 @@ class Issue
     }
 
     /**
-     * @param \Oro\Bundle\TrackerBundle\Entity\User $user
+     * @param \Oro\Bundle\UserBundle\Entity\User $user
      * @return bool
      */
     public function hasCollaborator($user)
@@ -577,7 +579,7 @@ class Issue
     /**
      * Set reporter
      *
-     * @param \Oro\Bundle\TrackerBundle\Entity\User $reporter
+     * @param \Oro\Bundle\UserBundle\Entity\User $reporter
      * @return Issue
      */
     public function setReporter(User $reporter = null)
@@ -590,7 +592,7 @@ class Issue
     /**
      * Get reporter
      *
-     * @return \Oro\Bundle\TrackerBundle\Entity\User
+     * @return \Oro\Bundle\UserBundle\Entity\User
      */
     public function getReporter()
     {
@@ -600,7 +602,7 @@ class Issue
     /**
      * Set assignee
      *
-     * @param \Oro\Bundle\TrackerBundle\Entity\User $assignee
+     * @param \Oro\Bundle\UserBundle\Entity\User $assignee
      * @return Issue
      */
     public function setAssignee(User $assignee = null)
@@ -613,7 +615,7 @@ class Issue
     /**
      * Get assignee
      *
-     * @return \Oro\Bundle\TrackerBundle\Entity\User
+     * @return \Oro\Bundle\UserBundle\Entity\User
      */
     public function getAssignee()
     {

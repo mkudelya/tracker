@@ -2,11 +2,6 @@ tracker_homepage:
     pattern:  /tracking/
     defaults: { _controller: OroTrackerBundle:Default:index }
 
-tracker_user:
-    resource: "@OroTrackerBundle/Controller/UserController.php"
-    type:     annotation
-    prefix:   /tracking/user
-
 tracker_issue:
     resource: "@OroTrackerBundle/Controller/IssueController.php"
     type:     annotation
@@ -21,7 +16,3 @@ tracker_activity:
     resource: "@OroTrackerBundle/Controller/ActivityController.php"
     type:     annotation
     prefix:   /tracking/activity
-
-fos_user:
-    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
-    prefix: /

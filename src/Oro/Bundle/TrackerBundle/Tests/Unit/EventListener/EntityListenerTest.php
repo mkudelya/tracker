@@ -76,8 +76,8 @@ class EntityListenerTest extends \PHPUnit_Framework_TestCase
     {
         $this->mockIssueEntity = $this->getMockBuilder('Oro\Bundle\TrackerBundle\Entity\Issue')->getMock();
         $this->mockCommentEntity = $this->getMockBuilder('Oro\Bundle\TrackerBundle\Entity\Comment')->getMock();
-        $this->mockAssigneeEntity = $this->getMockBuilder('Oro\Bundle\TrackerBundle\Entity\User')->getMock();
-        $this->mockReporterEntity = $this->getMockBuilder('Oro\Bundle\TrackerBundle\Entity\User')->getMock();
+        $this->mockAssigneeEntity = $this->getMockBuilder('Oro\Bundle\UserBundle\Entity\User')->getMock();
+        $this->mockReporterEntity = $this->getMockBuilder('Oro\Bundle\UserBundle\Entity\User')->getMock();
         $this->mockUnitOfWork = $this->getMockBuilder('Doctrine\ORM\UnitOfWork')
             ->disableOriginalConstructor()
             ->getMock();

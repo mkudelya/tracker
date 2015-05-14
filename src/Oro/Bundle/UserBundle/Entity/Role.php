@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\TrackerBundle\Entity;
+namespace Oro\Bundle\UserBundle\Entity;
 
 class Role
 {

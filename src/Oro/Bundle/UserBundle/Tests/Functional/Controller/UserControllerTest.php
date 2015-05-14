@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\TrackerBundle\Tests\Functional\Controller;
+namespace Oro\Bundle\UserBundle\Tests\Functional\Controller;
 
 class UserControllerTest extends AbstractController
 {
@@ -33,7 +33,7 @@ class UserControllerTest extends AbstractController
         $crawler = self::$client->request(
             'GET',
             $this->getUrl(
-                '_tracking_user_edit',
+                '_oro_user_edit',
                 array(
                     'id' => self::getFixture()->getAdminUser()->getId())
             )
@@ -58,7 +58,7 @@ class UserControllerTest extends AbstractController
         $crawler = self::$client->request(
             'GET',
             $this->getUrl(
-                '_tracking_user_profile',
+                '_oro_user_profile',
                 array('username' => self::getFixture()->getAdminUser()->getUsername())
             )
         );

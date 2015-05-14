@@ -30,7 +30,7 @@ class ActivityController extends Controller
     public function listByUserAction($id)
     {
         $manager = $this->getDoctrine()->getManager();
-        $user = $manager->getRepository('OroTrackerBundle:User')->findOneById($id);
+        $user = $manager->getRepository('OroUserBundle:User')->findOneById($id);
         $activities = $this->get('activity')->getActivityIssueListByUser($user);
         return array('activities' => $activities);
     }

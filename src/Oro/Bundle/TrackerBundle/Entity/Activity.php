@@ -7,6 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
+use Oro\Bundle\UserBundle\Entity\User;
+
 /**
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks
@@ -32,7 +34,7 @@ class Activity
     protected $issue;
 
     /**
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="activities")
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User", inversedBy="activities")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      **/
     protected $user;
@@ -128,7 +130,7 @@ class Activity
     /**
      * Set user
      *
-     * @param \Oro\Bundle\TrackerBundle\Entity\User $user
+     * @param \Oro\Bundle\UserBundle\Entity\User $user
      * @return Activity
      */
     public function setUser(User $user = null)
@@ -141,7 +143,7 @@ class Activity
     /**
      * Get user
      *
-     * @return \Oro\Bundle\TrackerBundle\Entity\User
+     * @return \Oro\Bundle\UserBundle\Entity\User
      */
     public function getUser()
     {

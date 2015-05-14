@@ -1,8 +1,8 @@
 <?php
 
-namespace Oro\Bundle\TrackerBundle\Tests\Unit\Entity;
+namespace Oro\Bundle\UserBundle\Tests\Unit\Entity;
 
-use Oro\Bundle\TrackerBundle\Entity\User;
+use Oro\Bundle\UserBundle\Entity\User;
 
 class UserTest extends AbstractEntityTestCase
 {
@@ -16,7 +16,7 @@ class UserTest extends AbstractEntityTestCase
      */
     public function getEntityFQCN()
     {
-        return 'Oro\Bundle\TrackerBundle\Entity\User';
+        return 'Oro\Bundle\UserBundle\Entity\User';
     }
 
     /**

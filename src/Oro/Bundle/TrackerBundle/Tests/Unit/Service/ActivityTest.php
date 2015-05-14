@@ -44,7 +44,7 @@ class ActivityTest extends \PHPUnit_Framework_TestCase
 
     public function testGetActivityIssueListWhereUserIsProjectMember()
     {
-        $obj = $this->getMockBuilder('Oro\Bundle\TrackerBundle\Entity\User')
+        $obj = $this->getMockBuilder('Oro\Bundle\UserBundle\Entity\User')
             ->getMock();
 
         $this->assertCount(2, $this->service->getActivityIssueListWhereUserIsProjectMember($obj));
@@ -52,7 +52,7 @@ class ActivityTest extends \PHPUnit_Framework_TestCase
 
     public function testGetActivityIssueListByUser()
     {
-        $obj = $this->getMockBuilder('Oro\Bundle\TrackerBundle\Entity\User')
+        $obj = $this->getMockBuilder('Oro\Bundle\UserBundle\Entity\User')
             ->getMock();
 
         $this->assertCount(2, $this->service->getActivityIssueListByUser($obj));

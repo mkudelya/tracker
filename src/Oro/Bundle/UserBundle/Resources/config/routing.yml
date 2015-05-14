@@ -1,0 +1,8 @@
+oro_user:
+    resource: "@OroUserBundle/Controller/UserController.php"
+    type:     annotation
+    prefix:   /tracking/user
+
+fos_user:
+    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+    prefix: /

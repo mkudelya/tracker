@@ -19,7 +19,8 @@ class AppKernel extends Kernel
             new FOS\UserBundle\FOSUserBundle(),
             new Oro\Bundle\TrackerBundle\OroTrackerBundle(),
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
-            new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle()
+            new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
+            new Oro\Bundle\UserBundle\OroUserBundle()
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

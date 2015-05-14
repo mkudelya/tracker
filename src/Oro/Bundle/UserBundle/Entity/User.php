@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\TrackerBundle\Entity;
+namespace Oro\Bundle\UserBundle\Entity;
 
 use FOS\UserBundle\Model\User as BaseUser;
 
@@ -9,6 +9,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+
+use Oro\Bundle\TrackerBundle\Entity\Project;
+use Oro\Bundle\TrackerBundle\Entity\Issue;
+use Oro\Bundle\TrackerBundle\Entity\Activity;
 
 /**
  * @ORM\Entity
@@ -45,17 +49,17 @@ class User extends BaseUser
     protected $tempAvatar;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Project", mappedBy="members")
+     * @ORM\ManyToMany(targetEntity="Oro\Bundle\TrackerBundle\Entity\Project", mappedBy="members")
      **/
     protected $projects;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Issue", mappedBy="collaborators")
+     * @ORM\ManyToMany(targetEntity="Oro\Bundle\TrackerBundle\Entity\Issue", mappedBy="collaborators")
      **/
     protected $issues;
 
     /**
-     * @ORM\OneToMany(targetEntity="Activity", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="Oro\Bundle\TrackerBundle\Entity\Activity", mappedBy="user")
      **/
     protected $activities;
 

@@ -5,7 +5,7 @@ namespace Oro\Bundle\TrackerBundle\Service;
 use Symfony\Component\DependencyInjection\ContainerInterface as Container;
 
 use Oro\Bundle\TrackerBundle\Entity\Issue as IssueEntity;
-use Oro\Bundle\TrackerBundle\Entity\User;
+use Oro\Bundle\UserBundle\Entity\User;
 
 class Issue
 {
@@ -110,7 +110,7 @@ class Issue
     {
         $manager = $this->getDoctrine()->getManager();
         $issues = $manager->createQuery(
-            'select u from Oro\Bundle\TrackerBundle\Entity\User u JOIN u.issues i
+            'select u from Oro\Bundle\UserBundle\Entity\User u JOIN u.issues i
             JOIN i.collaborators c WHERE i = ?1'
         );
         $issues->setParameter(1, $issue);

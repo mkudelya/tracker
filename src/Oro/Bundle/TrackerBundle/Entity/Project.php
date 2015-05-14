@@ -7,6 +7,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
+use Oro\Bundle\UserBundle\Entity\User;
+
 /**
  * @ORM\Entity
  * @ORM\Table(name="projects")
@@ -37,7 +39,7 @@ class Project
     protected $code;
 
     /**
-     * @ORM\ManyToMany(targetEntity="User", inversedBy="projects")
+     * @ORM\ManyToMany(targetEntity="Oro\Bundle\UserBundle\Entity\User", inversedBy="projects")
      * @ORM\JoinTable(name="project_members")
      **/
     protected $members;
@@ -213,7 +215,7 @@ class Project
     }
 
     /**
-     * @param \Oro\Bundle\TrackerBundle\Entity\User $user
+     * @param \Oro\Bundle\UserBundle\Entity\User $user
      * @return bool
      */
     public function hasMember($user)
@@ -244,7 +246,7 @@ class Project
     /**
      * Add members
      *
-     * @param \Oro\Bundle\TrackerBundle\Entity\User $members
+     * @param \Oro\Bundle\UserBundle\Entity\User $members
      * @return Project
      */
     public function addMember(User $members)
@@ -257,7 +259,7 @@ class Project
     /**
      * Remove members
      *
-     * @param \Oro\Bundle\TrackerBundle\Entity\User $members
+     * @param \Oro\Bundle\UserBundle\Entity\User $members
      */
     public function removeMember(User $members)
     {

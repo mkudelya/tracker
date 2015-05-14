@@ -1,3 +1,7 @@
+oro_user:
+    resource: "@OroUserBundle/Resources/config/routing.yml"
+    prefix:   /
+
 tracker:
     resource: "@OroTrackerBundle/Resources/config/routing.yml"
     prefix:   /

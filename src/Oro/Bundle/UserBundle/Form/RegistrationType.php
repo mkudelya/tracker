@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\TrackerBundle\Form;
+namespace Oro\Bundle\UserBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -9,8 +9,8 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface as Container;
 
-use Oro\Bundle\TrackerBundle\Entity\Role as Role;
-use Oro\Bundle\TrackerBundle\Entity\User;
+use Oro\Bundle\UserBundle\Entity\Role as Role;
+use Oro\Bundle\UserBundle\Entity\User;
 
 class RegistrationType extends AbstractType
 {
@@ -119,8 +119,8 @@ class RegistrationType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'data_class' => 'Oro\Bundle\TrackerBundle\Entity\User',
-                'intention'  => 'registration',
+                'data_class' => 'Oro\Bundle\UserBundle\Entity\User',
+                'intention'  => 'registration'
             )
         );
     }

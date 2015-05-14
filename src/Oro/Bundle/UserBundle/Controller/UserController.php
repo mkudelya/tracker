@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\TrackerBundle\Controller;
+namespace Oro\Bundle\UserBundle\Controller;
 
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -15,7 +15,7 @@ use FOS\UserBundle\Event\FormEvent;
 class UserController extends Controller
 {
     /**
-     * @Route("/list", name="_tracking_user_list")
+     * @Route("/list", name="_oro_user_list")
      * @Template()
      * @return array
      */
@@ -28,7 +28,7 @@ class UserController extends Controller
     }
 
     /**
-     * @Route("/show/{username}", name="_tracking_user_profile")
+     * @Route("/show/{username}", name="_oro_user_profile")
      * @Template()
      * @param string $username
      * @return array
@@ -39,7 +39,7 @@ class UserController extends Controller
 
         if (!empty($username)) {
             $manager = $this->getDoctrine()->getManager();
-            $userEntity = $manager->getRepository('OroTrackerBundle:User')->findOneByUsername($username);
+            $userEntity = $manager->getRepository('OroUserBundle:User')->findOneByUsername($username);
 
             if ($userEntity == null) {
                 throw new NotFoundHttpException(
@@ -54,7 +54,7 @@ class UserController extends Controller
     }
 
     /**
-     * @Route("/edit/{id}", name="_tracking_user_edit")
+     * @Route("/edit/{id}", name="_oro_user_edit")
      * @Template()
      * @param integer $id
      * @return array
@@ -87,7 +87,7 @@ class UserController extends Controller
     }
 
     /**
-     * @Route("/update/{id}", name="_tracking_user_update")
+     * @Route("/update/{id}", name="_oro_user_update")
      * @Template()
      * @param integer $id
      * @return mixed
@@ -138,9 +138,9 @@ class UserController extends Controller
 
             if (null === $response = $event->getResponse()) {
                 if ($currentUserEntity->hasRole('ROLE_ADMINISTRATOR')) {
-                    $url = $this->generateUrl('_tracking_user_list');
+                    $url = $this->generateUrl('_oro_user_list');
                 } else {
-                    $url = $this->generateUrl('_tracking_user_profile');
+                    $url = $this->generateUrl('_oro_user_profile');
                 }
                 $response = new RedirectResponse($url);
             }
@@ -149,7 +149,7 @@ class UserController extends Controller
         }
 
         return $this->render(
-            'OroTrackerBundle:User:edit.html.twig',
+            'OroUserBundle:User:edit.html.twig',
             array(
                 'form' => $form->createView(),
                 'user' => $user,

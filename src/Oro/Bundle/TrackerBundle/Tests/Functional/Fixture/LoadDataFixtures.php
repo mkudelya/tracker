@@ -8,7 +8,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-use Oro\Bundle\TrackerBundle\Entity\Role;
+use Oro\Bundle\UserBundle\Entity\Role;
 
 class LoadDataFixtures extends AbstractFixture implements ContainerAwareInterface
 {
@@ -26,7 +26,7 @@ class LoadDataFixtures extends AbstractFixture implements ContainerAwareInterfac
     protected $container;
 
     /**
-     * @var \Oro\Bundle\TrackerBundle\Entity\User
+     * @var \Oro\Bundle\UserBundle\Entity\User
      */
     protected $adminUser;
 
@@ -66,7 +66,7 @@ class LoadDataFixtures extends AbstractFixture implements ContainerAwareInterfac
     }
 
     /**
-     * @return \Oro\Bundle\TrackerBundle\Entity\User
+     * @return \Oro\Bundle\UserBundle\Entity\User
      */
     public function getAdminUser()
     {

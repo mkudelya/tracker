@@ -10,7 +10,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface as Container;
 use Oro\Bundle\TrackerBundle\Entity\Issue;
 use Oro\Bundle\TrackerBundle\Entity\Activity;
 use Oro\Bundle\TrackerBundle\Entity\Comment;
-use Oro\Bundle\TrackerBundle\Entity\User;
+use Oro\Bundle\UserBundle\Entity\User;
 
 class EntityListener
 {

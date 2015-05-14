@@ -36,8 +36,8 @@ class IssueTest extends AbstractEntityTestCase
         $updated = '2015-01-01';
         $parent = $this->getMock('Oro\Bundle\TrackerBundle\Entity\Issue');
         $project = $this->getMock('Oro\Bundle\TrackerBundle\Entity\Project');
-        $reporter = $this->getMock('Oro\Bundle\TrackerBundle\Entity\User');
-        $assignee = $this->getMock('Oro\Bundle\TrackerBundle\Entity\User');
+        $reporter = $this->getMock('Oro\Bundle\UserBundle\Entity\User');
+        $assignee = $this->getMock('Oro\Bundle\UserBundle\Entity\User');
 
         return [
             'id' => ['id', 1, 1],
@@ -59,7 +59,7 @@ class IssueTest extends AbstractEntityTestCase
 
     public function testCollaborators()
     {
-        $mock = $this->getMockBuilder('Oro\Bundle\TrackerBundle\Entity\User')->getMock();
+        $mock = $this->getMockBuilder('Oro\Bundle\UserBundle\Entity\User')->getMock();
         $mock
             ->expects($this->exactly(3))
             ->method('getId')

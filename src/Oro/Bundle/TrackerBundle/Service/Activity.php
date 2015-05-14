@@ -4,7 +4,7 @@ namespace Oro\Bundle\TrackerBundle\Service;
 
 use Symfony\Component\DependencyInjection\ContainerInterface as Container;
 
-use Oro\Bundle\TrackerBundle\Entity\User;
+use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\TrackerBundle\Entity\Project;
 use Oro\Bundle\TrackerBundle\Entity\Issue as IssueEntity;
 

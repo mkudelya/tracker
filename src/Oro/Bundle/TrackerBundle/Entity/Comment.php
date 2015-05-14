@@ -5,6 +5,8 @@ namespace Oro\Bundle\TrackerBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
+use Oro\Bundle\UserBundle\Entity\User;
+
 /**
  * @ORM\Entity
  * @ORM\Table(name="comments")
@@ -20,7 +22,7 @@ class Comment
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      **/
     protected $user;
@@ -111,7 +113,7 @@ class Comment
     /**
      * Set user
      *
-     * @param \Oro\Bundle\TrackerBundle\Entity\User $user
+     * @param \Oro\Bundle\UserBundle\Entity\User $user
      * @return Comment
      */
     public function setUser(User $user = null)
@@ -124,7 +126,7 @@ class Comment
     /**
      * Get user
      *
-     * @return \Oro\Bundle\TrackerBundle\Entity\User
+     * @return \Oro\Bundle\UserBundle\Entity\User
      */
     public function getUser()
     {

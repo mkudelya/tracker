@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\TrackerBundle\Tests\Unit\Entity;
 
-use Oro\Bundle\TrackerBundle\Entity\Role;
+use Oro\Bundle\UserBundle\Entity\Role;
 
 class RoleTest extends \PHPUnit_Framework_TestCase
 {

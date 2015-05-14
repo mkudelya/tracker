@@ -7,7 +7,7 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 use Oro\Bundle\TrackerBundle\Entity\Comment;
-use Oro\Bundle\TrackerBundle\Entity\Role;
+use Oro\Bundle\UserBundle\Entity\Role;
 
 class CommentVoter implements VoterInterface
 {

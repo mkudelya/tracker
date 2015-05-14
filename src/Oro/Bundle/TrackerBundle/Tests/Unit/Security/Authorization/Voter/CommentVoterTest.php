@@ -6,8 +6,8 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 use Oro\Bundle\TrackerBundle\Security\Authorization\Voter\CommentVoter;
 use Oro\Bundle\TrackerBundle\Entity\Comment;
-use Oro\Bundle\TrackerBundle\Entity\User;
-use Oro\Bundle\TrackerBundle\Entity\Role;
+use Oro\Bundle\UserBundle\Entity\User;
+use Oro\Bundle\UserBundle\Entity\Role;
 
 class CommentVoterTest extends \PHPUnit_Framework_TestCase
 {
@@ -39,7 +39,7 @@ class CommentVoterTest extends \PHPUnit_Framework_TestCase
             ->getMock();
 
         $this->mockUserEntity = $this
-            ->getMockBuilder('Oro\Bundle\TrackerBundle\Entity\User')
+            ->getMockBuilder('Oro\Bundle\UserBundle\Entity\User')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -173,7 +173,7 @@ class CommentVoterTest extends \PHPUnit_Framework_TestCase
     public function testUserCheckFailure()
     {
         $mockNonGrantedUserEntity = $this
-            ->getMockBuilder('Oro\Bundle\TrackerBundle\Entity\User')
+            ->getMockBuilder('Oro\Bundle\UserBundle\Entity\User')
             ->disableOriginalConstructor()
             ->getMock();
 

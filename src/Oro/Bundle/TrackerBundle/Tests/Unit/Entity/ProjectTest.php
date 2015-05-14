@@ -69,7 +69,7 @@ class ProjectTest extends AbstractEntityTestCase
 
     public function testMembers()
     {
-        $mock = $this->getMockBuilder('Oro\Bundle\TrackerBundle\Entity\User')->getMock();
+        $mock = $this->getMockBuilder('Oro\Bundle\UserBundle\Entity\User')->getMock();
         $mock
             ->expects($this->exactly(3))
             ->method('getId')

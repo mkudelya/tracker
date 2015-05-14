@@ -21,8 +21,8 @@
                         <td>{{ issue.getType() }}</td>
                         <td>{{ issue.getStatus() }}</td>
                         <td>{{ issue.getResolution() }}</td>
-                        <td><a href="{{ path('_tracking_user_profile', {'username': issue.getAssignee().getUsername() }) }}">{{ issue.getAssignee() }}</a></td>
-                        <td><a href="{{ path('_tracking_user_profile', {'username': issue.getReporter().getUsername() }) }}">{{ issue.getReporter() }}</a></td>
+                        <td><a href="{{ path('_oro_user_profile', {'username': issue.getAssignee().getUsername() }) }}">{{ issue.getAssignee() }}</a></td>
+                        <td><a href="{{ path('_oro_user_profile', {'username': issue.getReporter().getUsername() }) }}">{{ issue.getReporter() }}</a></td>
                         <td>
                             {% if is_granted('view', issue) %}
                             <a href="{{ path('_tracking_issue_show', {'projectCode': issue.getProject().getCode(), 'issueCode': issue.getCode()}) }}">{{ 'grid.show'|trans({}, 'OroTrackerBundle') }}</a> |

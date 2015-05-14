@@ -1,0 +1,6 @@
+services:
+    tracker_user.registration.type:
+        class: Oro\Bundle\UserBundle\Form\RegistrationType
+        arguments: ['@service_container']
+        tags:
+            - { name: form.type, alias: tracker_user_registration }

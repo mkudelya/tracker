@@ -25,7 +25,7 @@
                     <td>{{ user.getEmail() }}</td>
                     <td>{{ user.getUsername() }}</td>
                     <td>{{ user.getFullname() }}</td>
-                    <td><a href="{{ path('_tracking_user_edit', {'id': user.getId()}) }}">{{ 'grid.edit'|trans({}, 'OroTrackerBundle') }}</a>
+                    <td><a href="{{ path('_oro_user_edit', {'id': user.getId()}) }}">{{ 'grid.edit'|trans({}, 'OroTrackerBundle') }}</a>
                 </tr>
             {% endfor %}
             </tbody>

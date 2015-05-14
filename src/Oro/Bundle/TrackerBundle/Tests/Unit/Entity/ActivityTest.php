@@ -26,7 +26,7 @@ class ActivityTest extends AbstractEntityTestCase
     {
         $body = 'body';
         $issue = $this->getMock('Oro\Bundle\TrackerBundle\Entity\Issue');
-        $user = $this->getMock('Oro\Bundle\TrackerBundle\Entity\User');
+        $user = $this->getMock('Oro\Bundle\UserBundle\Entity\User');
         $created = '2015-01-01';
         $type = 'type';
         $project = $this->getMock('Oro\Bundle\TrackerBundle\Entity\Project');

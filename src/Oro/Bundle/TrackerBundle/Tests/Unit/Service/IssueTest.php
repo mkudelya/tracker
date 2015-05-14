@@ -76,7 +76,7 @@ class IssueTest extends \PHPUnit_Framework_TestCase
 
     public function testGetActivityIssueListByUser()
     {
-        $obj = $this->getMockBuilder('Oro\Bundle\TrackerBundle\Entity\User')
+        $obj = $this->getMockBuilder('Oro\Bundle\UserBundle\Entity\User')
             ->getMock();
 
         $this->assertCount(2, $this->service->getIssueListByCollaborationUser($obj));
@@ -84,7 +84,7 @@ class IssueTest extends \PHPUnit_Framework_TestCase
 
     public function testGetIssueListByAssigneeUser()
     {
-        $obj = $this->getMockBuilder('Oro\Bundle\TrackerBundle\Entity\User')
+        $obj = $this->getMockBuilder('Oro\Bundle\UserBundle\Entity\User')
             ->getMock();
 
         $this->assertCount(2, $this->service->getIssueListByAssigneeUser($obj));
@@ -108,7 +108,7 @@ class IssueTest extends \PHPUnit_Framework_TestCase
         $issue = $this->getMockBuilder('Oro\Bundle\TrackerBundle\Entity\Issue')
             ->getMock();
 
-        $user = $this->getMockBuilder('Oro\Bundle\TrackerBundle\Entity\User')
+        $user = $this->getMockBuilder('Oro\Bundle\UserBundle\Entity\User')
             ->getMock();
 
         $issue->expects($this->any())

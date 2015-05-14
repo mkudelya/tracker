@@ -1,10 +1,4 @@
 services:
-    tracker_user.registration.type:
-        class: Oro\Bundle\TrackerBundle\Form\RegistrationType
-        arguments: ['@service_container']
-        tags:
-            - { name: form.type, alias: tracker_user_registration }
-
     event.listener:
         class: Oro\Bundle\TrackerBundle\EventListener\EntityListener
         arguments: ['@service_container']
