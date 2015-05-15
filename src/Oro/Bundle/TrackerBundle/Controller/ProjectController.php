@@ -4,6 +4,7 @@ namespace Oro\Bundle\TrackerBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -40,6 +41,13 @@ class ProjectController extends Controller
         if ($projectCode) {
             $projectEntity = $manager->getRepository('OroTrackerBundle:Project')->findOneByCode($projectCode);
             $isAdd = false;
+
+            if (!$projectEntity) {
+                throw new ResourceNotFoundException(
+                    $this->get('translator')->trans('layout.sorry_not_existing', array(), 'OroTrackerBundle')
+                );
+            }
+
         } else {
             $projectEntity = new Project();
         }
@@ -84,6 +92,12 @@ class ProjectController extends Controller
     public function showAction($projectCode)
     {
         $projectEntity = $this->getDoctrine()->getRepository('OroTrackerBundle:Project')->findOneByCode($projectCode);
+
+        if (!$projectEntity) {
+            throw new ResourceNotFoundException(
+                $this->get('translator')->trans('layout.sorry_not_existing', array(), 'OroTrackerBundle')
+            );
+        }
 
         if (false === $this->get('security.context')->isGranted('view', $projectEntity)) {
             throw new AccessDeniedException(

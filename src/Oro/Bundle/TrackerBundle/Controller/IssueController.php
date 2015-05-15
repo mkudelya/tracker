@@ -4,6 +4,7 @@ namespace Oro\Bundle\TrackerBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -130,6 +131,12 @@ class IssueController extends Controller
         if ($methodType == self::IS_EDIT_TASK) {
             $issueEntity = $manager->getRepository('OroTrackerBundle:Issue')->findOneByCode($issueCode);
 
+            if (!$issueEntity) {
+                throw new ResourceNotFoundException(
+                    $this->get('translator')->trans('layout.sorry_not_existing', array(), 'OroTrackerBundle')
+                );
+            }
+
             if (false === $this->get('security.context')->isGranted('edit', $issueEntity)) {
                 throw new AccessDeniedException(
                     $this->get('translator')->trans('layout.unauthorised_access', array(), 'OroTrackerBundle')
@@ -205,6 +212,12 @@ class IssueController extends Controller
     {
         $projectEntity = $this->getDoctrine()->getRepository('OroTrackerBundle:Project')->findOneByCode($projectCode);
         $issueEntity = $this->getDoctrine()->getRepository('OroTrackerBundle:Issue')->findOneByCode($issueCode);
+
+        if (!$issueEntity) {
+            throw new ResourceNotFoundException(
+                $this->get('translator')->trans('layout.sorry_not_existing', array(), 'OroTrackerBundle')
+            );
+        }
 
         if (false === $this->get('security.context')->isGranted('view', $issueEntity)) {
             throw new AccessDeniedException(
