@@ -59,7 +59,7 @@ class EntityListener
         if ($token) {
             $currentUser = $token->getUser();
         } else {
-            $currentUser = new User();
+            return;
         }
 
         if ($entity instanceof Issue) {
