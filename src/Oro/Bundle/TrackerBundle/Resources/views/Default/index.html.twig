@@ -1,18 +1,22 @@
 {% extends "OroTrackerBundle::layout.html.twig" %}
 
 {% block content %}
-    <p>
-        <b>{{ 'layout.issues_where_you_are_as_collaborator'|trans({}, 'OroTrackerBundle') }}:</b>
-        {{ render(controller(
-        'OroTrackerBundle:Issue:listByCollaborator'
-        )) }}
-    </p>
-    <hr>
-    <br/>
-    <p>
-        <b>{{ 'layout.activity_list'|trans({}, 'OroTrackerBundle') }}:</b>
-        {{ render(controller(
-        'OroTrackerBundle:Activity:listWhereUserIsProjectMember'
-        )) }}
-    </p>
+    {% if app.user %}
+        <p>
+            <b>{{ 'layout.issues_where_you_are_as_collaborator'|trans({}, 'OroTrackerBundle') }}:</b>
+            {{ render(controller(
+            'OroTrackerBundle:Issue:listByCollaborator'
+            )) }}
+        </p>
+        <hr>
+        <br/>
+        <p>
+            <b>{{ 'layout.activity_list'|trans({}, 'OroTrackerBundle') }}:</b>
+            {{ render(controller(
+            'OroTrackerBundle:Activity:listWhereUserIsProjectMember'
+            )) }}
+        </p>
+    {% else %}
+        <p>{{ 'layout.welcome'|trans({}, 'OroTrackerBundle') }}</p>
+    {% endif %}
 {% endblock %}

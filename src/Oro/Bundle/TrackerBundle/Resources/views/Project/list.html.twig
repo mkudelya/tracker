@@ -6,7 +6,7 @@
 
 {% block page_actions %}
     {% if is_granted('ROLE_ADMINISTRATOR') or is_granted('ROLE_MANAGER') %}
-        [ <a href="{{ path('_tracking_project_edit') }}">{{ 'project.add'|trans({}, 'OroTrackerBundle') }}</a> ]
+        [ <a href="{{ path('_tracking_project_create') }}">{{ 'project.add'|trans({}, 'OroTrackerBundle') }}</a> ]
     {% endif %}
 {% endblock %}
 

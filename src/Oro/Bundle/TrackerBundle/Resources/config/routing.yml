@@ -1,18 +1,18 @@
 tracker_homepage:
-    pattern:  /tracking/
+    pattern:  /
     defaults: { _controller: OroTrackerBundle:Default:index }
 
 tracker_issue:
     resource: "@OroTrackerBundle/Controller/IssueController.php"
     type:     annotation
-    prefix:   /tracking/project/{projectCode}/ussue
+    prefix:   /project/{projectCode}/issue
 
 tracker_project:
     resource: "@OroTrackerBundle/Controller/ProjectController.php"
     type:     annotation
-    prefix:   /tracking/project
+    prefix:   /project
 
 tracker_activity:
     resource: "@OroTrackerBundle/Controller/ActivityController.php"
     type:     annotation
-    prefix:   /tracking/activity
+    prefix:   /activity

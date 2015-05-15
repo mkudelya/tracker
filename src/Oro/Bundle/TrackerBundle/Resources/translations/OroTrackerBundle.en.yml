@@ -14,6 +14,7 @@ layout:
     unauthorised_access: Unauthorised access
     sorry_not_existing: Sorry not existing
     error: Error
+    welcome: Welcome to Bug Tracking System. Please login
 
 activity:
     activities_not_found: Activities not found

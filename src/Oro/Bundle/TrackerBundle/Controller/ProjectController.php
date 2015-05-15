@@ -25,6 +25,7 @@ class ProjectController extends Controller
     }
 
     /**
+     * @Route("/create", name="_tracking_project_create")
      * @Route("/edit/{projectCode}", name="_tracking_project_edit")
      * @Template()
      * @param string $projectCode

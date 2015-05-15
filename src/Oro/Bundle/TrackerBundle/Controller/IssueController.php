@@ -101,6 +101,7 @@ class IssueController extends Controller
     }
 
     /**
+     * @Route("/create", name="_tracking_issue_create")
      * @Route("/edit/{issueCode}", name="_tracking_issue_edit")
      * @Route("/addsubtask/{issueCode}", name="_tracking_issue_add_subtask")
      * @Template()
@@ -145,6 +146,7 @@ class IssueController extends Controller
 
         $issueFormType = new IssueType();
         $issueFormType->setProcessMethod($methodType);
+        $issueFormType->setProject($projectEntity);
         $form = $this->createForm($issueFormType, $issueEntity);
         $form->handleRequest($request);
 

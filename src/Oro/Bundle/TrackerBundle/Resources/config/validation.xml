@@ -36,6 +36,9 @@
                 <option name="maxMessage">tracker.code.long</option>
              </constraint>
         </property>
+        <property name="members">
+            <constraint name="Oro\Bundle\TrackerBundle\Validator\Constraints\CheckMember" />
+        </property>
     </class>
 
     <class name="Oro\Bundle\TrackerBundle\Entity\Issue">

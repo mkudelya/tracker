@@ -2,11 +2,15 @@
 
 namespace Oro\Bundle\TrackerBundle\Form;
 
+use Doctrine\ORM\EntityRepository;
+
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 use Oro\Bundle\TrackerBundle\Controller\IssueController;
+use Oro\Bundle\TrackerBundle\Provider\IssueProvider;
+use Oro\Bundle\TrackerBundle\Entity\Project;
 
 class IssueType extends AbstractType
 {
@@ -43,8 +47,18 @@ class IssueType extends AbstractType
         'Incomplete' => 'Incomplete',
         'Cannot Reproduce' => 'Cannot Reproduce',
         'Done' => 'Done',
-        'Won\'t Do' => 'Won\'t Do',
+        'Won\'t Do' => 'Won\'t Do'
     );
+
+    /**
+     * @var IssueProvider
+     */
+    protected $issueProvider;
+
+    /**
+     * @var Project
+     */
+    protected $project;
 
     /**
      * @param FormBuilderInterface $builder
@@ -90,7 +104,24 @@ class IssueType extends AbstractType
                 'required'  => false
             )
         );
-        $builder->add('assignee');
+
+        $project = $this->project;
+
+        $builder->add(
+            'assignee',
+            'entity',
+            array(
+                'class' => 'Oro\Bundle\UserBundle\Entity\User',
+                'query_builder' => function (EntityRepository $repository) use ($project) {
+                    return $repository
+                        ->createQueryBuilder('u')
+                        ->join('u.projects', 'p')
+                        ->where('p = :project')
+                        ->setParameter('project', $project);
+                }
+            )
+        );
+
         $builder->add('Save', 'submit');
     }
 
@@ -128,5 +159,13 @@ class IssueType extends AbstractType
     public function getProcessMethod()
     {
         return $this->processMethod;
+    }
+
+    /**
+     * @param Project $project
+     */
+    public function setProject(Project $project)
+    {
+        $this->project = $project;
     }
 }
