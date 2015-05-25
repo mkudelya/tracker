@@ -6,6 +6,8 @@ Run commands
 
 $ composer install
 
+$ composer update
+
 $ php app/check.php
 
 $ php app/console doctrine:database:create
