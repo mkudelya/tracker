@@ -20,7 +20,8 @@ class AppKernel extends Kernel
             new Oro\Bundle\UserBundle\OroUserBundle(),
             new Oro\Bundle\TrackerBundle\OroTrackerBundle(),
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
-            new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle()
+            new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
+            new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle()
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

@@ -9,6 +9,8 @@ use Oro\Bundle\UserBundle\Entity\User;
 
 class Issue
 {
+    const LIMIT = 20;
+
     /**
      * @var Container
      */
@@ -47,7 +49,7 @@ class Issue
         $projectEntity = $this->getDoctrine()->getRepository('OroTrackerBundle:Project')->findOneByCode($projectCode);
         $issues = $this->getDoctrine()
             ->getRepository('OroTrackerBundle:Issue')
-            ->findBy(array('project' => $projectEntity, 'parent' => null));
+            ->findBy(array('project' => $projectEntity, 'parent' => null), null, self::LIMIT);
 
         return $issues;
     }
@@ -63,7 +65,7 @@ class Issue
 
         $issues = $this->getDoctrine()
             ->getRepository('OroTrackerBundle:Issue')
-            ->findBy(array('parent' => $issueEntity));
+            ->findBy(array('parent' => $issueEntity), null, self::LIMIT);
 
         return $issues;
     }
@@ -81,6 +83,7 @@ class Issue
         );
         $issues->setParameter(1, $user);
         $issues->setParameter(2, 'Closed');
+        $issues->setMaxResults(self::LIMIT);
 
         return $issues->getResult();
     }
@@ -98,6 +101,7 @@ class Issue
         );
         $issues->setParameter(1, $user);
         $issues->setParameter(2, 'Closed');
+        $issues->setMaxResults(self::LIMIT);
 
         return $issues->getResult();
     }

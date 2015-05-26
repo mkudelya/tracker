@@ -27,7 +27,8 @@
         "pdepend/pdepend" : "1.1.0",
         "phpmd/phpmd" : "1.4.*",
         "squizlabs/php_codesniffer": "2.*",
-        "friendsofsymfony/user-bundle": "~2.0@dev"
+        "friendsofsymfony/user-bundle": "~2.0@dev",
+        "knplabs/knp-paginator-bundle": "2.4.1"
     },
     "scripts": {
         "post-install-cmd": [

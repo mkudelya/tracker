@@ -21,7 +21,15 @@ class ProjectController extends Controller
      */
     public function listAction()
     {
+        $paginator  = $this->get('knp_paginator');
         $projects = $this->get('project')->getList();
+
+        $projects = $paginator->paginate(
+            $projects,
+            $this->getRequest()->query->getInt('page', 1),
+            20
+        );
+
         return array('projects' => $projects);
     }
 

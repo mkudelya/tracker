@@ -10,6 +10,8 @@ use Oro\Bundle\TrackerBundle\Entity\Issue as IssueEntity;
 
 class Activity
 {
+    const LIMIT = 10;
+
     /**
      * @var Container
      */
@@ -41,6 +43,7 @@ class Activity
             JOIN p.members u WHERE u = ?1 ORDER BY a.created DESC'
         );
         $activities->setParameter(1, $user);
+        $activities->setMaxResults(self::LIMIT);
         return $activities->getResult();
     }
 
@@ -56,6 +59,7 @@ class Activity
             ORDER BY a.created DESC'
         );
         $activities->setParameter(1, $user);
+        $activities->setMaxResults(self::LIMIT);
         return $activities->getResult();
     }
 
@@ -71,6 +75,7 @@ class Activity
             WHERE p = ?1 ORDER BY a.created DESC'
         );
         $activities->setParameter(1, $project);
+        $activities->setMaxResults(self::LIMIT);
         return $activities->getResult();
     }
 
@@ -86,6 +91,7 @@ class Activity
             WHERE i.id = ?1 or i.parent = ?1 ORDER BY a.created DESC'
         );
         $activities->setParameter(1, $issue);
+        $activities->setMaxResults(self::LIMIT);
         return $activities->getResult();
     }
 
