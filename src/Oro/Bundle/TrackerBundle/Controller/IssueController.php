@@ -29,7 +29,11 @@ class IssueController extends Controller
      */
     public function listAction($projectCode)
     {
-        $issues = $this->get('issue')->getIssueListByProjectCode($projectCode);
+        $issues = $this
+            ->getDoctrine()
+            ->getManager()
+            ->getRepository('OroTrackerBundle:Issue')
+            ->getIssueListByProjectCode($projectCode);
         return array('issues' => $issues);
     }
 
@@ -41,7 +45,11 @@ class IssueController extends Controller
      */
     public function subtasksListAction($issueCode)
     {
-        $issues = $this->get('issue')->getIssueSubListByIssueCode($issueCode);
+        $issues = $this
+            ->getDoctrine()
+            ->getManager()
+            ->getRepository('OroTrackerBundle:Issue')
+            ->getIssueSubListByIssueCode($issueCode);
         return array('issues' => $issues);
     }
 
@@ -52,7 +60,11 @@ class IssueController extends Controller
     public function listByCollaboratorAction()
     {
         $user = $this->get('security.context')->getToken()->getUser();
-        $issues = $this->get('issue')->getIssueListByCollaborationUser($user);
+        $issues = $this
+            ->getDoctrine()
+            ->getManager()
+            ->getRepository('OroTrackerBundle:Issue')
+            ->getIssueListByCollaborationUser($user);
         return array('issues' => $issues);
     }
 
@@ -65,7 +77,11 @@ class IssueController extends Controller
     public function listByAssigneeAction($id)
     {
         $user = $this->getDoctrine()->getRepository('OroUserBundle:User')->find($id);
-        $issues = $this->get('issue')->getIssueListByAssigneeUser($user);
+        $issues = $this
+            ->getDoctrine()
+            ->getManager()
+            ->getRepository('OroTrackerBundle:Issue')
+            ->getIssueListByAssigneeUser($user);
         return array('issues' => $issues);
     }
 
@@ -78,7 +94,11 @@ class IssueController extends Controller
     public function listCollaboratorByIssueAction($issueCode)
     {
         $issueEntity = $this->getDoctrine()->getRepository('OroTrackerBundle:Issue')->findOneByCode($issueCode);
-        $users = $this->get('issue')->getCollaborationListByIssue($issueEntity);
+        $users = $this
+            ->getDoctrine()
+            ->getManager()
+            ->getRepository('OroTrackerBundle:Issue')
+            ->getCollaborationListByIssue($issueEntity);
         return array('users' => $users);
     }
 
@@ -90,7 +110,11 @@ class IssueController extends Controller
      */
     public function listOfCommentsAction($issueCode)
     {
-        $comments = $this->get('issue')->getCommentListByIssueCode($issueCode);
+        $comments = $this
+            ->getDoctrine()
+            ->getManager()
+            ->getRepository('OroTrackerBundle:Issue')
+            ->getCommentListByIssueCode($issueCode);
         $commentFormType = new CommentType();
         $commentEntity = new Comment();
         $form = $this->createForm($commentFormType, $commentEntity);

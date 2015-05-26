@@ -1,44 +1,15 @@
 <?php
 
-namespace Oro\Bundle\TrackerBundle\Service;
+namespace Oro\Bundle\TrackerBundle\Entity\Repository;
 
-use Symfony\Component\DependencyInjection\ContainerInterface as Container;
+use Doctrine\ORM\EntityRepository;
 
 use Oro\Bundle\TrackerBundle\Entity\Issue as IssueEntity;
 use Oro\Bundle\UserBundle\Entity\User;
 
-class Issue
+class IssueRepository extends EntityRepository
 {
     const LIMIT = 20;
-
-    /**
-     * @var Container
-     */
-    protected $container;
-
-    /**
-     * @var \Doctrine\Bundle\DoctrineBundle\Registry
-     */
-    protected $doctine;
-
-    /**
-     * @param Container $container
-     */
-    public function __construct(Container $container)
-    {
-        $this->container = $container;
-        $this->doctine = $container->get('doctrine');
-    }
-
-    /**
-     * @param IssueEntity $issue
-     * @param User $user
-     * @return bool
-     */
-    public function isUserCollaborator(IssueEntity $issue, User $user)
-    {
-        return $issue->hasCollaborator($user);
-    }
 
     /**
      * @param string $projectCode
@@ -46,10 +17,8 @@ class Issue
      */
     public function getIssueListByProjectCode($projectCode)
     {
-        $projectEntity = $this->getDoctrine()->getRepository('OroTrackerBundle:Project')->findOneByCode($projectCode);
-        $issues = $this->getDoctrine()
-            ->getRepository('OroTrackerBundle:Issue')
-            ->findBy(array('project' => $projectEntity, 'parent' => null), null, self::LIMIT);
+        $projectEntity = $this->getEntityManager()->getRepository('OroTrackerBundle:Project')->findOneByCode($projectCode);
+        $issues = $this->findBy(array('project' => $projectEntity, 'parent' => null), null, self::LIMIT);
 
         return $issues;
     }
@@ -60,12 +29,8 @@ class Issue
      */
     public function getIssueSubListByIssueCode($issueCode)
     {
-        $manager = $this->getDoctrine()->getManager();
-        $issueEntity = $manager->getRepository('OroTrackerBundle:Issue')->findOneByCode($issueCode);
-
-        $issues = $this->getDoctrine()
-            ->getRepository('OroTrackerBundle:Issue')
-            ->findBy(array('parent' => $issueEntity), null, self::LIMIT);
+        $issueEntity = $this->getEntityManager()->getRepository('OroTrackerBundle:Issue')->findOneByCode($issueCode);
+        $issues = $this->findBy(array('parent' => $issueEntity), null, self::LIMIT);
 
         return $issues;
     }
@@ -76,8 +41,7 @@ class Issue
      */
     public function getIssueListByCollaborationUser(User $user)
     {
-        $manager = $this->getDoctrine()->getManager();
-        $issues = $manager->createQuery(
+        $issues = $this->getEntityManager()->createQuery(
             'select i from Oro\Bundle\TrackerBundle\Entity\Issue i JOIN i.collaborators u
             WHERE u = ?1 and i.status != ?2 and i.parent IS NULL'
         );
@@ -94,8 +58,7 @@ class Issue
      */
     public function getIssueListByAssigneeUser(User $user)
     {
-        $manager = $this->getDoctrine()->getManager();
-        $issues = $manager->createQuery(
+        $issues = $this->getEntityManager()->createQuery(
             'select i from Oro\Bundle\TrackerBundle\Entity\Issue i
             WHERE i.assignee = ?1 and i.status != ?2 and i.parent IS NULL'
         );
@@ -112,8 +75,7 @@ class Issue
      */
     public function getCollaborationListByIssue(IssueEntity $issue)
     {
-        $manager = $this->getDoctrine()->getManager();
-        $issues = $manager->createQuery(
+        $issues = $this->getEntityManager()->createQuery(
             'select u from Oro\Bundle\UserBundle\Entity\User u JOIN u.issues i
             JOIN i.collaborators c WHERE i = ?1'
         );
@@ -128,19 +90,11 @@ class Issue
      */
     public function getCommentListByIssueCode($issueCode)
     {
-        $issueEntity = $this->getDoctrine()->getRepository('OroTrackerBundle:Issue')->findOneByCode($issueCode);
-        $comments = $this->getDoctrine()
+        $issueEntity = $this->getEntityManager()->getRepository('OroTrackerBundle:Issue')->findOneByCode($issueCode);
+        $comments = $this->getEntityManager()
             ->getRepository('OroTrackerBundle:Comment')
             ->findBy(array('issue' => $issueEntity));
 
         return $comments;
-    }
-
-    /**
-     * @return \Doctrine\Bundle\DoctrineBundle\Registry
-     */
-    protected function getDoctrine()
-    {
-        return $this->doctine;
     }
 }

@@ -22,7 +22,7 @@ class ProjectController extends Controller
     public function listAction()
     {
         $paginator  = $this->get('knp_paginator');
-        $projects = $this->get('project')->getList();
+        $projects = $this->getDoctrine()->getRepository('OroTrackerBundle:Project')->findAll();
 
         $projects = $paginator->paginate(
             $projects,

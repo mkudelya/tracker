@@ -17,7 +17,11 @@ class ActivityController extends Controller
     public function listWhereUserIsProjectMemberAction()
     {
         $user = $this->get('security.context')->getToken()->getUser();
-        $activities = $this->get('activity')->getActivityIssueListWhereUserIsProjectMember($user);
+        $activities = $this
+            ->getDoctrine()
+            ->getManager()
+            ->getRepository('OroTrackerBundle:Activity')
+            ->getActivityIssueListWhereUserIsProjectMember($user);
         return array('activities' => $activities);
     }
 
@@ -31,7 +35,11 @@ class ActivityController extends Controller
     {
         $manager = $this->getDoctrine()->getManager();
         $user = $manager->getRepository('OroUserBundle:User')->findOneById($id);
-        $activities = $this->get('activity')->getActivityIssueListByUser($user);
+        $activities = $this
+            ->getDoctrine()
+            ->getManager()
+            ->getRepository('OroTrackerBundle:Activity')
+            ->getActivityIssueListByUser($user);
         return array('activities' => $activities);
     }
 
@@ -44,7 +52,11 @@ class ActivityController extends Controller
     public function listByProjectAction($projectCode)
     {
         $projectEntity = $this->getDoctrine()->getRepository('OroTrackerBundle:Project')->findOneByCode($projectCode);
-        $activities = $this->get('activity')->getActivityIssueListByProject($projectEntity);
+        $activities = $this
+            ->getDoctrine()
+            ->getManager()
+            ->getRepository('OroTrackerBundle:Activity')
+            ->getActivityIssueListByProject($projectEntity);
         return array('activities' => $activities);
     }
 
@@ -57,7 +69,11 @@ class ActivityController extends Controller
     public function listByIssueAction($issueCode)
     {
         $issueEntity = $this->getDoctrine()->getRepository('OroTrackerBundle:Issue')->findOneByCode($issueCode);
-        $activities = $this->get('activity')->getActivityIssueListByIssue($issueEntity);
+        $activities = $this
+            ->getDoctrine()
+            ->getManager()
+            ->getRepository('OroTrackerBundle:Activity')
+            ->getActivityIssueListByIssue($issueEntity);
         return array('activities' => $activities);
     }
 }

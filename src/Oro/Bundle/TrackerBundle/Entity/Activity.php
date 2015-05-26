@@ -13,6 +13,7 @@ use Oro\Bundle\UserBundle\Entity\User;
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks
  * @ORM\Table(name="activities")
+ * @ORM\Entity(repositoryClass="Oro\Bundle\TrackerBundle\Entity\Repository\ActivityRepository")
  */
 class Activity
 {

@@ -13,6 +13,7 @@ use Oro\Bundle\UserBundle\Entity\User;
 /**
  * @ORM\Entity
  * @ORM\Table(name="issues")
+ * @ORM\Entity(repositoryClass="Oro\Bundle\TrackerBundle\Entity\Repository\IssueRepository")
  * @ORM\HasLifecycleCallbacks
  * @UniqueEntity("code")
  */
