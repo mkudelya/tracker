@@ -49,7 +49,7 @@ class Issue
     /**
      * @ORM\Column(type="integer", options={"default":0})
      */
-    protected $priority;
+    protected $priority = 0;
 
     /**
      * @ORM\Column(type="string", length=20)

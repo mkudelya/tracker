@@ -144,6 +144,17 @@ class IssueController extends Controller
 
         if ($routeName == self::ROUTE_ADD_SUBTASK) {
             $methodType = self::IS_ADD_SUBTASK;
+            $issueEntity = $manager->getRepository('OroTrackerBundle:Issue')->findOneByCode($issueCode);
+            if (!$issueEntity) {
+                throw new ResourceNotFoundException(
+                    $this->get('translator')->trans('layout.sorry_not_existing', array(), 'OroTrackerBundle')
+                );
+            }
+            if ($issueEntity->getType() !== 'story') {
+                throw new AccessDeniedException(
+                    $this->get('translator')->trans('layout.issue_is_not_story', array(), 'OroTrackerBundle')
+                );
+            }
         } else {
             if ($issueCode) {
                 $methodType = self::IS_EDIT_TASK;

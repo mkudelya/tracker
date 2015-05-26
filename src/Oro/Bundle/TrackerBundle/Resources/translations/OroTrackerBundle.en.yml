@@ -12,7 +12,8 @@ layout:
     assignee_issue_list: Assignee issue list
     home: Home
     unauthorised_access: Unauthorised access
-    sorry_not_existing: Sorry not existing
+    sorry_not_existing: Sorry, resource isn't exist
+    issue_is_not_story: Issue isn't a story
     error: Error
     welcome: Welcome to Bug Tracking System. Please login
 

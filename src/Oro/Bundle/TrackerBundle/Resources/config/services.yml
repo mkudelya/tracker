@@ -6,17 +6,8 @@ services:
             - { name: doctrine.event_listener, event: postPersist }
             - { name: doctrine.event_listener, event: postUpdate }
 
-    project:
-        class: Oro\Bundle\TrackerBundle\Service\Project
-        arguments: ['@service_container']
-
     issue:
         class: Oro\Bundle\TrackerBundle\Service\Issue
-        arguments: ['@service_container']
-
-    activity:
-        class: Oro\Bundle\TrackerBundle\Service\Activity
-        arguments: ['@service_container']
 
     security.access.project_voter:
         class:      Oro\Bundle\TrackerBundle\Security\Authorization\Voter\ProjectVoter
