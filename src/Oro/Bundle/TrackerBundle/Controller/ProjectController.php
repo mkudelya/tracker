@@ -12,6 +12,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 use Oro\Bundle\TrackerBundle\Entity\Project;
 use Oro\Bundle\TrackerBundle\Form\ProjectType;
+use Oro\Bundle\TrackerBundle\Security\Authorization\Voter\ProjectVoter;
 
 class ProjectController extends Controller
 {
@@ -36,44 +37,60 @@ class ProjectController extends Controller
 
     /**
      * @Route("/create", name="_tracking_project_create")
-     * @Route("/edit/{projectCode}", name="_tracking_project_edit", defaults={"projectCode" = null})
+     * @Template("OroTrackerBundle:Project:edit.html.twig")
+     * @return mixed
+     */
+    public function createAction()
+    {
+        return $this->edit(new Project());
+    }
+
+    /**
+     * @Route("/edit/{projectCode}", name="_tracking_project_edit")
      * @ParamConverter("project", options={"mapping": {"projectCode": "code"}})
      * @Template()
      * @param Project $project
      * @return mixed
      */
-    public function editAction(Project $project = null)
+    public function editAction(Project $project)
     {
-        $request = $this->getRequest();
-        $manager = $this->getDoctrine()->getManager();
-        $isAdd = true;
-
-        if ($project) {
-            $isAdd = false;
-            if (!$project) {
-                throw new ResourceNotFoundException(
-                    $this->get('translator')->trans('layout.sorry_not_existing', array(), 'OroTrackerBundle')
-                );
-            }
-
-        } else {
-            $project = new Project();
+        if (!$project) {
+            throw new ResourceNotFoundException(
+                $this->get('translator')->trans('layout.sorry_not_existing', array(), 'OroTrackerBundle')
+            );
         }
 
-        if (false === $this->get('security.context')->isGranted('edit', $project)) {
+        if (false === $this->get('security.context')->isGranted(ProjectVoter::EDIT, $project)) {
             throw new AccessDeniedException(
                 $this->get('translator')->trans('layout.unauthorised_access', array(), 'OroTrackerBundle')
             );
         }
 
+        return $this->edit($project);
+    }
+
+    /**
+     * @param Project $project
+     * @return mixed
+     */
+    protected function edit(Project $project)
+    {
+        $request = $this->getRequest();
+        $manager = $this->getDoctrine()->getManager();
+
         $form = $this->createForm(new ProjectType(), $project);
         $form->handleRequest($request);
 
-        if ($request->getMethod() == 'POST' && $form->isValid()) {
+        if ($request->getMethod() === 'POST' && $form->isValid()) {
             $manager->persist($project);
             $manager->flush();
 
-            $flashId = $isAdd ? 'flash.add.project' : 'flash.update.project';
+            if ($project->getId()) {
+                $flashId = 'flash.update.project';
+            } else {
+                $flashId = 'flash.add.project';
+            }
+
             $request->getSession()->getFlashBag()->add(
                 'notice',
                 $this->get('translator')->trans($flashId, array(), 'OroTrackerBundle')
@@ -86,8 +103,7 @@ class ProjectController extends Controller
 
         return array(
             'form' => $form->createView(),
-            'project' => $project,
-            'isAdd' => $isAdd
+            'project' => $project
         );
     }
 
@@ -106,7 +122,7 @@ class ProjectController extends Controller
             );
         }
 
-        if (false === $this->get('security.context')->isGranted('view', $project)) {
+        if (false === $this->get('security.context')->isGranted(ProjectVoter::VIEW, $project)) {
             throw new AccessDeniedException(
                 $this->get('translator')->trans('layout.unauthorised_access', array(), 'OroTrackerBundle')
             );

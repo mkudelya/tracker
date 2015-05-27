@@ -77,7 +77,7 @@
         <br/>
         <p>
         <b>{{ 'layout.add_comment'|trans({}, 'OroTrackerBundle') }}:</b>
-        <form action="{{ path('_tracking_edit_comment', {'projectCode': project.getCode(), 'issueCode': issue.getCode()}) }}" {{ form_enctype(comment_form) }} method="POST" class="tracker_comment">
+        <form action="{{ path('_tracking_create_comment', {'projectCode': project.getCode(), 'issueCode': issue.getCode()}) }}" {{ form_enctype(comment_form) }} method="POST" class="tracker_comment">
             {{ form_widget(comment_form) }}
         </form>
         </p>

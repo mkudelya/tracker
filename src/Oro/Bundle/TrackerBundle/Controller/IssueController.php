@@ -16,6 +16,9 @@ use Oro\Bundle\TrackerBundle\Entity\Project;
 use Oro\Bundle\TrackerBundle\Form\CommentType;
 use Oro\Bundle\TrackerBundle\Form\IssueType;
 use Oro\Bundle\UserBundle\Entity\User;
+use Oro\Bundle\TrackerBundle\Security\Authorization\Voter\ProjectVoter;
+use Oro\Bundle\TrackerBundle\Security\Authorization\Voter\IssueVoter;
+use Oro\Bundle\TrackerBundle\Security\Authorization\Voter\CommentVoter;
 
 class IssueController extends Controller
 {
@@ -130,45 +133,62 @@ class IssueController extends Controller
 
     /**
      * @Route("/create", name="_tracking_issue_create")
-     * @Route("/edit/{issueCode}", name="_tracking_issue_edit", defaults={"issueCode" = null})
+     * @ParamConverter("project", options={"mapping": {"projectCode": "code"}})
+     * @Template("OroTrackerBundle:Issue:edit.html.twig")
+     * @param Project $project
+     * @return mixed
+     */
+    public function createAction(Project $project)
+    {
+        if (false === $this->get('security.context')->isGranted(ProjectVoter::ADD_ISSUE, $project)) {
+            throw new AccessDeniedException(
+                $this->get('translator')->trans('layout.unauthorised_access', array(), 'OroTrackerBundle')
+            );
+        }
+
+        return $this->edit($project, new Issue);
+    }
+
+    /**
+     * @Route("/edit/{issueCode}", name="_tracking_issue_edit")
      * @ParamConverter("project", options={"mapping": {"projectCode": "code"}})
      * @ParamConverter("issue", options={"mapping": {"issueCode": "code"}})
-     * @Template()
      * @param Project $project
      * @param Issue $issue
      * @return mixed
      */
-    public function editAction(Project $project, Issue $issue = null)
+    public function editAction(Project $project, Issue $issue)
+    {
+        if (!$issue) {
+            throw new ResourceNotFoundException(
+                $this->get('translator')->trans('layout.sorry_not_existing', array(), 'OroTrackerBundle')
+            );
+        }
+
+        if (false === $this->get('security.context')->isGranted(IssueVoter::EDIT, $issue)) {
+            throw new AccessDeniedException(
+                $this->get('translator')->trans('layout.unauthorised_access', array(), 'OroTrackerBundle')
+            );
+        }
+
+        return $this->edit($project, $issue);
+    }
+
+    /**
+     * @param Project $project
+     * @param Issue $issue
+     * @return mixed
+     */
+    protected function edit(Project $project, Issue $issue)
     {
         $request = $this->getRequest();
         $manager = $this->getDoctrine()->getManager();
         $user = $this->get('security.context')->getToken()->getUser();
 
-        if ($issue) {
+        if ($issue->getId()) {
             $methodType = self::IS_EDIT_TASK;
         } else {
             $methodType = self::IS_ADD_TASK;
-        }
-
-        if ($methodType === self::IS_EDIT_TASK) {
-            if (!$issue) {
-                throw new ResourceNotFoundException(
-                    $this->get('translator')->trans('layout.sorry_not_existing', array(), 'OroTrackerBundle')
-                );
-            }
-
-            if (false === $this->get('security.context')->isGranted('edit', $issue)) {
-                throw new AccessDeniedException(
-                    $this->get('translator')->trans('layout.unauthorised_access', array(), 'OroTrackerBundle')
-                );
-            }
-        } else {
-            if (false === $this->get('security.context')->isGranted('add_issue', $project)) {
-                throw new AccessDeniedException(
-                    $this->get('translator')->trans('layout.unauthorised_access', array(), 'OroTrackerBundle')
-                );
-            }
-            $issue = new Issue();
         }
 
         $issueFormType = new IssueType();
@@ -243,7 +263,7 @@ class IssueController extends Controller
             );
         }
 
-        if (false === $this->get('security.context')->isGranted('add_issue', $project)) {
+        if (false === $this->get('security.context')->isGranted(ProjectVoter::ADD_ISSUE, $project)) {
             throw new AccessDeniedException(
                 $this->get('translator')->trans('layout.unauthorised_access', array(), 'OroTrackerBundle')
             );
@@ -302,7 +322,7 @@ class IssueController extends Controller
             );
         }
 
-        if (false === $this->get('security.context')->isGranted('view', $issue)) {
+        if (false === $this->get('security.context')->isGranted(IssueVoter::VIEW, $issue)) {
             throw new AccessDeniedException(
                 $this->get('translator')->trans('layout.unauthorised_access', array(), 'OroTrackerBundle')
             );
@@ -316,13 +336,32 @@ class IssueController extends Controller
             'comment_form' => $form->createView(),
             'issue' => $issue,
             'project' => $project,
-            'isStory' => $issue->getType() == 'story' ? true : false,
+            'isStory' => ($issue->getType() === 'story'),
             'isSubtask' => $issue->getParent() ? true : false
         );
     }
 
     /**
-     * @Route("/{issueCode}/edit_comment/{commentId}", name="_tracking_edit_comment", defaults={"commentId" = null})
+     * @Route("/{issueCode}/create_comment", name="_tracking_create_comment")
+     * @ParamConverter("project", options={"mapping": {"projectCode": "code"}})
+     * @ParamConverter("issue", options={"mapping": {"issueCode": "code"}})
+     * @param Project $project
+     * @param Issue $issue
+     * @return mixed
+     */
+    public function createCommentAction(Project $project, Issue $issue)
+    {
+        if (false === $this->get('security.context')->isGranted(IssueVoter::ADD_COMMENT, $issue)) {
+            throw new AccessDeniedException(
+                $this->get('translator')->trans('layout.unauthorised_access', array(), 'OroTrackerBundle')
+            );
+        }
+
+        return $this->editComment($project, $issue, new Comment());
+    }
+
+    /**
+     * @Route("/{issueCode}/edit_comment/{commentId}", name="_tracking_edit_comment")
      * @ParamConverter("project", options={"mapping": {"projectCode": "code"}})
      * @ParamConverter("issue", options={"mapping": {"issueCode": "code"}})
      * @ParamConverter("comment", options={"mapping": {"commentId": "id"}})
@@ -332,29 +371,28 @@ class IssueController extends Controller
      * @param Comment $comment
      * @return mixed
      */
-    public function editCommentAction(Project $project, Issue $issue, Comment $comment = null)
+    public function editCommentAction(Project $project, Issue $issue, Comment $comment)
+    {
+        if (false === $this->get('security.context')->isGranted(CommentVoter::EDIT, $comment)) {
+            throw new AccessDeniedException(
+                $this->get('translator')->trans('layout.unauthorised_access', array(), 'OroTrackerBundle')
+            );
+        }
+
+        return $this->editComment($project, $issue, $comment);
+    }
+
+    /**
+     * @param Project $project
+     * @param Issue $issue
+     * @param Comment $comment
+     * @return mixed
+     */
+    public function editComment(Project $project, Issue $issue, Comment $comment)
     {
         $request = $this->getRequest();
         $manager = $this->getDoctrine()->getManager();
         $user = $this->get('security.context')->getToken()->getUser();
-        $isAdd = false;
-
-        if ($comment) {
-            if (false === $this->get('security.context')->isGranted('edit', $comment)) {
-                throw new AccessDeniedException(
-                    $this->get('translator')->trans('layout.unauthorised_access', array(), 'OroTrackerBundle')
-                );
-            }
-        } else {
-            $isAdd = true;
-            $comment = new Comment();
-            if (false === $this->get('security.context')->isGranted('add_comment', $issue)) {
-                throw new AccessDeniedException(
-                    $this->get('translator')->trans('layout.unauthorised_access', array(), 'OroTrackerBundle')
-                );
-            }
-        }
-
         $commentFormType = new CommentType();
         $form = $this->createForm($commentFormType, $comment);
 
@@ -366,10 +404,10 @@ class IssueController extends Controller
             $manager->persist($comment);
             $manager->flush();
 
-            if ($isAdd) {
-                $flashId = 'flash.add.comment';
-            } else {
+            if ($comment->getId()) {
                 $flashId = 'flash.update.comment';
+            } else {
+                $flashId = 'flash.add.comment';
             }
 
             $request->getSession()->getFlashBag()->add(
@@ -391,7 +429,7 @@ class IssueController extends Controller
             'comment_form' => $form->createView(),
             'issue' => $issue,
             'project' => $project,
-            'isStory' => $issue->getType() == 'story' ? true : false
+            'isStory' => ($issue->getType() === 'story')
         );
     }
 
@@ -412,7 +450,7 @@ class IssueController extends Controller
         $manager = $this->getDoctrine()->getManager();
 
         if ($comment) {
-            if (false === $this->get('security.context')->isGranted('delete', $comment)) {
+            if (false === $this->get('security.context')->isGranted(CommentVoter::DELETE, $comment)) {
                 throw new AccessDeniedException(
                     $this->get('translator')->trans('layout.unauthorised_access', array(), 'OroTrackerBundle')
                 );

@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block content %}
-<form action="{{ path('_oro_user_update', {'id': id}) }}" {{ form_enctype(form) }} method="POST" class="fos_user_registration_form">
+<form action="{{ path('_oro_user_update', {'id': user.getId()}) }}" {{ form_enctype(form) }} method="POST" class="fos_user_registration_form">
 
     {{ form_errors(form) }}
 

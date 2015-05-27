@@ -6,15 +6,21 @@
 {% endblock %}
 
 {% block description %}
-    {% if isAdd %}
-        {{ 'project.add'|trans({}, 'OroTrackerBundle') }}
-    {% else %}
+    {% if project.getId() %}
         {{ 'project.edit'|trans({}, 'OroTrackerBundle') }}
+    {% else %}
+        {{ 'project.add'|trans({}, 'OroTrackerBundle') }}
     {% endif %}
 {% endblock %}
 
 {% block content %}
-<form action="{{ path('_tracking_project_edit', {'projectCode': project.getCode()}) }}" {{ form_enctype(form) }} method="POST" class="tracker_project">
+    <form action="
+    {% if project.getId() %}
+        {{ path('_tracking_project_edit', {'projectCode': project.getCode()}) }}
+    {% else %}
+        {{ path('_tracking_project_create') }}
+    {% endif %}
+    " {{ form_enctype(form) }} method="POST" class="tracker_project">
 {{ form_widget(form) }}
 </form>
 {% endblock %}
