@@ -8,6 +8,7 @@ use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 use Oro\Bundle\TrackerBundle\Entity\Project;
 use Oro\Bundle\TrackerBundle\Form\ProjectType;
@@ -35,42 +36,41 @@ class ProjectController extends Controller
 
     /**
      * @Route("/create", name="_tracking_project_create")
-     * @Route("/edit/{projectCode}", name="_tracking_project_edit")
+     * @Route("/edit/{projectCode}", name="_tracking_project_edit", defaults={"projectCode" = null})
+     * @ParamConverter("project", options={"mapping": {"projectCode": "code"}})
      * @Template()
-     * @param string $projectCode
+     * @param Project $project
      * @return mixed
      */
-    public function editAction($projectCode = null)
+    public function editAction(Project $project = null)
     {
         $request = $this->getRequest();
         $manager = $this->getDoctrine()->getManager();
         $isAdd = true;
 
-        if ($projectCode) {
-            $projectEntity = $manager->getRepository('OroTrackerBundle:Project')->findOneByCode($projectCode);
+        if ($project) {
             $isAdd = false;
-
-            if (!$projectEntity) {
+            if (!$project) {
                 throw new ResourceNotFoundException(
                     $this->get('translator')->trans('layout.sorry_not_existing', array(), 'OroTrackerBundle')
                 );
             }
 
         } else {
-            $projectEntity = new Project();
+            $project = new Project();
         }
 
-        if (false === $this->get('security.context')->isGranted('edit', $projectEntity)) {
+        if (false === $this->get('security.context')->isGranted('edit', $project)) {
             throw new AccessDeniedException(
                 $this->get('translator')->trans('layout.unauthorised_access', array(), 'OroTrackerBundle')
             );
         }
 
-        $form = $this->createForm(new ProjectType(), $projectEntity);
+        $form = $this->createForm(new ProjectType(), $project);
         $form->handleRequest($request);
 
         if ($request->getMethod() == 'POST' && $form->isValid()) {
-            $manager->persist($projectEntity);
+            $manager->persist($project);
             $manager->flush();
 
             $flashId = $isAdd ? 'flash.add.project' : 'flash.update.project';
@@ -80,39 +80,38 @@ class ProjectController extends Controller
             );
 
             return $this->redirect(
-                $this->generateUrl('_tracking_project_show', array('projectCode' => $projectEntity->getCode()))
+                $this->generateUrl('_tracking_project_show', array('projectCode' => $project->getCode()))
             );
         }
 
         return array(
             'form' => $form->createView(),
-            'projectCode' => $projectCode,
+            'project' => $project,
             'isAdd' => $isAdd
         );
     }
 
     /**
      * @Route("/{projectCode}", name="_tracking_project_show")
+     * @ParamConverter("project", options={"mapping": {"projectCode": "code"}})
      * @Template()
-     * @param string $projectCode
+     * @param Project $project
      * @return array
      */
-    public function showAction($projectCode)
+    public function showAction(Project $project)
     {
-        $projectEntity = $this->getDoctrine()->getRepository('OroTrackerBundle:Project')->findOneByCode($projectCode);
-
-        if (!$projectEntity) {
+        if (!$project) {
             throw new ResourceNotFoundException(
                 $this->get('translator')->trans('layout.sorry_not_existing', array(), 'OroTrackerBundle')
             );
         }
 
-        if (false === $this->get('security.context')->isGranted('view', $projectEntity)) {
+        if (false === $this->get('security.context')->isGranted('view', $project)) {
             throw new AccessDeniedException(
                 $this->get('translator')->trans('layout.unauthorised_access', array(), 'OroTrackerBundle')
             );
         }
 
-        return array('project' => $projectEntity);
+        return array('project' => $project);
     }
 }

@@ -8,11 +8,14 @@ use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 use Oro\Bundle\TrackerBundle\Entity\Comment;
 use Oro\Bundle\TrackerBundle\Entity\Issue;
+use Oro\Bundle\TrackerBundle\Entity\Project;
 use Oro\Bundle\TrackerBundle\Form\CommentType;
 use Oro\Bundle\TrackerBundle\Form\IssueType;
+use Oro\Bundle\UserBundle\Entity\User;
 
 class IssueController extends Controller
 {
@@ -70,13 +73,13 @@ class IssueController extends Controller
 
     /**
      * @Route("/{issueCode}/assignee/{id}", name="_tracking_issue_by_assignee_user")
+     * @ParamConverter("user", options={"mapping": {"id": "id"}})
      * @Template("OroTrackerBundle:Issue:list.html.twig")
-     * @param integer $id
+     * @param User $user
      * @return array
      */
-    public function listByAssigneeAction($id)
+    public function listByAssigneeAction(User $user)
     {
-        $user = $this->getDoctrine()->getRepository('OroUserBundle:User')->find($id);
         $issues = $this
             ->getDoctrine()
             ->getManager()
@@ -87,18 +90,18 @@ class IssueController extends Controller
 
     /**
      * @Route("/{issueCode}/collaborators", name="_tracking_issue_sublist")
+     * @ParamConverter("issue", options={"mapping": {"issueCode": "code"}})
      * @Template("OroTrackerBundle:Issue:collaborators.list.html.twig")
-     * @param string $issueCode
+     * @param Issue $issue
      * @return array
      */
-    public function listCollaboratorByIssueAction($issueCode)
+    public function listCollaboratorByIssueAction(Issue $issue)
     {
-        $issueEntity = $this->getDoctrine()->getRepository('OroTrackerBundle:Issue')->findOneByCode($issueCode);
         $users = $this
             ->getDoctrine()
             ->getManager()
             ->getRepository('OroTrackerBundle:Issue')
-            ->getCollaborationListByIssue($issueEntity);
+            ->getCollaborationListByIssue($issue);
         return array('users' => $users);
     }
 
@@ -127,87 +130,64 @@ class IssueController extends Controller
 
     /**
      * @Route("/create", name="_tracking_issue_create")
-     * @Route("/edit/{issueCode}", name="_tracking_issue_edit")
-     * @Route("/addsubtask/{issueCode}", name="_tracking_issue_add_subtask")
+     * @Route("/edit/{issueCode}", name="_tracking_issue_edit", defaults={"issueCode" = null})
+     * @ParamConverter("project", options={"mapping": {"projectCode": "code"}})
+     * @ParamConverter("issue", options={"mapping": {"issueCode": "code"}})
      * @Template()
-     * @param string $projectCode
-     * @param integer $issueCode
+     * @param Project $project
+     * @param Issue $issue
      * @return mixed
      */
-    public function editAction($projectCode, $issueCode = null)
+    public function editAction(Project $project, Issue $issue = null)
     {
         $request = $this->getRequest();
-        $routeName = $request->get('_route');
         $manager = $this->getDoctrine()->getManager();
         $user = $this->get('security.context')->getToken()->getUser();
-        $projectEntity = $this->getDoctrine()->getRepository('OroTrackerBundle:Project')->findOneByCode($projectCode);
 
-        if ($routeName == self::ROUTE_ADD_SUBTASK) {
-            $methodType = self::IS_ADD_SUBTASK;
-            $issueEntity = $manager->getRepository('OroTrackerBundle:Issue')->findOneByCode($issueCode);
-            if (!$issueEntity) {
-                throw new ResourceNotFoundException(
-                    $this->get('translator')->trans('layout.sorry_not_existing', array(), 'OroTrackerBundle')
-                );
-            }
-            if ($issueEntity->getType() !== 'story') {
-                throw new AccessDeniedException(
-                    $this->get('translator')->trans('layout.issue_is_not_story', array(), 'OroTrackerBundle')
-                );
-            }
+        if ($issue) {
+            $methodType = self::IS_EDIT_TASK;
         } else {
-            if ($issueCode) {
-                $methodType = self::IS_EDIT_TASK;
-            } else {
-                $methodType = self::IS_ADD_TASK;
-            }
+            $methodType = self::IS_ADD_TASK;
         }
 
-        if ($methodType == self::IS_EDIT_TASK) {
-            $issueEntity = $manager->getRepository('OroTrackerBundle:Issue')->findOneByCode($issueCode);
-
-            if (!$issueEntity) {
+        if ($methodType === self::IS_EDIT_TASK) {
+            if (!$issue) {
                 throw new ResourceNotFoundException(
                     $this->get('translator')->trans('layout.sorry_not_existing', array(), 'OroTrackerBundle')
                 );
             }
 
-            if (false === $this->get('security.context')->isGranted('edit', $issueEntity)) {
+            if (false === $this->get('security.context')->isGranted('edit', $issue)) {
                 throw new AccessDeniedException(
                     $this->get('translator')->trans('layout.unauthorised_access', array(), 'OroTrackerBundle')
                 );
             }
         } else {
-            if (false === $this->get('security.context')->isGranted('add_issue', $projectEntity)) {
+            if (false === $this->get('security.context')->isGranted('add_issue', $project)) {
                 throw new AccessDeniedException(
                     $this->get('translator')->trans('layout.unauthorised_access', array(), 'OroTrackerBundle')
                 );
             }
-            $issueEntity = new Issue();
+            $issue = new Issue();
         }
 
         $issueFormType = new IssueType();
         $issueFormType->setProcessMethod($methodType);
-        $issueFormType->setProject($projectEntity);
-        $form = $this->createForm($issueFormType, $issueEntity);
+        $issueFormType->setProject($project);
+        $form = $this->createForm($issueFormType, $issue);
         $form->handleRequest($request);
 
-        if ($request->getMethod() == 'POST' && $form->isValid()) {
-            $issueEntity->setProject($projectEntity);
+        if ($request->getMethod() === 'POST' && $form->isValid()) {
+            $issue->setProject($project);
 
-            if ($methodType != self::IS_EDIT_TASK) {
-                $issueEntity->setReporter($user);
+            if ($methodType !== self::IS_EDIT_TASK) {
+                $issue->setReporter($user);
             }
 
-            if ($methodType == self::IS_ADD_SUBTASK) {
-                $parentIssueEntity = $manager->getRepository('OroTrackerBundle:Issue')->findOneByCode($issueCode);
-                $issueEntity->setParent($parentIssueEntity);
-            }
-
-            $manager->persist($issueEntity);
+            $manager->persist($issue);
             $manager->flush();
 
-            if ($methodType == self::IS_ADD_TASK || $methodType == self::IS_ADD_SUBTASK) {
+            if ($methodType === self::IS_ADD_TASK) {
                 $flashId = 'flash.add.issue';
             } else {
                 $flashId = 'flash.update.issue';
@@ -222,7 +202,7 @@ class IssueController extends Controller
                 $this->generateUrl(
                     '_tracking_issue_show',
                     array(
-                        'projectCode' => $projectCode, 'issueCode' => $issueEntity->getCode()
+                        'projectCode' => $project->getCode(), 'issueCode' => $issue->getCode()
                     )
                 )
             );
@@ -230,31 +210,99 @@ class IssueController extends Controller
 
         return array(
             'form' => $form->createView(),
-            'issueCode' => $issueCode,
+            'issue' => $issue,
             'methodType' => $methodType,
-            'project' => $projectEntity
+            'project' => $project
         );
     }
 
     /**
-     * @Route("/{issueCode}/", name="_tracking_issue_show")
-     * @Template()
-     * @param string $projectCode
-     * @param string $issueCode
-     * @return array
+     * @Route("/addsubtask/{issueCode}", name="_tracking_issue_add_subtask")
+     * @ParamConverter("project", options={"mapping": {"projectCode": "code"}})
+     * @ParamConverter("parentIssue", options={"mapping": {"issueCode": "code"}})
+     * @Template("OroTrackerBundle:Issue:edit.html.twig")
+     * @param Project $project
+     * @param Issue $parentIssue
+     * @return mixed
      */
-    public function showAction($projectCode, $issueCode)
+    public function addSubAction(Project $project, Issue $parentIssue)
     {
-        $projectEntity = $this->getDoctrine()->getRepository('OroTrackerBundle:Project')->findOneByCode($projectCode);
-        $issueEntity = $this->getDoctrine()->getRepository('OroTrackerBundle:Issue')->findOneByCode($issueCode);
+        $request = $this->getRequest();
+        $manager = $this->getDoctrine()->getManager();
+        $user = $this->get('security.context')->getToken()->getUser();
 
-        if (!$issueEntity) {
+        if (!$parentIssue) {
             throw new ResourceNotFoundException(
                 $this->get('translator')->trans('layout.sorry_not_existing', array(), 'OroTrackerBundle')
             );
         }
 
-        if (false === $this->get('security.context')->isGranted('view', $issueEntity)) {
+        if ($parentIssue->getType() !== 'story') {
+            throw new AccessDeniedException(
+                $this->get('translator')->trans('layout.issue_is_not_story', array(), 'OroTrackerBundle')
+            );
+        }
+
+        if (false === $this->get('security.context')->isGranted('add_issue', $project)) {
+            throw new AccessDeniedException(
+                $this->get('translator')->trans('layout.unauthorised_access', array(), 'OroTrackerBundle')
+            );
+        }
+
+        $issue = new Issue();
+        $issueFormType = new IssueType();
+        $issueFormType->setProcessMethod(self::IS_ADD_TASK);
+        $issueFormType->setProject($project);
+        $form = $this->createForm($issueFormType, $issue);
+        $form->handleRequest($request);
+
+        if ($request->getMethod() === 'POST' && $form->isValid()) {
+            $issue->setProject($project);
+            $issue->setReporter($user);
+            $issue->setParent($parentIssue);
+            $manager->persist($issue);
+            $manager->flush();
+            $request->getSession()->getFlashBag()->add(
+                'notice',
+                $this->get('translator')->trans('flash.add.issue', array(), 'OroTrackerBundle')
+            );
+
+            return $this->redirect(
+                $this->generateUrl(
+                    '_tracking_issue_show',
+                    array(
+                        'projectCode' => $project->getCode(), 'issueCode' => $issue->getCode()
+                    )
+                )
+            );
+        }
+
+        return array(
+            'form' => $form->createView(),
+            'issue' => $parentIssue,
+            'methodType' => self::IS_ADD_SUBTASK,
+            'project' => $project
+        );
+    }
+
+    /**
+     * @Route("/{issueCode}/", name="_tracking_issue_show")
+     * @ParamConverter("project", options={"mapping": {"projectCode": "code"}})
+     * @ParamConverter("issue", options={"mapping": {"issueCode": "code"}})
+     * @Template()
+     * @param Project $project
+     * @param Issue $issue
+     * @return array
+     */
+    public function showAction(Project $project, Issue $issue)
+    {
+        if (!$issue) {
+            throw new ResourceNotFoundException(
+                $this->get('translator')->trans('layout.sorry_not_existing', array(), 'OroTrackerBundle')
+            );
+        }
+
+        if (false === $this->get('security.context')->isGranted('view', $issue)) {
             throw new AccessDeniedException(
                 $this->get('translator')->trans('layout.unauthorised_access', array(), 'OroTrackerBundle')
             );
@@ -266,41 +314,41 @@ class IssueController extends Controller
 
         return array(
             'comment_form' => $form->createView(),
-            'issue' => $issueEntity,
-            'project' => $projectEntity,
-            'isStory' => $issueEntity->getType() == 'story' ? true : false,
-            'isSubtask' => $issueEntity->getParent() ? true : false
+            'issue' => $issue,
+            'project' => $project,
+            'isStory' => $issue->getType() == 'story' ? true : false,
+            'isSubtask' => $issue->getParent() ? true : false
         );
     }
 
     /**
-     * @Route("/{issueCode}/edit_comment/{commentId}", name="_tracking_edit_comment")
+     * @Route("/{issueCode}/edit_comment/{commentId}", name="_tracking_edit_comment", defaults={"commentId" = null})
+     * @ParamConverter("project", options={"mapping": {"projectCode": "code"}})
+     * @ParamConverter("issue", options={"mapping": {"issueCode": "code"}})
+     * @ParamConverter("comment", options={"mapping": {"commentId": "id"}})
      * @Template("OroTrackerBundle:Issue:show.html.twig")
-     * @param string $projectCode
-     * @param string $issueCode
-     * @param integer $commentId
+     * @param Project $project
+     * @param Issue $issue
+     * @param Comment $comment
      * @return mixed
      */
-    public function editCommentAction($projectCode, $issueCode, $commentId = null)
+    public function editCommentAction(Project $project, Issue $issue, Comment $comment = null)
     {
         $request = $this->getRequest();
-        $projectEntity = $this->getDoctrine()->getRepository('OroTrackerBundle:Project')->findOneByCode($projectCode);
-        $issueEntity = $this->getDoctrine()->getRepository('OroTrackerBundle:Issue')->findOneByCode($issueCode);
         $manager = $this->getDoctrine()->getManager();
         $user = $this->get('security.context')->getToken()->getUser();
         $isAdd = false;
 
-        if ($commentId) {
-            $commentEntity = $this->getDoctrine()->getRepository('OroTrackerBundle:Comment')->find($commentId);
-            if (false === $this->get('security.context')->isGranted('edit', $commentEntity)) {
+        if ($comment) {
+            if (false === $this->get('security.context')->isGranted('edit', $comment)) {
                 throw new AccessDeniedException(
                     $this->get('translator')->trans('layout.unauthorised_access', array(), 'OroTrackerBundle')
                 );
             }
         } else {
             $isAdd = true;
-            $commentEntity = new Comment();
-            if (false === $this->get('security.context')->isGranted('add_comment', $issueEntity)) {
+            $comment = new Comment();
+            if (false === $this->get('security.context')->isGranted('add_comment', $issue)) {
                 throw new AccessDeniedException(
                     $this->get('translator')->trans('layout.unauthorised_access', array(), 'OroTrackerBundle')
                 );
@@ -308,14 +356,14 @@ class IssueController extends Controller
         }
 
         $commentFormType = new CommentType();
-        $form = $this->createForm($commentFormType, $commentEntity);
+        $form = $this->createForm($commentFormType, $comment);
 
         $form->handleRequest($request);
 
-        if ($request->getMethod() == 'POST' && $form->isValid()) {
-            $commentEntity->setIssue($issueEntity);
-            $commentEntity->setUser($user);
-            $manager->persist($commentEntity);
+        if ($request->getMethod() === 'POST' && $form->isValid()) {
+            $comment->setIssue($issue);
+            $comment->setUser($user);
+            $manager->persist($comment);
             $manager->flush();
 
             if ($isAdd) {
@@ -333,7 +381,7 @@ class IssueController extends Controller
                 $this->generateUrl(
                     '_tracking_issue_show',
                     array(
-                        'projectCode' => $projectCode, 'issueCode' => $issueCode
+                        'projectCode' => $project->getCode(), 'issueCode' => $issue->getCode()
                     )
                 )
             );
@@ -341,35 +389,36 @@ class IssueController extends Controller
 
         return array(
             'comment_form' => $form->createView(),
-            'issue' => $issueEntity,
-            'project' => $projectEntity,
-            'isStory' => $issueEntity->getType() == 'story' ? true : false
+            'issue' => $issue,
+            'project' => $project,
+            'isStory' => $issue->getType() == 'story' ? true : false
         );
     }
 
     /**
      * @Route("/{issueCode}/remove_comment/{commentId}", name="_tracking_remove_comment")
+     * @ParamConverter("project", options={"mapping": {"projectCode": "code"}})
+     * @ParamConverter("issue", options={"mapping": {"issueCode": "code"}})
+     * @ParamConverter("comment", options={"mapping": {"commentId": "id"}})
      * @Template("OroTrackerBundle:Issue:show.html.twig")
-     * @param string $projectCode
-     * @param string $issueCode
-     * @param integer $commentId
+     * @param Project $project
+     * @param Issue $issue
+     * @param Comment $comment
      * @return mixed
      */
-    public function removeCommentAction($projectCode, $issueCode, $commentId = null)
+    public function removeCommentAction(Project $project, Issue $issue, Comment $comment)
     {
         $request = $this->getRequest();
         $manager = $this->getDoctrine()->getManager();
 
-        if ($commentId) {
-            $commentEntity = $this->getDoctrine()->getRepository('OroTrackerBundle:Comment')->find($commentId);
-
-            if (false === $this->get('security.context')->isGranted('delete', $commentEntity)) {
+        if ($comment) {
+            if (false === $this->get('security.context')->isGranted('delete', $comment)) {
                 throw new AccessDeniedException(
                     $this->get('translator')->trans('layout.unauthorised_access', array(), 'OroTrackerBundle')
                 );
             }
 
-            $manager->remove($commentEntity);
+            $manager->remove($comment);
             $manager->flush();
 
             $request->getSession()->getFlashBag()->add(
@@ -382,7 +431,7 @@ class IssueController extends Controller
             $this->generateUrl(
                 '_tracking_issue_show',
                 array(
-                    'projectCode' => $projectCode, 'issueCode' => $issueCode
+                    'projectCode' => $project->getCode(), 'issueCode' => $issue->getCode()
                 )
             )
         );

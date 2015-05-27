@@ -6,6 +6,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Oro\Bundle\UserBundle\Entity\User;
+use Oro\Bundle\TrackerBundle\Entity\Project;
+use Oro\Bundle\TrackerBundle\Entity\Issue;
 
 class ActivityController extends Controller
 {
@@ -26,15 +29,13 @@ class ActivityController extends Controller
     }
 
     /**
-     * @Route("/list/user{id}", name="_tracking_activity_list_by_user")
+     * @Route("/list/user/{id}", name="_tracking_activity_list_by_user")
      * @Template("OroTrackerBundle:Activity:list.html.twig")
-     * @param integer $id
+     * @param User $user
      * @return array
      */
-    public function listByUserAction($id)
+    public function listByUserAction(User $user)
     {
-        $manager = $this->getDoctrine()->getManager();
-        $user = $manager->getRepository('OroUserBundle:User')->findOneById($id);
         $activities = $this
             ->getDoctrine()
             ->getManager()
@@ -44,36 +45,34 @@ class ActivityController extends Controller
     }
 
     /**
-     * @Route("/list_by_project/{projectCode}", name="_tracking_activity_list_by_project")
+     * @Route("/list_by_project/{code}", name="_tracking_activity_list_by_project")
      * @Template("OroTrackerBundle:Activity:list.html.twig")
-     * @param string $projectCode
+     * @param Project $project
      * @return array
      */
-    public function listByProjectAction($projectCode)
+    public function listByProjectAction(Project $project)
     {
-        $projectEntity = $this->getDoctrine()->getRepository('OroTrackerBundle:Project')->findOneByCode($projectCode);
         $activities = $this
             ->getDoctrine()
             ->getManager()
             ->getRepository('OroTrackerBundle:Activity')
-            ->getActivityIssueListByProject($projectEntity);
+            ->getActivityIssueListByProject($project);
         return array('activities' => $activities);
     }
 
     /**
-     * @Route("/list_by_issue/{issueCode}", name="_tracking_activity_list_by_issue")
+     * @Route("/list_by_issue/{code}", name="_tracking_activity_list_by_issue")
      * @Template("OroTrackerBundle:Activity:list.html.twig")
-     * @param string $issueCode
+     * @param Issue $issue
      * @return array
      */
-    public function listByIssueAction($issueCode)
+    public function listByIssueAction(Issue $issue)
     {
-        $issueEntity = $this->getDoctrine()->getRepository('OroTrackerBundle:Issue')->findOneByCode($issueCode);
         $activities = $this
             ->getDoctrine()
             ->getManager()
             ->getRepository('OroTrackerBundle:Activity')
-            ->getActivityIssueListByIssue($issueEntity);
+            ->getActivityIssueListByIssue($issue);
         return array('activities' => $activities);
     }
 }

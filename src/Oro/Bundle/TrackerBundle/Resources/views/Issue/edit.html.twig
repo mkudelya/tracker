@@ -3,8 +3,8 @@
 {% block breadcrumb %}
     <a href="{{ path('_tracking_project_list') }}">{{ 'project.projects_list'|trans({}, 'OroTrackerBundle') }}</a> /
     <a href="{{ path('_tracking_project_show', {'projectCode' : project.getCode()}) }}">{{ project.getCode() }}</a>
-    {% if issueCode %}
-    / <a href="{{ path('_tracking_issue_show', {'projectCode': project.getCode(), 'issueCode': issueCode}) }}">{{ issueCode }}</a>
+    {% if issue.getCode() %}
+    / <a href="{{ path('_tracking_issue_show', {'projectCode': project.getCode(), 'issueCode': issue.getCode()}) }}">{{ issue.getCode() }}</a>
     {% endif %}
 {% endblock %}
 
@@ -19,9 +19,9 @@
 {% block content %}
     <form action="
     {% if methodType == constant('Oro\\Bundle\\TrackerBundle\\Controller\\IssueController::IS_ADD_SUBTASK') %}
-        {{ path('_tracking_issue_add_subtask', {'projectCode': project.getCode(), 'issueCode': issueCode}) }}
+        {{ path('_tracking_issue_add_subtask', {'projectCode': project.getCode(), 'issueCode': issue.getCode()}) }}
     {% else %}
-        {{ path('_tracking_issue_edit', {'projectCode': project.getCode(), 'issueCode': issueCode}) }}
+        {{ path('_tracking_issue_edit', {'projectCode': project.getCode(), 'issueCode': issue.getCode()}) }}
     {% endif %}
     " {{ form_enctype(form) }} method="POST" class="tracker_issue">
         {{ form_widget(form) }}

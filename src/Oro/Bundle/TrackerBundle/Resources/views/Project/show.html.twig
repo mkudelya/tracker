@@ -34,7 +34,7 @@
     <b>{{ 'layout.activity_list'|trans({}, 'OroTrackerBundle') }}:</b>
     {{ render(controller(
     'OroTrackerBundle:Activity:listByProject',
-    {'projectCode': project.getCode()}
+    {'code': project.getCode()}
     )) }}
     </p>
 {% endblock %}

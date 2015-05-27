@@ -40,7 +40,7 @@
     <b>{{ 'layout.activity_list'|trans({}, 'OroTrackerBundle') }}:</b>
     {{ render(controller(
     'OroTrackerBundle:Activity:listByIssue',
-    {'issueCode': issue.getCode()}
+    {'code': issue.getCode()}
     )) }}
     </p>
     <hr>
