@@ -54,12 +54,6 @@ class ProjectController extends Controller
      */
     public function editAction(Project $project)
     {
-        if (!$project) {
-            throw new ResourceNotFoundException(
-                $this->get('translator')->trans('layout.sorry_not_existing', array(), 'OroTrackerBundle')
-            );
-        }
-
         if (false === $this->get('security.context')->isGranted(ProjectVoter::EDIT, $project)) {
             throw new AccessDeniedException(
                 $this->get('translator')->trans('layout.unauthorised_access', array(), 'OroTrackerBundle')
@@ -117,12 +111,6 @@ class ProjectController extends Controller
      */
     public function showAction(Project $project)
     {
-        if (!$project) {
-            throw new ResourceNotFoundException(
-                $this->get('translator')->trans('layout.sorry_not_existing', array(), 'OroTrackerBundle')
-            );
-        }
-
         if (false === $this->get('security.context')->isGranted(ProjectVoter::VIEW, $project)) {
             throw new AccessDeniedException(
                 $this->get('translator')->trans('layout.unauthorised_access', array(), 'OroTrackerBundle')

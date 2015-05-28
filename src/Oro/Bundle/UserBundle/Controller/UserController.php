@@ -41,13 +41,7 @@ class UserController extends Controller
     {
         $currentUser = $this->get('security.context')->getToken()->getUser();
 
-        if ($user) {
-            if ($user === null) {
-                throw new NotFoundHttpException(
-                    $this->get('translator')->trans('layout.sorry_not_existing', array(), 'OroTrackerBundle')
-                );
-            }
-        } else {
+        if (!$user) {
             $user = $currentUser;
         }
 

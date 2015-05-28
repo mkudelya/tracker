@@ -6,7 +6,7 @@ class ProjectControllerTest extends AbstractController
 {
     public function testAddProject()
     {
-        $crawler = self::$client->request('GET', $this->getUrl('_tracking_project_edit'));
+        $crawler = self::$client->request('GET', $this->getUrl('_tracking_project_create'));
 
         $form = $crawler->selectButton('tracker_project[Save]')->form();
 

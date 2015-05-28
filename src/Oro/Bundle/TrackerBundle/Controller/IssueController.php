@@ -160,12 +160,6 @@ class IssueController extends Controller
      */
     public function editAction(Project $project, Issue $issue)
     {
-        if (!$issue) {
-            throw new ResourceNotFoundException(
-                $this->get('translator')->trans('layout.sorry_not_existing', array(), 'OroTrackerBundle')
-            );
-        }
-
         if (false === $this->get('security.context')->isGranted(IssueVoter::EDIT, $issue)) {
             throw new AccessDeniedException(
                 $this->get('translator')->trans('layout.unauthorised_access', array(), 'OroTrackerBundle')
@@ -252,12 +246,6 @@ class IssueController extends Controller
         $manager = $this->getDoctrine()->getManager();
         $user = $this->get('security.context')->getToken()->getUser();
 
-        if (!$parentIssue) {
-            throw new ResourceNotFoundException(
-                $this->get('translator')->trans('layout.sorry_not_existing', array(), 'OroTrackerBundle')
-            );
-        }
-
         if ($parentIssue->getType() !== 'story') {
             throw new AccessDeniedException(
                 $this->get('translator')->trans('layout.issue_is_not_story', array(), 'OroTrackerBundle')
@@ -317,12 +305,6 @@ class IssueController extends Controller
      */
     public function showAction(Project $project, Issue $issue)
     {
-        if (!$issue) {
-            throw new ResourceNotFoundException(
-                $this->get('translator')->trans('layout.sorry_not_existing', array(), 'OroTrackerBundle')
-            );
-        }
-
         if (false === $this->get('security.context')->isGranted(IssueVoter::VIEW, $issue)) {
             throw new AccessDeniedException(
                 $this->get('translator')->trans('layout.unauthorised_access', array(), 'OroTrackerBundle')

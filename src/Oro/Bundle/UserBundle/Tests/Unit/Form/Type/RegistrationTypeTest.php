@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\UserBundle\Tests\Unit\Form\Type;
 
-use Oro\Bundle\TrackerBundle\Form\RegistrationType;
+use Oro\Bundle\UserBundle\Form\RegistrationType;
 
 class RegistrationTypeTest extends \PHPUnit_Framework_TestCase
 {

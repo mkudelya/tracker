@@ -2,13 +2,13 @@
 
 namespace Oro\Bundle\TrackerBundle\Tests\Unit\EventListener;
 
-use Oro\Bundle\TrackerBundle\EventListener\EntityListener;
+use Oro\Bundle\TrackerBundle\EventListener\ActivityListener;
 use Doctrine\Common\Collections\ArrayCollection;
 
-class EntityListenerTest extends \PHPUnit_Framework_TestCase
+class ActivityListenerTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var EntityListener
+     * @var ActivityListener
      */
     protected $listener;
 
@@ -92,8 +92,8 @@ class EntityListenerTest extends \PHPUnit_Framework_TestCase
             ->getMock();
         $this->mockIssueService =
             $this->getMockBuilder('Oro\Bundle\TrackerBundle\Service\Issue')
-            ->disableOriginalConstructor()
-            ->getMock('Oro\Bundle\TrackerBundle\Service\Issue');
+                ->disableOriginalConstructor()
+                ->getMock('Oro\Bundle\TrackerBundle\Service\Issue');
 
         //Security context
         $this->mockSecurityContext->expects($this->any())
@@ -142,94 +142,7 @@ class EntityListenerTest extends \PHPUnit_Framework_TestCase
             ->method('getEntityManager')
             ->will($this->returnValue($this->mockEntityManager));
 
-        $this->listener = new EntityListener($this->mockContainer);
-    }
-
-    public function testAddReporterAndAssigneeToCollaboratorsSuccess()
-    {
-        //special set different id to add assignee user to collaborators too
-        $this->mockReporterEntity->expects($this->any())
-            ->method('getId')
-            ->will($this->returnValue(11111));
-
-        $this->mockArgs->expects($this->any())
-            ->method('getEntity')
-            ->will($this->returnValue($this->mockIssueEntity));
-
-        $this->mockContainer->expects($this->any())
-            ->method('get')
-            ->with('issue')
-            ->will($this->returnValue($this->mockIssueService));
-
-        //main conditionals
-        $this->mockIssueService->expects($this->any())
-            ->method('isUserCollaborator')
-            ->will($this->returnValue(false));
-
-        $this->mockIssueEntity->expects($this->exactly(2))
-            ->method('addCollaborator')
-            ->with($this->isType('object'));
-
-        $this->mockEntityManager->expects($this->exactly(1))
-            ->method('flush');
-
-        $this->listener->updateCollaborators($this->mockArgs);
-    }
-
-    public function testAddReporterAndAssigneeToCollaboratorsFailure()
-    {
-        //special set different id to add assignee user to collaborators too
-        $this->mockReporterEntity->expects($this->any())
-            ->method('getId')
-            ->will($this->returnValue(11111));
-
-        $this->mockArgs->expects($this->any())
-            ->method('getEntity')
-            ->will($this->returnValue($this->mockIssueEntity));
-
-        $this->mockContainer->expects($this->any())
-            ->method('get')
-            ->with('issue')
-            ->will($this->returnValue($this->mockIssueService));
-
-        //main conditionals
-        $this->mockIssueService->expects($this->any())
-            ->method('isUserCollaborator')
-            ->will($this->returnValue(true));
-
-        $this->mockIssueEntity->expects($this->never())
-            ->method('addCollaborator');
-
-        $this->mockEntityManager->expects($this->never())
-            ->method('flush');
-
-        $this->listener->updateCollaborators($this->mockArgs);
-    }
-
-    public function testAddUserAfterCommentToCollaboratorsSuccess()
-    {
-        $this->mockArgs->expects($this->any())
-            ->method('getEntity')
-            ->will($this->returnValue($this->mockCommentEntity));
-
-        $this->mockContainer->expects($this->any())
-            ->method('get')
-            ->with('issue')
-            ->will($this->returnValue($this->mockIssueService));
-
-        //main conditionals
-        $this->mockIssueService->expects($this->any())
-            ->method('isUserCollaborator')
-            ->will($this->returnValue(false));
-
-        $this->mockIssueEntity->expects($this->once())
-            ->method('addCollaborator')
-            ->with($this->mockReporterEntity);
-
-        $this->mockEntityManager->expects($this->once())
-            ->method('flush');
-
-        $this->listener->updateCollaborators($this->mockArgs);
+        $this->listener = new ActivityListener($this->mockContainer, 'abc@abc.com');
     }
 
     public function testAddNewIssueToActivitySuccess()
@@ -318,8 +231,8 @@ class EntityListenerTest extends \PHPUnit_Framework_TestCase
 
         $renderer = $this->getMockBuilder('\stdClass')->setMethods(array('render'))->getMock();
         $renderer->expects($this->any())
-        ->method('render')
-        ->will($this->returnValue('body'));
+            ->method('render')
+            ->will($this->returnValue('body'));
 
         $this->mockContainer->expects($this->at(0))
             ->method('get')

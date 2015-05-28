@@ -61,46 +61,7 @@ class IssueTest extends \PHPUnit_Framework_TestCase
             ->with('doctrine')
             ->will($this->returnValue($this->mockDoctrine));
 
-        $this->service = new Issue($this->mockContainer);
-    }
-
-    public function testGetIssueListByProjectCode()
-    {
-        $this->assertCount(2, $this->service->getIssueListByProjectCode('test'));
-    }
-
-    public function testGetIssueSubListByIssueCode()
-    {
-        $this->assertCount(2, $this->service->getIssueSubListByIssueCode('test'));
-    }
-
-    public function testGetActivityIssueListByUser()
-    {
-        $obj = $this->getMockBuilder('Oro\Bundle\UserBundle\Entity\User')
-            ->getMock();
-
-        $this->assertCount(2, $this->service->getIssueListByCollaborationUser($obj));
-    }
-
-    public function testGetIssueListByAssigneeUser()
-    {
-        $obj = $this->getMockBuilder('Oro\Bundle\UserBundle\Entity\User')
-            ->getMock();
-
-        $this->assertCount(2, $this->service->getIssueListByAssigneeUser($obj));
-    }
-
-    public function testGetCollaborationListByIssue()
-    {
-        $obj = $this->getMockBuilder('Oro\Bundle\TrackerBundle\Entity\Issue')
-            ->getMock();
-
-        $this->assertCount(2, $this->service->getCollaborationListByIssue($obj));
-    }
-
-    public function testGetCommentListByIssueCode()
-    {
-        $this->assertCount(2, $this->service->getCommentListByIssueCode('test'));
+        $this->service = new Issue();
     }
 
     public function testIsUserCollaborator()
