@@ -7,7 +7,7 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 use Oro\Bundle\TrackerBundle\Entity\Project;
-use Oro\Bundle\UserBundle\Entity\Role;
+use Oro\Bundle\UserBundle\Model\Role;
 
 class ProjectVoter implements VoterInterface
 {

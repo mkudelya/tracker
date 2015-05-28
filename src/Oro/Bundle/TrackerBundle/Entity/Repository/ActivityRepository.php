@@ -19,7 +19,7 @@ class ActivityRepository extends EntityRepository
     public function getActivityIssueListWhereUserIsProjectMember(User $user)
     {
         $activities = $this->getEntityManager()->createQuery(
-            'select a from Oro\Bundle\TrackerBundle\Entity\Activity a JOIN a.project p
+            'SELECT a FROM OroTrackerBundle:Activity a JOIN a.project p
             JOIN p.members u WHERE u = ?1 ORDER BY a.created DESC'
         );
         $activities->setParameter(1, $user);
@@ -34,7 +34,7 @@ class ActivityRepository extends EntityRepository
     public function getActivityIssueListByUser(User $user)
     {
         $activities = $this->getEntityManager()->createQuery(
-            'select a from Oro\Bundle\TrackerBundle\Entity\Activity a WHERE a.user = ?1
+            'SELECT a FROM OroTrackerBundle:Activity a WHERE a.user = ?1
             ORDER BY a.created DESC'
         );
         $activities->setParameter(1, $user);
@@ -49,7 +49,7 @@ class ActivityRepository extends EntityRepository
     public function getActivityIssueListByProject(Project $project)
     {
         $activities = $this->getEntityManager()->createQuery(
-            'select a from Oro\Bundle\TrackerBundle\Entity\Activity a JOIN a.project p
+            'SELECT a FROM OroTrackerBundle:Activity a JOIN a.project p
             WHERE p = ?1 ORDER BY a.created DESC'
         );
         $activities->setParameter(1, $project);
@@ -64,7 +64,7 @@ class ActivityRepository extends EntityRepository
     public function getActivityIssueListByIssue(IssueEntity $issue)
     {
         $activities = $this->getEntityManager()->createQuery(
-            'select a from Oro\Bundle\TrackerBundle\Entity\Activity a JOIN a.issue i
+            'SELECT a FROM OroTrackerBundle:Activity a JOIN a.issue i
             WHERE i.id = ?1 or i.parent = ?1 ORDER BY a.created DESC'
         );
         $activities->setParameter(1, $issue);

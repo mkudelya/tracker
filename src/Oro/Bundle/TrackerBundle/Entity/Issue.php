@@ -12,7 +12,7 @@ use Oro\Bundle\UserBundle\Entity\User;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="issues")
+ * @ORM\Table(name="issue")
  * @ORM\Entity(repositoryClass="Oro\Bundle\TrackerBundle\Entity\Repository\IssueRepository")
  * @ORM\HasLifecycleCallbacks
  * @UniqueEntity("code")
@@ -81,7 +81,7 @@ class Issue
 
     /**
      * @ORM\ManyToMany(targetEntity="Oro\Bundle\UserBundle\Entity\User", inversedBy="issues")
-     * @ORM\JoinTable(name="issue_collaborators")
+     * @ORM\JoinTable(name="issue_collaborator")
      **/
     protected $collaborators;
 
@@ -402,7 +402,7 @@ class Issue
 
         if ($collaborators->count()) {
             foreach ($collaborators as $collaborator) {
-                if ($collaborator->getId() == $user->getId()) {
+                if ($collaborator->getId() === $user->getId()) {
                     return true;
                 }
             }
@@ -541,7 +541,7 @@ class Issue
     {
         $this->setUpdated(new \DateTime('now', new \DateTimeZone('UTC')));
 
-        if ($this->getCreated() == null) {
+        if ($this->getCreated() === null) {
             $this->setCreated(new \DateTime('now', new \DateTimeZone('UTC')));
         }
     }

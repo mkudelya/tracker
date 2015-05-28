@@ -12,7 +12,7 @@ use Oro\Bundle\UserBundle\Entity\User;
 /**
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks
- * @ORM\Table(name="activities")
+ * @ORM\Table(name="activity")
  * @ORM\Entity(repositoryClass="Oro\Bundle\TrackerBundle\Entity\Repository\ActivityRepository")
  */
 class Activity
@@ -60,6 +60,14 @@ class Activity
      * @ORM\Column(type="integer", options={"default":0})
      */
     protected $type;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->user = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -180,7 +188,7 @@ class Activity
      */
     public function updatedTimestamps()
     {
-        if ($this->getCreated() == null) {
+        if ($this->getCreated() === null) {
             $this->setCreated(new \DateTime('now', new \DateTimeZone('UTC')));
         }
     }
@@ -206,14 +214,6 @@ class Activity
     public function getType()
     {
         return $this->type;
-    }
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->user = new ArrayCollection();
     }
 
     /**
@@ -244,7 +244,7 @@ class Activity
      */
     public function isNewCommentType()
     {
-        return $this->getType() == self::NEW_COMMENT_ISSUE_TYPE;
+        return $this->getType() === self::NEW_COMMENT_ISSUE_TYPE;
     }
 
     /**
@@ -252,7 +252,7 @@ class Activity
      */
     public function isNewIssueType()
     {
-        return $this->getType() == self::NEW_ISSUE_TYPE;
+        return $this->getType() === self::NEW_ISSUE_TYPE;
     }
 
     /**
@@ -260,6 +260,6 @@ class Activity
      */
     public function isStatusChangedType()
     {
-        return $this->getType() == self::CHANGED_STATUS_ISSUE_TYPE;
+        return $this->getType() === self::CHANGED_STATUS_ISSUE_TYPE;
     }
 }

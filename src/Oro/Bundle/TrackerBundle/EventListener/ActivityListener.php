@@ -10,9 +10,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface as Container;
 use Oro\Bundle\TrackerBundle\Entity\Issue;
 use Oro\Bundle\TrackerBundle\Entity\Activity;
 use Oro\Bundle\TrackerBundle\Entity\Comment;
-use Oro\Bundle\UserBundle\Entity\User;
 
-class EntityListener
+class ActivityListener
 {
     /**
      * @var Container
@@ -20,11 +19,17 @@ class EntityListener
     private $container;
 
     /**
+     * @var string
+     */
+    private $fromEmail;
+
+    /**
      * @param Container $container
      */
-    public function __construct(Container $container)
+    public function __construct(Container $container, $fromEmail)
     {
         $this->container = $container;
+        $this->fromEmail = $fromEmail;
     }
 
     /**
@@ -32,7 +37,6 @@ class EntityListener
      */
     public function postPersist(LifecycleEventArgs $args)
     {
-        $this->updateCollaborators($args);
         $this->addToActivity($args, true);
     }
 
@@ -41,7 +45,6 @@ class EntityListener
      */
     public function postUpdate(LifecycleEventArgs $args)
     {
-        $this->updateCollaborators($args);
         $this->addToActivity($args, false);
     }
 
@@ -101,55 +104,6 @@ class EntityListener
     }
 
     /**
-     * @param LifecycleEventArgs $args
-     */
-    public function updateCollaborators(LifecycleEventArgs $args)
-    {
-        $entity = $args->getEntity();
-        $entityManager = $args->getEntityManager();
-
-        if ($entity instanceof Issue) {
-            $isNeedUpdate = false;
-            $isReporterCollaborator = $this
-                ->container
-                ->get('issue')
-                ->isUserCollaborator($entity, $entity->getReporter());
-
-            $isAssigneeCollaborator = $this
-                ->container
-                ->get('issue')
-                ->isUserCollaborator($entity, $entity->getAssignee());
-
-            if (!$isReporterCollaborator) {
-                $entity->addCollaborator($entity->getReporter());
-                $isNeedUpdate = true;
-            }
-
-            //also prevent duplicates users<-->issues
-            if (!$isAssigneeCollaborator && $entity->getReporter()->getId() != $entity->getAssignee()->getId()) {
-                $entity->addCollaborator($entity->getAssignee());
-                $isNeedUpdate = true;
-            }
-
-            if ($isNeedUpdate) {
-                $entityManager->persist($entity);
-                $entityManager->flush();
-            }
-        } elseif ($entity instanceof Comment) {
-            $isUserCollaborator = $this
-                ->container
-                ->get('issue')
-                ->isUserCollaborator($entity->getIssue(), $entity->getUser());
-
-            if (!$isUserCollaborator) {
-                $entity->getIssue()->addCollaborator($entity->getUser());
-                $entityManager->persist($entity);
-                $entityManager->flush();
-            }
-        }
-    }
-
-    /**
      * @param Activity $activity
      */
     public function activityEmailNotification(Activity $activity)
@@ -161,7 +115,7 @@ class EntityListener
             foreach ($collaborators as $user) {
                 $message = \Swift_Message::newInstance()
                     ->setSubject('Notification task - "'.$issue->getSummary().'"')
-                    ->setFrom('robot@localhost')
+                    ->setFrom($this->fromEmail)
                     ->setTo($user->getEmail())
                     ->setBody(
                         $this->container->get('templating')->render(

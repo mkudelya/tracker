@@ -9,7 +9,7 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface as Container;
 
-use Oro\Bundle\UserBundle\Entity\Role as Role;
+use Oro\Bundle\UserBundle\Model\Role as Role;
 use Oro\Bundle\UserBundle\Entity\User;
 
 class RegistrationType extends AbstractType

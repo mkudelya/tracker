@@ -5,11 +5,11 @@ namespace Oro\Bundle\TrackerBundle\Form;
 use Doctrine\ORM\EntityRepository;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Exception\LogicException;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 use Oro\Bundle\TrackerBundle\Controller\IssueController;
-use Oro\Bundle\TrackerBundle\Provider\IssueProvider;
 use Oro\Bundle\TrackerBundle\Entity\Project;
 
 class IssueType extends AbstractType
@@ -51,11 +51,6 @@ class IssueType extends AbstractType
     );
 
     /**
-     * @var IssueProvider
-     */
-    protected $issueProvider;
-
-    /**
      * @var Project
      */
     protected $project;
@@ -69,6 +64,10 @@ class IssueType extends AbstractType
         $builder->add('summary');
         $builder->add('code');
         $builder->add('description');
+
+        if (!$this->getProcessMethod()) {
+            throw new LogicException('Please call setProcessMethod first');
+        }
 
         if ($this->getProcessMethod() == IssueController::IS_ADD_TASK) {
             $this->types['story'] = 'Story';

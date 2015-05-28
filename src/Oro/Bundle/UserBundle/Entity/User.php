@@ -16,7 +16,7 @@ use Oro\Bundle\TrackerBundle\Entity\Activity;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="users")
+ * @ORM\Table(name="user")
  */
 class User extends BaseUser
 {

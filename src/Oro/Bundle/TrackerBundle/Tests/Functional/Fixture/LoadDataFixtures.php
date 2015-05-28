@@ -8,7 +8,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-use Oro\Bundle\UserBundle\Entity\Role;
+use Oro\Bundle\UserBundle\Model\Role;
 
 class LoadDataFixtures extends AbstractFixture implements ContainerAwareInterface
 {

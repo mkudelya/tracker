@@ -153,6 +153,7 @@ class IssueController extends Controller
      * @Route("/edit/{issueCode}", name="_tracking_issue_edit")
      * @ParamConverter("project", options={"mapping": {"projectCode": "code"}})
      * @ParamConverter("issue", options={"mapping": {"issueCode": "code"}})
+     * @Template("OroTrackerBundle:Issue:edit.html.twig")
      * @param Project $project
      * @param Issue $issue
      * @return mixed
@@ -399,16 +400,17 @@ class IssueController extends Controller
         $form->handleRequest($request);
 
         if ($request->getMethod() === 'POST' && $form->isValid()) {
-            $comment->setIssue($issue);
-            $comment->setUser($user);
-            $manager->persist($comment);
-            $manager->flush();
 
             if ($comment->getId()) {
                 $flashId = 'flash.update.comment';
             } else {
                 $flashId = 'flash.add.comment';
             }
+
+            $comment->setIssue($issue);
+            $comment->setUser($user);
+            $manager->persist($comment);
+            $manager->flush();
 
             $request->getSession()->getFlashBag()->add(
                 'notice',

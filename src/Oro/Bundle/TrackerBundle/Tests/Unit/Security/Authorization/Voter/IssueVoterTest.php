@@ -7,7 +7,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Oro\Bundle\TrackerBundle\Security\Authorization\Voter\IssueVoter;
 use Oro\Bundle\TrackerBundle\Entity\Issue;
 use Oro\Bundle\UserBundle\Entity\User;
-use Oro\Bundle\UserBundle\Entity\Role;
+use Oro\Bundle\UserBundle\Model\Role;
 
 class IssueVoterTest extends \PHPUnit_Framework_TestCase
 {

@@ -9,7 +9,7 @@ use Oro\Bundle\UserBundle\Entity\User;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="comments")
+ * @ORM\Table(name="comment")
  * @ORM\HasLifecycleCallbacks
  */
 class Comment
@@ -162,7 +162,7 @@ class Comment
      */
     public function updatedTimestamps()
     {
-        if ($this->getCreated() == null) {
+        if ($this->getCreated() === null) {
             $this->setCreated(new \DateTime('now', new \DateTimeZone('UTC')));
         }
     }

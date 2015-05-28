@@ -7,7 +7,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Oro\Bundle\TrackerBundle\Security\Authorization\Voter\ProjectVoter;
 use Oro\Bundle\TrackerBundle\Entity\Project;
 use Oro\Bundle\UserBundle\Entity\User;
-use Oro\Bundle\UserBundle\Entity\Role;
+use Oro\Bundle\UserBundle\Model\Role;
 
 class ProjectVoterTest extends \PHPUnit_Framework_TestCase
 {

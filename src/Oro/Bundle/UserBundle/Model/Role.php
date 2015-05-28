@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\UserBundle\Entity;
+namespace Oro\Bundle\UserBundle\Model;
 
 class Role
 {
@@ -8,7 +8,7 @@ class Role
     const ROLE_MANAGER = 'ROLE_MANAGER';
     const ROLE_OPERATOR = 'ROLE_OPERATOR';
 
-    protected $roles = array(
+    protected static $roles = array(
         self::ROLE_ADMINISTRATOR => 'Administrator',
         self::ROLE_MANAGER => 'Manager',
         self::ROLE_OPERATOR => 'Operator'
@@ -19,6 +19,6 @@ class Role
      */
     public function getAvailableRoles()
     {
-        return $this->roles;
+        return self::$roles;
     }
 }

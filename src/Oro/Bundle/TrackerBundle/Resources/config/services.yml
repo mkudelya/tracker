@@ -1,7 +1,14 @@
 services:
-    event.listener:
-        class: Oro\Bundle\TrackerBundle\EventListener\EntityListener
+    collaborator.listener:
+        class: Oro\Bundle\TrackerBundle\EventListener\CollaboratorListener
         arguments: ['@service_container']
+        tags:
+            - { name: doctrine.event_listener, event: postPersist }
+            - { name: doctrine.event_listener, event: postUpdate }
+
+    activity.listener:
+        class: Oro\Bundle\TrackerBundle\EventListener\ActivityListener
+        arguments: ['@service_container', '%mailer_user%']
         tags:
             - { name: doctrine.event_listener, event: postPersist }
             - { name: doctrine.event_listener, event: postUpdate }

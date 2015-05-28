@@ -42,7 +42,7 @@ class IssueRepository extends EntityRepository
     public function getIssueListByCollaborationUser(User $user)
     {
         $issues = $this->getEntityManager()->createQuery(
-            'select i from Oro\Bundle\TrackerBundle\Entity\Issue i JOIN i.collaborators u
+            'SELECT i FROM OroTrackerBundle:Issue i JOIN i.collaborators u
             WHERE u = ?1 and i.status != ?2 and i.parent IS NULL'
         );
         $issues->setParameter(1, $user);
@@ -59,7 +59,7 @@ class IssueRepository extends EntityRepository
     public function getIssueListByAssigneeUser(User $user)
     {
         $issues = $this->getEntityManager()->createQuery(
-            'select i from Oro\Bundle\TrackerBundle\Entity\Issue i
+            'SELECT i FROM OroTrackerBundle:Issue i
             WHERE i.assignee = ?1 and i.status != ?2 and i.parent IS NULL'
         );
         $issues->setParameter(1, $user);
@@ -76,7 +76,7 @@ class IssueRepository extends EntityRepository
     public function getCollaborationListByIssue(IssueEntity $issue)
     {
         $issues = $this->getEntityManager()->createQuery(
-            'select u from Oro\Bundle\UserBundle\Entity\User u JOIN u.issues i
+            'SELECT u FROM OroUserBundle:User u JOIN u.issues i
             JOIN i.collaborators c WHERE i = ?1'
         );
         $issues->setParameter(1, $issue);

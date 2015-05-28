@@ -82,14 +82,15 @@ class ProjectController extends Controller
         $form->handleRequest($request);
 
         if ($request->getMethod() === 'POST' && $form->isValid()) {
-            $manager->persist($project);
-            $manager->flush();
 
             if ($project->getId()) {
                 $flashId = 'flash.update.project';
             } else {
                 $flashId = 'flash.add.project';
             }
+
+            $manager->persist($project);
+            $manager->flush();
 
             $request->getSession()->getFlashBag()->add(
                 'notice',

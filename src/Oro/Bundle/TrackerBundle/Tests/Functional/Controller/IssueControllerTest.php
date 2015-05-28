@@ -6,13 +6,14 @@ class IssueControllerTest extends AbstractController
 {
     public function testAddIssue()
     {
-        $crawler = self::$client->request('GET', $this->getUrl('_tracking_project_edit'));
+        $crawler = self::$client->request('GET', $this->getUrl('_tracking_project_create'));
 
         $form = $crawler->selectButton('tracker_project[Save]')->form();
 
         $form['tracker_project[label]'] = 'label';
         $form['tracker_project[summary]'] = 'summary';
         $form['tracker_project[code]'] = 'second';
+        $form['tracker_project[members]'] = 1;
 
         $crawler = self::$client->submit($form);
 

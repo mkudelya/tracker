@@ -7,7 +7,7 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 use Oro\Bundle\TrackerBundle\Entity\Comment;
-use Oro\Bundle\UserBundle\Entity\Role;
+use Oro\Bundle\UserBundle\Model\Role;
 
 class CommentVoter implements VoterInterface
 {
@@ -77,7 +77,7 @@ class CommentVoter implements VoterInterface
         switch($attribute) {
             case self::DELETE:
             case self::EDIT:
-                if ($object->getUser()->getId() == $user->getId()) {
+                if ($object->getUser()->getId() === $user->getId()) {
                     return VoterInterface::ACCESS_GRANTED;
                 }
                 break;

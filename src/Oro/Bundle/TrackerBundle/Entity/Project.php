@@ -11,7 +11,7 @@ use Oro\Bundle\UserBundle\Entity\User;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="projects")
+ * @ORM\Table(name="project")
  * @UniqueEntity("code")
  */
 class Project
@@ -40,7 +40,7 @@ class Project
 
     /**
      * @ORM\ManyToMany(targetEntity="Oro\Bundle\UserBundle\Entity\User", inversedBy="projects")
-     * @ORM\JoinTable(name="project_members")
+     * @ORM\JoinTable(name="project_member")
      **/
     protected $members;
 
@@ -53,6 +53,16 @@ class Project
      * @ORM\OneToMany(targetEntity="Activity", mappedBy="project")
      **/
     protected $activities;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->members = new ArrayCollection();
+        $this->issues = new ArrayCollection();
+        $this->activities = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -224,23 +234,13 @@ class Project
 
         if ($members->count()) {
             foreach ($members as $member) {
-                if ($member->getId() == $user->getId()) {
+                if ($member->getId() === $user->getId()) {
                     return true;
                 }
             }
         }
 
         return false;
-    }
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->members = new ArrayCollection();
-        $this->issues = new ArrayCollection();
-        $this->activities = new ArrayCollection();
     }
 
     /**
